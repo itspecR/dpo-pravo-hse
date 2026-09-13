@@ -7,8 +7,11 @@
  *
  * Security model (local tool, not for public internet):
  *  - Binds only to 127.0.0.1
- *  - Session cookie (HttpOnly, SameSite=Strict) after login; TOTP required
- *  - HTTP Basic still accepted for автотестов, если сессии нет
+ *  - Session cookie (HttpOnly, SameSite=Strict) after login; TOTP required,
+ *    когда он подключён (totpEnrolled в .admin-credentials.json)
+ *  - HTTP Basic выключен по умолчанию: ADMIN_ALLOW_BASIC=1 включает его для
+ *    автотестов, и только пока TOTP не подключён – второй фактор обязан
+ *    действовать на каждом пути входа (аудит 13.09.2026)
  *  - CSRF token required for state-changing POSTs
  *  - Brute-force lockout + request throttling
  *  - Path traversal blocked; allowlisted static assets only
@@ -300,11 +303,21 @@ setInterval(() => {
 // перезапуском сервера, так что одного слота достаточно.
 let verifiedAuthDigest = null;
 
+/**
+ * Basic – запасной вход для автотестов, а не второй путь мимо TOTP.
+ * Включается только явно (ADMIN_ALLOW_BASIC=1) и только пока второй фактор
+ * не подключён: Basic проверяет один пароль, и при подключённом TOTP он
+ * выдавал бы тот же результат авторизации без кода (аудит 13.09.2026).
+ */
+function basicAllowed(credentials) {
+  return process.env.ADMIN_ALLOW_BASIC === '1' && !credentials.totpEnrolled;
+}
+
 async function checkAuth(req, credentials) {
   const session = sessions.get(req);
   if (session) return { ok: true, session };
 
-  if (process.env.ADMIN_ALLOW_BASIC === '0') return false;
+  if (!basicAllowed(credentials)) return false;
   const header = req.headers.authorization || '';
   const [scheme, encoded] = header.split(' ');
   if (scheme !== 'Basic' || !encoded) return false;
@@ -1336,11 +1349,11 @@ async function createServer(credentials) {
 
       const authed = await checkAuth(req, credentials);
       if (!authed) {
-        // Выключенный Basic (ADMIN_ALLOW_BASIC=0) — не подбор пароля:
-        // браузер мог прислать кэш старого Authorization. Считать это
+        // Выключенный Basic (умолчание, либо подключён TOTP) – не подбор
+        // пароля: браузер мог прислать кэш старого Authorization. Считать это
         // неудачей — значит за 5 запросов закрыть админку на 15 минут.
         const sentBasic = /^Basic\s/i.test(String(req.headers.authorization || ''));
-        const basicOff = process.env.ADMIN_ALLOW_BASIC === '0';
+        const basicOff = !basicAllowed(credentials);
         if (req.headers.authorization && !(sentBasic && basicOff)) {
           recordAuthFail(ip);
           await sleep(FAIL_DELAY_MS); // тарпит — только для неверных кред
