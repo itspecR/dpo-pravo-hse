@@ -101,9 +101,12 @@ test('integrity каждого скрипта совпадает с файлом
   for (const rel of pages) {
     const html = fs.readFileSync(path.join(OUT, rel), 'utf8');
     for (const m of html.matchAll(/<script src="([^"]+)"[^>]*\sintegrity="([^"]+)"/g)) {
-      const file = path.join(OUT, path.dirname(rel), m[1]);
-      const actual = 'sha384-' + crypto.createHash('sha384').update(fs.readFileSync(file)).digest('base64');
+      const [src, version] = m[1].split('?v=');
+      const buf = fs.readFileSync(path.join(OUT, path.dirname(rel), src));
+      const actual = 'sha384-' + crypto.createHash('sha384').update(buf).digest('base64');
       if (actual !== m[2]) bad.push(`${rel}: ${m[1]}`);
+      // Версия в адресе – от опубликованного (сжатого) файла, иначе кэш не сбросится.
+      if (version !== undefined && version !== crypto.createHash('sha384').update(buf).digest('hex').slice(0, 10)) bad.push(`${rel}: ${m[1]} (версия)`);
       checked++;
     }
   }

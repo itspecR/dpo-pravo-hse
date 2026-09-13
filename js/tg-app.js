@@ -272,14 +272,140 @@
 
   /* ---------- Экран 2: программа ---------- */
 
-  function bullets(title, items) {
+  // Порядок разделов и их вид – раскладка «А · Лента», выбранная владельцем
+  // на живом макете 14.09.2026: всё подряд, как страница программы на сайте.
+  // Пустой раздел не выводится вовсе.
+
+  function section(title, sub, body) {
+    if (!body) return null;
+    return h('section', { class: 'block' }, [h('h2', { class: 'h2', text: title }), sub ? h('p', { class: 'sub', text: sub }) : null, body]);
+  }
+
+  function list(cls, items, tag) {
     if (!items || !items.length) return null;
-    return h('div', null, [
-      h('h2', { class: 'h2', text: title }),
-      h('ul', { class: 'bul' }, items.map(function (x) {
-        return h('li', { text: x });
-      })),
+    return h(tag || 'ul', { class: cls }, items.map(function (x) {
+      return h('li', { text: x });
+    }));
+  }
+
+  /** Ссылка наружу: в Telegram – через openLink (встроенный браузер), в браузере – новой вкладкой. */
+  function outLink(cls, href, children) {
+    var a = h('a', { class: cls, href: href, target: '_blank', rel: 'noopener noreferrer' }, children);
+    a.addEventListener('click', function (e) {
+      if (!inTelegram) return;
+      e.preventDefault();
+      tg.openLink(a.href);
+    });
+    return a;
+  }
+
+  function hostOf(url) {
+    try {
+      return new URL(url).host.replace(/^www\./, '');
+    } catch (e) {
+      return '';
+    }
+  }
+
+  function plural(n, one, few, many) {
+    var d = n % 10;
+    var dd = n % 100;
+    return n + ' ' + (d === 1 && dd !== 11 ? one : d >= 2 && d <= 4 && (dd < 12 || dd > 14) ? few : many);
+  }
+
+  /** Текст, свёрнутый до нескольких строк, с кнопкой «Читать полностью». */
+  function clamped(cls, text, limit) {
+    var p = h('p', { class: cls + ' clamp', text: text });
+    if (text.length <= limit) {
+      p.classList.remove('clamp');
+      return p;
+    }
+    var more = h('button', { class: 'more', type: 'button', 'aria-expanded': 'false', text: 'Читать полностью' });
+    more.addEventListener('click', function () {
+      var open = p.classList.toggle('clamp') === false;
+      more.textContent = open ? 'Свернуть' : 'Читать полностью';
+      more.setAttribute('aria-expanded', String(open));
+    });
+    return h('div', null, [p, more]);
+  }
+
+  function noticeBlock(n) {
+    if (!n) return null;
+    return h('div', { class: 'notice', role: 'note' }, [
+      h('p', { class: 'notice-head' }, [h('span', { class: 'notice-tag', text: 'Важно' }), n.date]),
+      h('p', { class: 'notice-text', text: n.text }),
+      n.url ? outLink('notice-link', n.url, ['Смотреть на ' + (hostOf(n.url) || 'сайте') + ' ↗']) : null,
     ]);
+  }
+
+  function priceBlock(p, price) {
+    if (!price && !p.priceTerms.length) return null;
+    return h('div', { class: 'price-box' }, [
+      price ? h('span', { class: 'price', text: price }) : null,
+      p.oldPrice ? h('s', { class: 'price-old', text: core.formatPrice(p.oldPrice) }) : null,
+      list('price-terms', p.priceTerms),
+    ]);
+  }
+
+  function modulesBlock(p) {
+    if (!p.modules.length) return null;
+    var sub = plural(p.modules.length, 'модуль', 'модуля', 'модулей') + (p.hours ? ' · ' + p.hours : '');
+    return section('Программа обучения', sub, h('ol', { class: 'modules' }, p.modules.map(function (m) {
+      var head = [h('span', { class: 'module-title', text: m.title }), m.hours ? h('span', { class: 'module-hours', text: m.hours }) : null];
+      if (!m.topics.length) return h('li', null, [h('div', { class: 'module-row' }, head)]);
+      return h('li', null, [h('details', null, [h('summary', { class: 'module-row' }, head), list('module-topics', m.topics)])]);
+    })));
+  }
+
+  function filesBlock(p) {
+    if (!p.files.length) return null;
+    return section('Документы программы', null, h('ul', { class: 'files' }, p.files.map(function (f) {
+      return h('li', null, [outLink('file', f.path, [
+        h('span', { class: 'file-icon', 'aria-hidden': 'true', text: 'PDF' }),
+        h('span', { class: 'file-name' }, [f.title, h('small', { text: f.size ? 'PDF · ' + f.size : 'PDF' })]),
+        h('span', { class: 'file-go', 'aria-hidden': 'true', text: '↗' }),
+      ])]);
+    })));
+  }
+
+  function teachersBlock(p) {
+    if (!p.teachers.length) return null;
+    var title = p.teachers.length === 1 ? 'Преподаватель-практик' : 'Преподаватели-практики';
+    return section(title, null, h('ul', { class: 'teachers' }, p.teachers.map(function (t) {
+      return h('li', { class: 'teacher' }, [
+        t.photo ? h('img', { class: 'teacher-photo', src: t.photo, alt: '', loading: 'lazy', decoding: 'async' }) : h('span', { class: 'teacher-photo', 'aria-hidden': 'true' }),
+        h('div', null, [
+          h('p', { class: 'teacher-name', text: t.name }),
+          t.about ? clamped('teacher-about', t.about, 110) : null,
+          t.page ? outLink('teacher-page', t.page, ['Страница на hse.ru ↗']) : null,
+        ]),
+      ]);
+    })));
+  }
+
+  function feedbackBlock(p) {
+    if (!p.feedback.length) return null;
+    // Прокручиваемая лента – регион с фокусом (стрелки клавиатуры), список внутри.
+    return section('Отзывы выпускников', 'С официальной страницы программы на hse.ru', h('div', { class: 'reviews-scroll', role: 'region', tabindex: '0', 'aria-label': 'Отзывы, листаются вбок' }, [
+      h('ul', { class: 'reviews' }, p.feedback.map(function (f) {
+        return h('li', null, [h('blockquote', { text: f.text }), f.author ? h('p', { class: 'review-author', text: f.author }) : null]);
+      })),
+    ]));
+  }
+
+  function faqBlock(p) {
+    if (!p.faq.length) return null;
+    return section('Вопросы и ответы', 'С официальной страницы программы на hse.ru', h('ul', { class: 'faq' }, p.faq.map(function (x) {
+      return h('li', null, [h('details', null, [h('summary', { text: x.q }), h('p', { class: 'faq-a', text: x.a })])]);
+    })));
+  }
+
+  /** «О программе» как на сайте: лид, если он не начало описания; склеенное описание – списком. */
+  function aboutBlock(p) {
+    var text = p.about || p.tagline;
+    if (!text) return null;
+    var body = p.aboutItems ? list('bul', p.aboutItems) : clamped('about', text, 320);
+    return section('О программе', null, h('div', null, [p.lead ? h('p', { class: 'about-lead', text: p.lead }) : null, body]));
   }
 
   function programScreen() {
@@ -288,7 +414,10 @@
     var facts = [
       ['Старт', p.startLabel ? p.startLabel.replace(/^Старт:\s*/, '') : null],
       ['Формат', p.format],
-      ['Длительность', p.duration || p.hours],
+      ['Длительность', p.duration],
+      ['Объём', p.hours],
+      ['Язык', p.language],
+      ['График', p.schedule],
       ['Документ', p.doc],
     ].filter(function (f) {
       return f[1];
@@ -302,20 +431,26 @@
       h('div', { class: 'hero' }, [picture(p.cover)]),
       h('div', { class: 'badges' }, [p.badge && h('span', { class: 'badge', text: p.badge }), p.format && h('span', { class: 'badge', text: p.format })]),
       h('h1', { class: 'h1 h1--sm', text: p.title }),
-      p.tagline ? h('p', { class: 'lead', text: p.tagline }) : null,
+      noticeBlock(p.notice),
       facts.length
         ? h('dl', { class: 'facts' }, facts.map(function (f) {
             return h('div', { class: 'fact' }, [h('dt', { text: f[0] }), h('dd', { text: f[1] })]);
           }))
         : null,
-      bullets('Для кого', p.audience),
-      bullets('Чему научитесь', p.results),
-      p.modules.length ? h('h2', { class: 'h2', text: 'Программа' }) : null,
-      p.modules.length
-        ? h('ul', { class: 'mods' }, p.modules.map(function (m) {
-            return h('li', null, [m.title, m.hours ? h('span', { text: m.hours }) : null]);
-          }))
-        : null,
+      priceBlock(p, price),
+      aboutBlock(p),
+      // В источнике пункты – части одной фразы («Предпринимателям,»); в плашке запятая лишняя.
+      section('Кому подойдёт программа', p.audienceIntro, list('pills', p.audience.map(function (x) {
+        return x.replace(/[,;.]\s*$/, '');
+      }))),
+      section('Чему вы научитесь', null, list('bul', p.results)),
+      section('Преимущества программы', null, list('advantages', p.advantages, 'ol')),
+      modulesBlock(p),
+      filesBlock(p),
+      teachersBlock(p),
+      feedbackBlock(p),
+      section('Документы для приёма', null, list('bul', p.admissionDocs)),
+      faqBlock(p),
     ]);
   }
 

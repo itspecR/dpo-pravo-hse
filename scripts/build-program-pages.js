@@ -1585,4 +1585,4 @@ html.vi-mode :focus-visible{outline:3px solid #000 !important;outline-offset:2px
 
 if (require.main === module) build();
 
-module.exports = { build, renderPage, safeUrl, slugifyHref: programHref, buildPayUrl };
+module.exports = { build, renderPage, safeUrl, slugifyHref: programHref, buildPayUrl, normalizeProgram, splitGluedAbout };
