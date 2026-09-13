@@ -24,8 +24,10 @@ test('в данных все программы каталога и ровно �
   assert.equal(data.programs.length, catalog.programs.length);
   assert.ok(data.programs.length >= 27, 'каталог неожиданно пуст');
   for (const p of data.programs) assert.deepEqual(Object.keys(p).sort(), [...FIELDS].sort(), p.id);
+  // С 14.09.2026 карточка показывает всё, что есть на странице программы
+  // (решение владельца), но служебные и сырые поля каталога по-прежнему не уходят.
   const leaked = JSON.stringify(data);
-  for (const key of ['"teachers"', '"feedback"', '"faq"', '"files"', '"discounts"', '"source"', '"locked"']) {
+  for (const key of ['"source"', '"locked"', '"image"', '"discounts"', '"taxRefund"', '"kind"', '"teacherPhotos"', '"teacherPages"']) {
     assert.equal(leaked.includes(key), false, `на страницу утекло поле ${key}`);
   }
   assert.ok(data.programs.filter((p) => p.cover).length > 20, 'обложки не нашлись на диске');
@@ -59,9 +61,95 @@ test('документ, цена и подпись старта считаютс
   assert.equal(later.programs.find((x) => x.id === '494685723').startLabel, null, 'прошедший старт не показывается');
 });
 
+test('полная карточка: всё содержимое страницы программы', () => {
+  const p = data.programs.find((x) => x.id === '494685723');
+  // Сравнение с исходником – после той же типографики, что делает генератор.
+  const src = JSON.parse(JSON.stringify(catalog.programs.find((x) => String(x.id) === '494685723')).split(EM).join(EN));
+  assert.equal(p.about, src.about);
+  assert.equal(p.audienceIntro, src.audience.intro);
+  assert.deepEqual(p.audience, src.audience.items, 'все пункты «Кому подойдёт», без обрезки');
+  assert.equal(p.results.length, src.results.length);
+  assert.deepEqual(p.advantages, src.advantages);
+  assert.equal(p.language, 'русский');
+  assert.ok(p.priceTerms.includes('Скидка для юридических лиц'));
+  assert.equal(p.modules.length, 8);
+  assert.ok(p.modules.every((m) => Array.isArray(m.topics) && m.topics.length > 0), 'подтемы модулей');
+  assert.deepEqual(Object.keys(p.modules[0]).sort(), ['hours', 'title', 'topics']);
+  assert.equal(p.teachers.length, 8);
+  for (const t of p.teachers) {
+    assert.deepEqual(Object.keys(t).sort(), ['about', 'name', 'page', 'photo']);
+    assert.match(t.photo, /^\.\.\/images\/teachers\/[a-z0-9_.-]+$/i, t.name);
+    assert.ok(fs.existsSync(path.join(ROOT, t.photo.slice(3))), `нет фото ${t.photo}`);
+  }
+  assert.equal(p.feedback.length, src.feedback.length);
+  assert.deepEqual(Object.keys(p.feedback[0]).sort(), ['author', 'text']);
+  assert.deepEqual(p.faq.map((x) => x.q), src.faq.map((x) => x.q));
+  assert.deepEqual(p.admissionDocs, src.admissionDocs);
+  assert.deepEqual(p.files.map((f) => f.title).sort(), ['Расписание занятий', 'Учебный план']);
+  for (const f of p.files) {
+    assert.deepEqual(Object.keys(f).sort(), ['path', 'size', 'title']);
+    assert.match(f.path, /^\.\.\/files\/[a-z0-9_.-]+\.pdf$/i);
+    assert.ok(fs.existsSync(path.join(ROOT, f.path.slice(3))), `нет файла ${f.path}`);
+  }
+  const withPages = data.programs.flatMap((x) => x.teachers).filter((t) => t.page);
+  assert.ok(withPages.length > 0, 'личные страницы преподавателей не подхватились');
+  assert.ok(withPages.every((t) => /^https:\/\/([a-z0-9-]+\.)*hse\.ru\//i.test(t.page)));
+});
+
+test('фото и страницы преподавателей, файлы и объявление – только безопасные и живые', () => {
+  const store = {
+    programs: [{
+      id: '1',
+      title: 'Т',
+      teachers: [
+        { name: 'Есть фото', about: 'а' },
+        { name: 'Выход из папки', about: 'б' },
+        { name: 'Нет файла', about: 'в' },
+      ],
+      files: [
+        { kind: 'plan', size: '1 Мб', path: 'files/494685723-plan.pdf' },
+        { kind: 'schedule', size: '1 Мб', path: 'files/nope-schedule.pdf' },
+        { kind: 'plan', size: '1 Мб', path: '../.catalog-data.json' },
+      ],
+      notice: { date: '01.04.2026', text: 'старое', url: 'https://example.org/x' },
+    }],
+    teacherPhotos: {
+      'Есть фото': 'images/teachers/anna-sorokina.jpg',
+      'Выход из папки': 'images/teachers/../../.catalog-data.json',
+      'Нет файла': 'images/teachers/nobody-here.jpg',
+    },
+    teacherPages: {
+      'Есть фото': 'https://www.hse.ru/org/persons/1/',
+      'Выход из папки': 'https://evil.example/hse.ru/',
+      'Нет файла': 'http://www.hse.ru/org/persons/2/',
+    },
+  };
+  const p = buildData(store, { now: NOW }).programs[0];
+  assert.deepEqual(p.teachers.map((t) => t.photo), ['../images/teachers/anna-sorokina.jpg', null, null]);
+  assert.deepEqual(p.teachers.map((t) => t.page), ['https://www.hse.ru/org/persons/1/', null, null]);
+  assert.deepEqual(p.files, [{ title: 'Учебный план', size: '1 Мб', path: '../files/494685723-plan.pdf' }]);
+  assert.equal(p.notice, null, 'объявление старше 90 дней не показывается');
+
+  store.programs[0].notice = { date: '01.09.2026', text: 'свежее', url: 'javascript:alert(1)' };
+  assert.deepEqual(buildData(store, { now: NOW }).programs[0].notice, { date: '01.09.2026', text: 'свежее', url: null });
+  store.programs[0].notice = { date: '', text: 'без даты', url: 'https://disk.yandex.ru/i/x' };
+  assert.deepEqual(buildData(store, { now: NOW }).programs[0].notice, { date: null, text: 'без даты', url: 'https://disk.yandex.ru/i/x' });
+});
+
+test('условия цены: налоговый вычет и скидки одной строкой каждое', () => {
+  const p = buildData({ programs: [{ id: '1', title: 'Т', taxRefund: '13%', discounts: ['Скидка выпускникам', ''] }] }, { now: NOW }).programs[0];
+  assert.deepEqual(p.priceTerms, ['13% можно вернуть налоговым вычетом', 'Скидка выпускникам']);
+});
+
 test('длинное тире в текстах каталога становится коротким', () => {
   const d = buildData(
-    { programs: [{ id: '1', title: 'А ' + EM + ' Б', tagline: EM, results: [EM], modules: [{ title: EM, hours: '' }], audience: { items: [EM] } }] },
+    {
+      programs: [{
+        id: '1', title: 'А ' + EM + ' Б', tagline: EM, about: EM, results: [EM], advantages: [EM],
+        modules: [{ title: EM, hours: '', topics: [EM] }], audience: { intro: EM, items: [EM] },
+        teachers: [{ name: EM, about: EM }], feedback: [{ text: EM, author: EM }], faq: [{ q: EM, a: EM }],
+      }],
+    },
     { now: NOW }
   );
   assert.equal(JSON.stringify(d).includes(EM), false);
@@ -92,10 +180,13 @@ test('страница: CSP без unsafe-inline, скрипт Telegram, сво�
 
 test('название с </script> не закрывает блок данных и читается обратно без искажений', () => {
   const evil = '</script><script>alert(1)</script>';
-  const html = renderPage(buildData({ programs: [{ id: '1', title: evil }] }, { now: NOW }));
+  const html = renderPage(buildData({ programs: [{ id: '1', title: evil, feedback: [{ text: evil, author: evil }], faq: [{ q: evil, a: evil }] }] }, { now: NOW }));
   const block = /<script type="application\/json" id="tg-data">([\s\S]*?)<\/script>/.exec(html)[1];
   assert.equal(block.includes('<'), false, 'в блоке данных остался «<»');
-  assert.equal(JSON.parse(block).programs[0].title, evil);
+  const back = JSON.parse(block).programs[0];
+  assert.equal(back.title, evil);
+  assert.equal(back.feedback[0].text, evil);
+  assert.equal(back.faq[0].a, evil);
   assert.equal((html.match(/<script/g) || []).length, 4, 'появился лишний тег script');
 });
 

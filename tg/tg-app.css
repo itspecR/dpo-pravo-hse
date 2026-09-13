@@ -71,7 +71,6 @@ img { display: block; max-width: 100% }
 .hero img { width: 100%; height: 100%; object-fit: cover }
 .badges { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 10px }
 .badge { padding: 6px 9px; border-radius: 999px; background: var(--bg-tint); color: var(--ink-soft); font-size: 12px; font-weight: 600; line-height: 1 }
-.lead { margin: 0 0 16px; color: var(--ink-soft) }
 .facts { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; margin: 0 0 8px; background: var(--line); border: 1px solid var(--line);
   border-radius: var(--card-r); overflow: hidden }
 .fact { margin: 0; padding: 11px 12px; background: rgb(var(--surface)) }
@@ -81,10 +80,70 @@ img { display: block; max-width: 100% }
 .bul { display: flex; flex-direction: column; gap: 8px; margin: 0; padding: 0; list-style: none }
 .bul li { position: relative; padding-left: 16px; font-size: 14px; color: var(--ink-soft) }
 .bul li::before { content: ''; position: absolute; left: 2px; top: .6em; width: 6px; height: 6px; border-radius: 50%; background: rgb(var(--accent)) }
-.mods { margin: 0; padding: 0; list-style: none; border: 1px solid var(--line); border-radius: var(--card-r); background: rgb(var(--surface)); overflow: hidden }
-.mods li { display: flex; justify-content: space-between; gap: 12px; padding: 11px 12px; border-top: 1px solid var(--line); font-size: 14px; line-height: 1.35 }
-.mods li:first-child { border-top: 0 }
-.mods span { flex: none; font-size: 12px; color: var(--ink-mute); white-space: nowrap }
+.sub { margin: -4px 0 10px; font-size: 13px; color: var(--ink-mute) }
+.more { border: 0; background: none; padding: 6px 0 0; min-height: 44px; color: rgb(var(--accent)); font-size: 14px; font-weight: 600; cursor: pointer }
+.clamp { display: -webkit-box; -webkit-box-orient: vertical; overflow: hidden }
+.about { margin: 0; color: var(--ink-soft); white-space: pre-line }
+.about.clamp { -webkit-line-clamp: 6 }
+
+/* Полная карточка программы (раскладка «А · Лента», владелец 14.09.2026) */
+.notice { margin: 0 0 16px; padding: 12px 14px; border: 1px solid #F0B86E; border-radius: var(--card-r); background: #FFF4E0 }
+.notice-head { display: flex; align-items: center; gap: 8px; margin: 0 0 6px; font-size: 12px; color: var(--ink-mute) }
+.notice-tag { padding: 3px 8px; border-radius: 999px; background: #F0B86E; color: rgb(var(--ink)); font-weight: 600 }
+.notice-text { margin: 0; font-size: 14px }
+.notice-link { display: inline-flex; align-items: center; min-height: 44px; font-size: 14px; font-weight: 600; color: rgb(var(--accent)) }
+.price-box { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; margin: 8px 0 0; padding: 12px 14px; border: 1px solid var(--line); border-radius: var(--card-r); background: rgb(var(--surface)) }
+.price-box .price { font-size: 24px }
+.price-old { font-size: 14px; color: var(--ink-mute) }
+.price-terms { flex-basis: 100%; margin: 2px 0 0; padding: 0; list-style: none; font-size: 13px; color: var(--ink-soft) }
+.price-terms li::before { content: '✓ '; color: rgb(var(--accent)) }
+.pills { display: flex; flex-wrap: wrap; gap: 6px; margin: 0; padding: 0; list-style: none }
+.pills li { padding: 7px 10px; border-radius: 999px; background: var(--bg-tint); font-size: 13px; color: var(--ink-soft) }
+.advantages { display: flex; flex-direction: column; gap: 10px; margin: 0; padding: 0; list-style: none; counter-reset: adv }
+.advantages li { position: relative; min-height: 24px; padding-left: 34px; font-size: 14px; color: var(--ink-soft); counter-increment: adv }
+.advantages li::before { content: counter(adv); position: absolute; left: 0; top: 0; width: 24px; height: 24px; border-radius: 50%; background: rgb(var(--ink)); color: var(--bg); font: 600 12px/24px var(--sans); text-align: center }
+.modules { margin: 0; padding: 0; list-style: none; border: 1px solid var(--line); border-radius: var(--card-r); background: rgb(var(--surface)); overflow: hidden; counter-reset: mod }
+.modules > li { border-top: 1px solid var(--line); counter-increment: mod }
+.modules > li:first-child { border-top: 0 }
+.module-row { display: grid; grid-template-columns: 22px 1fr auto; gap: 10px; align-items: start; padding: 12px; font-size: 14px; line-height: 1.35; list-style: none }
+summary.module-row { cursor: pointer }
+.module-row::-webkit-details-marker { display: none }
+.module-row::before { content: counter(mod); color: var(--ink-mute); font-weight: 600 }
+.module-hours { padding-top: 2px; font-size: 12px; color: var(--ink-mute); white-space: nowrap }
+summary.module-row .module-hours::after { content: ' ▾'; color: rgb(var(--accent)) }
+details[open] > summary.module-row .module-hours::after { content: ' ▴' }
+.module-topics { display: flex; flex-direction: column; gap: 6px; margin: 0; padding: 0 12px 12px 44px; font-size: 13px; color: var(--ink-soft) }
+.files { display: flex; flex-direction: column; gap: 8px; margin: 0; padding: 0; list-style: none }
+.file { display: grid; grid-template-columns: 40px 1fr auto; align-items: center; gap: 10px; padding: 10px 12px; border: 1px solid var(--line); border-radius: var(--card-r); background: rgb(var(--surface)); color: inherit; text-decoration: none }
+.file-icon { width: 40px; height: 40px; border-radius: 10px; background: #FBE3E1; color: var(--error); font: 700 11px/40px var(--sans); text-align: center }
+.file-name { font-size: 14px; font-weight: 600 }
+.file-name small { display: block; font-size: 12px; font-weight: 400; color: var(--ink-mute) }
+.file-go { font-size: 18px; color: rgb(var(--accent)) }
+.teachers { display: flex; flex-direction: column; gap: 10px; margin: 0; padding: 0; list-style: none }
+.teacher { display: grid; grid-template-columns: 64px 1fr; gap: 12px; padding: 12px; border: 1px solid var(--line); border-radius: var(--card-r); background: rgb(var(--surface)) }
+.teacher-photo { display: block; width: 64px; height: 64px; border-radius: 50%; object-fit: cover; object-position: center 20%; background: var(--bg-tint) }
+.teacher-name { margin: 2px 0 4px; font-size: 15px; font-weight: 700; line-height: 1.25 }
+.teacher-about { margin: 0; font-size: 13px; color: var(--ink-soft) }
+.teacher-about.clamp { -webkit-line-clamp: 3 }
+.teacher .more { min-height: 32px; padding-top: 2px; font-size: 13px }
+.teacher-page { display: inline-flex; align-items: center; min-height: 32px; font-size: 13px; font-weight: 600; color: rgb(var(--accent)) }
+.reviews { display: flex; align-items: flex-start; gap: 10px; overflow-x: auto; margin: 0 -16px; padding: 0 16px 4px; list-style: none; scroll-snap-type: x mandatory; scrollbar-width: none }
+.reviews::-webkit-scrollbar { display: none }
+.reviews li { flex: none; width: 280px; max-width: 80vw; padding: 14px; border: 1px solid var(--line); border-radius: var(--card-r); background: rgb(var(--surface)); scroll-snap-align: start }
+.reviews blockquote { margin: 0 0 10px; font-size: 14px; color: var(--ink-soft) }
+.reviews blockquote::before { content: '«'; margin-right: 2px; font: 700 20px var(--slab); color: rgb(var(--accent)) }
+.review-author { margin: 0; font-size: 12px; font-weight: 600 }
+.checks { display: flex; flex-direction: column; gap: 8px; margin: 0; padding: 0; list-style: none }
+.checks li { position: relative; padding-left: 22px; font-size: 14px; color: var(--ink-soft) }
+.checks li::before { content: ''; position: absolute; left: 2px; top: .35em; width: 12px; height: 12px; border: 1.5px solid rgb(var(--accent)); border-radius: 3px }
+.faq { margin: 0; padding: 0; list-style: none; border: 1px solid var(--line); border-radius: var(--card-r); background: rgb(var(--surface)); overflow: hidden }
+.faq li { border-top: 1px solid var(--line) }
+.faq li:first-child { border-top: 0 }
+.faq summary { display: flex; justify-content: space-between; gap: 10px; padding: 12px; font-size: 14px; font-weight: 600; list-style: none; cursor: pointer }
+.faq summary::-webkit-details-marker { display: none }
+.faq summary::after { content: '+'; font-size: 18px; line-height: 1; color: rgb(var(--accent)) }
+.faq details[open] summary::after { content: '–' }
+.faq-a { margin: 0; padding: 0 12px 12px; font-size: 13px; color: var(--ink-soft); white-space: pre-line }
 
 /* Заявка */
 .mini { display: flex; align-items: center; gap: 12px; margin: 0 0 18px; padding: 10px; border: 1px solid var(--line); border-radius: var(--card-r);
@@ -133,6 +192,7 @@ img { display: block; max-width: 100% }
   .card:active { transform: scale(.985) }
   .chip:active, .ghost:active, .main-btn button:active { transform: scale(.97) }
   .plaque { animation: tg-rise .5s var(--ease) .08s both }
+  details[open] > .module-topics, details[open] > .faq-a { animation: tg-rise .3s var(--ease) both }
 }
 @keyframes tg-push { from { opacity: 0; transform: translateX(28px) } to { opacity: 1; transform: none } }
 @keyframes tg-pop { from { opacity: 0; transform: translateX(-20px) } to { opacity: 1; transform: none } }
