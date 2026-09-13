@@ -30,6 +30,8 @@ test('в данных все программы каталога и ровно �
   }
   assert.ok(data.programs.filter((p) => p.cover).length > 20, 'обложки не нашлись на диске');
   assert.ok(data.programs.every((p) => p.cover === null || /^\.\.\/images\/programs\/[a-z0-9_.-]+$/i.test(p.cover)));
+  assert.ok(data.programs.some((p) => p.thumb !== p.cover), 'миниатюры должны быть найдены, отличны от обложек');
+  assert.ok(data.programs.every((p) => p.thumb === null || /^\.\.\/images\/programs\/(thumbs\/)?[a-z0-9_.-]+$/i.test(p.thumb)));
 });
 
 test('сферы: только непустые, счётчики сходятся с программами', () => {

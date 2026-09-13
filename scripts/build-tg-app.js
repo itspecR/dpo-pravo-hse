@@ -49,6 +49,14 @@ function localImage(rel) {
   return fs.existsSync(path.join(ROOT, rel)) ? '../' + rel : null;
 }
 
+/** Разрешает миниатюру из папки thumbs/ по id программы. */
+function resolveThumb(id) {
+  // Защита от трюков с путями: только буквы, цифры, дефис, подчеркивание.
+  if (!id || !/^[A-Za-z0-9_-]+$/.test(id)) return null;
+  const thumbRel = `images/programs/thumbs/${id}.jpg`;
+  return fs.existsSync(path.join(ROOT, thumbRel)) ? '../' + thumbRel : null;
+}
+
 /** «Итоговый документ – диплом о … НИУ ВШЭ.» -> «Диплом о … НИУ ВШЭ». */
 function docTitle(badge) {
   const m = badge && /–\s*(.+?)\.?$/.exec(badge.tip || '');
@@ -74,6 +82,7 @@ function programOf(p, now) {
   // Та же цена, что на лендинге (priceOf в scripts/build-landing.js).
   const price = p.discountPrice != null ? p.discountPrice : p.educationPricing;
   const cover = localImage(p.image);
+  const thumb = resolveThumb(id) || cover;
   const hasDiscount =
     typeof p.discountPrice === 'number' && typeof p.educationPricing === 'number' && p.discountPrice < p.educationPricing;
   return {
@@ -93,7 +102,7 @@ function programOf(p, now) {
     results: (p.results || []).slice(0, 5),
     modules: (p.modules || []).map((m) => ({ title: m.title || '', hours: m.hours || '' })),
     cover,
-    thumb: localImage(`images/programs/thumbs/${id}.jpg`) || cover,
+    thumb,
     pay: /^\d+$/.test(id) ? buildPayUrl(id) : null,
   };
 }
