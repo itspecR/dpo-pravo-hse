@@ -705,6 +705,12 @@ function mountWalkIn(slot, opts) {
   var assetPath = opts.assetPath || 'images/crow/';
   var width = opts.width || 120;
   slot.style.position = 'relative';
+  // Собственный контекст наложения: z-index маскота (40) и кнопки-хита (41)
+  // нужны только друг относительно друга. Без isolation они действовали в
+  // общем контексте страницы и при прокрутке ворона рисовалась ПОВЕРХ
+  // липкой панели фильтров каталога (z-index:15) вместо того, чтобы уйти под
+  // неё вместе с содержимым (дефект 13.09.2026, замер: перекрытие 59px).
+  slot.style.isolation = 'isolate';
   var current = null;
 
   function teardown() {

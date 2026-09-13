@@ -119,3 +119,14 @@ test('index.html: crow-walk-addon вызывает mountWalkIn на window.load,
   // грузится лениво по требованию).
   assert.doesNotMatch(addon, /createElement\('script'\)/, 'на лендинге crow-mascot.js уже подключён тегом <script defer> – динамическая загрузка здесь не нужна');
 });
+
+test('js/crow-mascot.js: mountWalkIn замыкает контекст наложения слота – маскот не всплывает над липкой панелью фильтров при прокрутке', () => {
+  // Дефект 13.09.2026 (каталог): у маскота в слоте z-index:40, у кнопки-хита
+  // 41, у липкой панели поиска в каталоге z-index:15. Пока слот не образует
+  // собственный контекст наложения, эти z-index действуют в общем контексте
+  // страницы – и при прокрутке ворона рисуется ПОВЕРХ панели вместо того,
+  // чтобы уйти под неё, как остальное содержимое. Замер: перекрытие 59px,
+  // elementFromPoint в зоне перекрытия возвращал .crow-walk-hit.
+  const fn = CROW.slice(CROW.indexOf('function mountWalkIn'));
+  assert.match(fn, /slot\.style\.isolation\s*=\s*'isolate'/, 'слот должен быть собственным контекстом наложения (isolation:isolate)');
+});
