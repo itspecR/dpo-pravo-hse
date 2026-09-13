@@ -84,3 +84,25 @@ test('в выкладке нет ни одного файла, начинающ�
   walk(OUT);
   assert.deepEqual(strays, []);
 });
+
+test('integrity каждого скрипта совпадает с файлом, который уезжает на витрину', () => {
+  // Дефект 13.09.2026: хеши SRI считались от исходников, а сборка сжимает
+  // js/ – на витрине браузер блокировал 9 скриптов на страницах программ
+  // (форма заявки, ворона, бот, cookies, аналитика).
+  const crypto = require('node:crypto');
+  const pages = fs.readdirSync(OUT).filter((f) => f.endsWith('.html'))
+    .concat(fs.readdirSync(path.join(OUT, 'programs')).filter((f) => f.endsWith('.html')).map((f) => path.join('programs', f)));
+  let checked = 0;
+  const bad = [];
+  for (const rel of pages) {
+    const html = fs.readFileSync(path.join(OUT, rel), 'utf8');
+    for (const m of html.matchAll(/<script src="([^"]+)"[^>]*\sintegrity="([^"]+)"/g)) {
+      const file = path.join(OUT, path.dirname(rel), m[1]);
+      const actual = 'sha384-' + crypto.createHash('sha384').update(fs.readFileSync(file)).digest('base64');
+      if (actual !== m[2]) bad.push(`${rel}: ${m[1]}`);
+      checked++;
+    }
+  }
+  assert.ok(checked > 0, 'в выкладке не нашлось ни одного integrity – проверка ничего не проверила');
+  assert.deepEqual(bad, [], 'хеш не совпадает с файлом в выкладке');
+});

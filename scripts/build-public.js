@@ -33,6 +33,7 @@
 const fs = require('node:fs');
 const path = require('node:path');
 const vm = require('node:vm');
+const crypto = require('node:crypto');
 const { execFileSync } = require('node:child_process');
 
 const {
@@ -129,6 +130,33 @@ function minifyOwnScripts() {
   return { files, was: kb(was), now: kb(now) };
 }
 
+/**
+ * SRI на страницах считается от исходников (lib/sri.js), а minifyOwnScripts
+ * меняет байты скриптов – со старым хешем браузер скрипт не исполнит
+ * (дефект 13.09.2026: на витрине молчали форма заявки, ворона и бот).
+ * Поэтому хеш каждого integrity пересчитывается по файлу из выкладки.
+ */
+function syncIntegrity() {
+  const pages = fs.readdirSync(OUT).filter((f) => f.endsWith('.html'));
+  for (const dir of PAGE_DIRS) {
+    const from = path.join(OUT, dir);
+    if (!fs.existsSync(from)) continue;
+    for (const f of fs.readdirSync(from)) if (f.endsWith('.html')) pages.push(path.join(dir, f));
+  }
+  let n = 0;
+  for (const rel of pages) {
+    const file = path.join(OUT, rel);
+    const html = fs.readFileSync(file, 'utf8');
+    const out = html.replace(/(<script src="([^"]+)"[^>]*\sintegrity=")[^"]+"/g, (tag, head, src) => {
+      const buf = fs.readFileSync(path.join(OUT, path.dirname(rel), src));
+      n++;
+      return `${head}sha384-${crypto.createHash('sha384').update(buf).digest('base64')}"`;
+    });
+    if (out !== html) fs.writeFileSync(file, out, 'utf8');
+  }
+  return n;
+}
+
 function build() {
   fs.rmSync(OUT, { recursive: true, force: true });
   fs.mkdirSync(OUT, { recursive: true });
@@ -158,6 +186,7 @@ function build() {
   let programs = 0;
   for (const dir of PAGE_DIRS) programs += copyDir(dir, PAGE_EXT);
   report.push(`страницы программ: ${programs}`);
+  report.push(`хеши integrity пересчитаны: ${syncIntegrity()}`);
 
   let data = 0;
   for (const dir of DATA_DIRS) data += copyDir(dir, DATA_EXT);
