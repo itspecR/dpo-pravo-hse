@@ -210,3 +210,40 @@ test('момент согласия на обработку ПДн записа�
   assert.equal(res.ok, true);
   assert.equal(res.application.consentAt, res.application.receivedAt);
 });
+
+// Адрес заявителя попадает в ссылку mailto: в админке. Разделители URI
+// внутри адреса («?bcc=», «#», процентное кодирование) превращались бы в
+// параметры почтового клиента – скрытый получатель ответа менеджера
+// (аудит 13.09.2026, находка 4). Проверка должна принимать один почтовый
+// адрес, а не произвольную строку с одним «@».
+test('адрес с параметрами mailto или процентным кодированием отвергается', () => {
+  for (const email of [
+    'victim@example.org?bcc=attacker%40evil.example',
+    'victim@example.org?subject=hi',
+    'victim@example.org?body=text',
+    'victim%40evil.example@example.org',
+    'victim@example.org#fragment',
+    'victim@example.org/path',
+    'a&b=c@example.org',
+    '"quoted"@example.org',
+    'victim@example.org:25',
+  ]) {
+    const res = parseApplication({ ...valid(), email });
+    assert.equal(res.ok, false, `должен отвергаться: ${email}`);
+    assert.deepEqual(fieldsOf(res), ['email'], email);
+  }
+});
+
+test('обычные адреса, plus-addressing, апостроф и UTF-8 принимаются', () => {
+  for (const email of [
+    'anna@example.org',
+    'anna.petrova+dpo@sub.example.org',
+    "o'hara@example.org",
+    'иван@почта.рф',
+    'first-last_1@example-mail.co.uk',
+  ]) {
+    const res = parseApplication({ ...valid(), email });
+    assert.equal(res.ok, true, `должен приниматься: ${email}`);
+    assert.equal(res.application.email, email);
+  }
+});

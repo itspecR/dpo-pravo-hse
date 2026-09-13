@@ -36,3 +36,37 @@ test('диагностика умеет предупреждение почты 
   assert.match(src, /c\.warn/);
   assert.match(src, /id="mailBanner"/);
 });
+
+// Ссылка mailto: строится из адреса заявителя. HTML-экранирование защищает
+// атрибут, но не URI: «?bcc=» внутри адреса стало бы параметром почтового
+// клиента (аудит 13.09.2026, находка 4). Функция mailtoHref вырезается из
+// исходника и исполняется – проверяется результат, а не наличие строки.
+const vm = require('node:vm');
+
+function mailtoHrefFromSource() {
+  const m = /const mailtoHref = \(email\) => \{[\s\S]*?\n  \};/.exec(src);
+  assert.ok(m, 'в admin.html нет функции mailtoHref');
+  return vm.runInNewContext(`${m[0]}; mailtoHref`, {});
+}
+
+test('mailto: кодирует разделители URI и не добавляет параметров почтового клиента', () => {
+  const mailtoHref = mailtoHrefFromSource();
+  const href = mailtoHref('victim@example.org?bcc=attacker%40evil.example&subject=x#y');
+  assert.ok(href.startsWith('mailto:'));
+  assert.doesNotMatch(href, /[?#&]/, 'в ссылке остались разделители параметров');
+  assert.doesNotMatch(href, /%40evil/, 'процентная последовательность не перекодирована');
+  assert.equal(href, 'mailto:victim@example.org%3Fbcc%3Dattacker%2540evil.example%26subject%3Dx%23y');
+});
+
+test('mailto: обычный адрес и plus-addressing остаются читаемыми', () => {
+  const mailtoHref = mailtoHrefFromSource();
+  assert.equal(mailtoHref('anna.petrova+dpo@example.org'), 'mailto:anna.petrova+dpo@example.org');
+  assert.equal(mailtoHref("o'hara@example.org"), "mailto:o'hara@example.org");
+  assert.equal(mailtoHref(''), '');
+  assert.equal(mailtoHref(undefined), '');
+});
+
+test('карточка заявки строит почтовую ссылку через mailtoHref', () => {
+  assert.match(src, /mailtoHref\(a\.email\)/);
+  assert.doesNotMatch(src, /`mailto:\$\{a\.email\}`/);
+});

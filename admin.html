@@ -1658,6 +1658,15 @@
     return d ? `tel:${d}` : '';
   };
 
+  // Адрес – значение внутри URI, а не его часть: «?bcc=…» из адреса
+  // заявителя стал бы параметром почтового клиента. Кодируем всё, кроме
+  // «@» и «+» (оба разрешены в mailto буквально и так читаются в ссылке);
+  // escapeHtml на выводе – отдельный, последний этап и URI не касается.
+  const mailtoHref = (email) => {
+    const s = String(email || '');
+    return s ? `mailto:${encodeURIComponent(s).replace(/%40/g, '@').replace(/%2B/g, '+')}` : '';
+  };
+
   const renderAppBadge = (stats) => {
     const n = stats && stats.new ? Number(stats.new) : 0;
     const badge = $('appBadge');
@@ -1723,7 +1732,7 @@
           .concat(a.sourceOther ? [`«${a.sourceOther}»`] : [])
           .join(', ');
         const tel = telHref(a.phone);
-        const mailTo = a.email ? `mailto:${a.email}` : '';
+        const mailTo = mailtoHref(a.email);
         const facts = [
           ['Тема', TOPIC_LABELS[a.topic || 'program'] || a.topic],
           a.applicantType === 'corporate' ? ['Тип', 'от организации'] : null,
