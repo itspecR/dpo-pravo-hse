@@ -8,7 +8,7 @@
   },
   "scripts": {
     "admin": "node admin-server.js",
-    "update-catalog": "node update-catalog.js && node scripts/fetch-program-descriptions.js --all && node scripts/fetch-program-media.js && node scripts/build-program-pages.js",
+    "update-catalog": "node update-catalog.js && node scripts/fetch-program-descriptions.js --all && node scripts/fetch-program-media.js && node scripts/build-program-pages.js && node scripts/build-tg-app.js",
     "start": "node admin-server.js",
     "serve": "node scripts/static-server.js",
     "load-test": "node scripts/load-test.js --concurrency 2500 --duration 25 --sockets 400",
@@ -16,6 +16,7 @@
     "test": "node --test tests/unit/*.test.js",
     "test:security": "python tests/security_test.py",
     "build-programs": "node scripts/build-program-pages.js",
+    "build-tg": "node scripts/build-tg-app.js",
     "template:extract": "node scripts/landing-template.js extract",
     "template:inject": "node scripts/landing-template.js inject",
     "template:verify": "node scripts/landing-template.js verify",
@@ -24,7 +25,7 @@
     "build-public": "node scripts/build-public.js",
     "prerender": "node scripts/prerender-landing.js",
     "publish-mirror": "node scripts/build-public.js --publish",
-    "update-details": "node scripts/fetch-program-descriptions.js --all && node scripts/fetch-program-media.js && node scripts/build-program-pages.js",
+    "update-details": "node scripts/fetch-program-descriptions.js --all && node scripts/fetch-program-media.js && node scripts/build-program-pages.js && node scripts/build-tg-app.js",
     "backup-data": "node scripts/backup-data.js"
   }
 }

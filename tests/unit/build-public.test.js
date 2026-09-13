@@ -36,6 +36,8 @@ test('в выкладке есть всё, ради чего она сущест
     'images/logo/apple-touch-icon-180.png',
     '.nojekyll',
     'content/programs-index.json',
+    'tg/index.html',
+    'tg/tg-app.css',
   ]) {
     assert.ok(has(rel), `в публичной выкладке нет ${rel}`);
   }
@@ -90,8 +92,10 @@ test('integrity каждого скрипта совпадает с файлом
   // js/ – на витрине браузер блокировал 9 скриптов на страницах программ
   // (форма заявки, ворона, бот, cookies, аналитика).
   const crypto = require('node:crypto');
-  const pages = fs.readdirSync(OUT).filter((f) => f.endsWith('.html'))
-    .concat(fs.readdirSync(path.join(OUT, 'programs')).filter((f) => f.endsWith('.html')).map((f) => path.join('programs', f)));
+  const pages = fs.readdirSync(OUT).filter((f) => f.endsWith('.html'));
+  for (const dir of ['programs', 'tg']) {
+    pages.push(...fs.readdirSync(path.join(OUT, dir)).filter((f) => f.endsWith('.html')).map((f) => path.join(dir, f)));
+  }
   let checked = 0;
   const bad = [];
   for (const rel of pages) {
