@@ -16,3 +16,24 @@ node_modules
 .catalog-schedule.json
 .catalog-update.lock
 .load-test-report.json
+# Одноразовый пароль и секрет TOTP первого запуска (lib/admin-credentials.js),
+# том закрытых данных compose (.data), резервные копии заявок (backups),
+# TLS-ключи (certs, docker-compose.tls.yml) и файлы окружения. Bind-mount при
+# запуске содержимое слоя не отменяет: что скопировано – то в образе
+# (аудит 13.09.2026). Живая проверка: tests/docker_context_test.py.
+.admin-password.txt
+АДМИН-ПАРОЛЬ.txt
+.data
+backups
+certs
+.env
+.env.*
+**/*.pem
+**/*.key
+.playwright-cli
+# Артефакты сборки и правки лендинга: в образе не нужны.
+.public
+.prerender
+.landing-template.html
+.index.html.bak
+.impeccable
