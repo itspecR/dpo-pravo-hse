@@ -14,6 +14,7 @@ const path = require('node:path');
 const ROOT = path.resolve(__dirname, '..', '..');
 const client = fs.readFileSync(path.join(ROOT, 'js', 'application-form.js'), 'utf8');
 const server = fs.readFileSync(path.join(ROOT, 'lib', 'application-form.js'), 'utf8');
+const tgCore = fs.readFileSync(path.join(ROOT, 'js', 'tg-core.js'), 'utf8');
 
 const literal = (src, name) => {
   const m = src.match(new RegExp(`${name}\\s*=\\s*(/[^\\n]+?/)[;\\n]`));
@@ -25,6 +26,7 @@ test('регулярные выражения почты и телефона н�
   for (const name of ['EMAIL_SHAPE', 'PHONE_ALLOWED']) {
     const re = literal(server, name);
     assert.ok(client.includes(re), `${name} ${re} отсутствует в js/application-form.js`);
+    assert.ok(tgCore.includes(re), `${name} ${re} отсутствует в js/tg-core.js (мини-апп Telegram)`);
   }
   assert.match(server, /PHONE_MIN_DIGITS = 10/);
   assert.match(server, /PHONE_MAX_DIGITS = 15/);
