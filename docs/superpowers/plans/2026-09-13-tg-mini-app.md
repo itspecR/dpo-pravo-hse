@@ -1541,6 +1541,11 @@ git commit -m "feat(tg): publish the mini app with the showcase and document bot
 - [ ] **Step 2: Отправить и выложить**
 
 ```bash
+git switch main && git merge --ff-only feat/tg-mini-app && node scripts/build-tg-app.js && git status --short
+```
+Пересборка обновляет метки старта; если `tg/index.html` изменился, закоммитить его отдельно: `chore(tg): rebuild mini app page before publishing`.
+
+```bash
 git push -q origin main && git push -q mirror main
 npm run publish-mirror
 ```

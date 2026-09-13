@@ -33,7 +33,7 @@ img { display: block; max-width: 100% }
 /* Своя шапка – только вне Telegram: внутри шапку и «назад» рисует Telegram */
 .bar { position: sticky; top: 0; z-index: 10; display: flex; align-items: center; gap: 12px; height: 52px; padding: 0 16px;
   background: rgba(251, 249, 245, .92); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line) }
-.bar-back { border: 0; background: none; padding: 8px 0; color: rgb(var(--accent)); font-size: 15px; cursor: pointer }
+.bar-back { display: flex; align-items: center; min-height: 44px; border: 0; background: none; padding: 8px 0; color: rgb(var(--accent)); font-size: 15px; cursor: pointer }
 .bar-title { font-weight: 600 }
 
 .screen { padding: 16px 16px 28px }
@@ -94,6 +94,7 @@ img { display: block; max-width: 100% }
 .mini b { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; font-size: 14px; line-height: 1.25 }
 .mini small { display: block; font-size: 13px; color: var(--ink-mute) }
 .field { display: block; margin: 0 0 12px }
+.field label { display: block }
 .field-label { display: block; margin: 0 0 5px; font-size: 13px; color: var(--ink-mute) }
 .field-hint { color: rgb(var(--accent)) }
 .field input { width: 100%; height: 46px; padding: 0 12px; border: 1px solid var(--line); border-radius: 12px; background: rgb(var(--surface)); font-size: 16px; outline: none }

@@ -59,6 +59,7 @@
     },
   };
   var mainAction = null;
+  var firstShow = true;
 
   /* ---------- DOM ---------- */
 
@@ -172,6 +173,19 @@
     app.appendChild(screen);
     window.scrollTo(0, name === 'list' && direction === 'back' ? state.listScroll : 0);
     setBack(state.stack.length > 1);
+    // Клик уносит фокус вместе с исчезнувшей карточкой/кнопкой – после
+    // перехода фокус переносится на заголовок экрана, а не теряется на
+    // <body>. Не при первом показе стартового экрана: там фокус ставить
+    // некуда и незачем.
+    if (firstShow) {
+      firstShow = false;
+    } else {
+      var heading = screen.querySelector('h1');
+      if (heading) {
+        heading.setAttribute('tabindex', '-1');
+        heading.focus({ preventScroll: true });
+      }
+    }
   }
 
   /* ---------- Экран 1: витрина ---------- */
@@ -191,7 +205,7 @@
         ]),
       ]),
     ]);
-    card.style.setProperty('--i', String(Math.min(index, 8)));
+    card.style.setProperty('--i', String(Math.min(index, 7)));
     return card;
   }
 
@@ -346,7 +360,12 @@
       inputs[name] = input;
       errs[name] = h('span', { class: 'field-err', id: 'err-' + name, hidden: true });
       var hint = name === 'firstName' && state.nameFromTelegram ? h('span', { class: 'field-hint', text: ' · из профиля Telegram' }) : null;
-      return h('label', { class: 'field' }, [h('span', { class: 'field-label' }, [d[1], hint]), input, errs[name]]);
+      // Ошибка – вне label: иначе её текст попадает в доступное имя поля
+      // и читается дважды (сначала подпись, потом ошибка).
+      return h('div', { class: 'field' }, [
+        h('label', null, [h('span', { class: 'field-label' }, [d[1], hint]), input]),
+        errs[name],
+      ]);
     });
 
     var consent = h('input', { type: 'checkbox', name: 'consent', 'aria-describedby': 'err-consent' });
@@ -412,10 +431,6 @@
   function demoScreen() {
     var p = byId[state.programId];
     var v = state.submitted;
-    if (!v) {
-      state.stack.pop();
-      return formScreen();
-    }
     var rows = [['Программа', p.title], ['Имя', v.firstName + ' ' + v.lastName], ['Телефон', v.phone], ['E-mail', v.email]];
     if (v.position) rows.push(['Должность', v.position]);
     if (v.company) rows.push(['Место работы', v.company]);
@@ -429,6 +444,10 @@
     var again = h('button', { class: 'ghost', type: 'button', text: 'Вернуться к программам' });
     again.addEventListener('click', function () {
       state.listScroll = 0;
+      // Согласие не переносится на следующую заявку – чекбокс не должен
+      // приходить уже отмеченным для другой программы.
+      state.form.consent = false;
+      state.submitted = null;
       reset('list');
     });
 
@@ -452,10 +471,11 @@
   if (inTelegram) {
     tg.ready();
     tg.expand();
-    if (tg.isVersionAtLeast && tg.isVersionAtLeast('6.9')) {
-      tg.setHeaderColor(BRAND_BG);
-      tg.setBackgroundColor(BRAND_BG);
-    }
+    if (tg.isVersionAtLeast && tg.isVersionAtLeast('6.1')) tg.setBackgroundColor(BRAND_BG);
+    if (tg.isVersionAtLeast && tg.isVersionAtLeast('6.9')) tg.setHeaderColor(BRAND_BG);
+    // Полоса под нативной MainButton – своя область (не header и не фон
+    // страницы), тёмная тема Telegram иначе оставит её тёмной.
+    if (tg.isVersionAtLeast && tg.isVersionAtLeast('7.10') && tg.setBottomBarColor) tg.setBottomBarColor(BRAND_BG);
     tg.MainButton.onClick(runMain);
     tg.BackButton.onClick(back);
   } else {
