@@ -136,6 +136,34 @@ test('фото и страницы преподавателей, файлы и �
   assert.deepEqual(buildData(store, { now: NOW }).programs[0].notice, { date: null, text: 'без даты', url: 'https://disk.yandex.ru/i/x' });
 });
 
+test('как на сайте: лид, склеенное описание списком, канон имён преподавателей', () => {
+  const hk = data.programs.find((x) => x.id === '1025688553');
+  assert.equal(hk.lead, hk.tagline, 'самостоятельный лид показывается, как about-lead на сайте');
+  const glued = data.programs.find((x) => x.id === '829977883');
+  assert.ok(Array.isArray(glued.aboutItems) && glued.aboutItems.length >= 3, 'склеенный about разбит на пункты');
+  assert.equal(data.programs.find((x) => x.id === '494685723').aboutItems, null);
+  const prefix = buildData({ programs: [{ id: '1', title: 'Т', tagline: 'Начало длинного описания программы', about: 'Начало длинного описания программы и его продолжение.' }] }, { now: NOW }).programs[0];
+  assert.equal(prefix.lead, null, 'лид-префикс описания не дублируется');
+  const budnik = data.programs.find((x) => x.id === '472681893').teachers.find((t) => /Будник/.test(t.name));
+  assert.equal(budnik.name, 'Будник Руслан Александрович');
+  assert.match(budnik.page, /^https:\/\/www\.hse\.ru\//, 'страница находится по каноническому имени');
+});
+
+test('странные данные не роняют сборку и не проходят фильтры', () => {
+  const p = buildData({
+    programs: [{
+      id: '1', title: 'Т',
+      files: [{ kind: '__proto__', title: { x: 1 }, size: 5, path: 'files/494685723-plan.pdf' }],
+      notice: { date: 20260901, text: 'текст', url: 'https://example.org/' },
+      teachers: [{ name: 'Папка', about: 'а' }],
+    }],
+    teacherPhotos: { 'Папка': 'images/teachers/..' },
+  }, { now: NOW }).programs[0];
+  assert.deepEqual(p.files, [{ title: 'Документ', size: '', path: '../files/494685723-plan.pdf' }]);
+  assert.equal(p.notice.date, null, 'дата не строкой – не выводится');
+  assert.equal(p.teachers[0].photo, null, 'папка вместо файла – не фото');
+});
+
 test('условия цены: налоговый вычет и скидки одной строкой каждое', () => {
   const p = buildData({ programs: [{ id: '1', title: 'Т', taxRefund: '13%', discounts: ['Скидка выпускникам', ''] }] }, { now: NOW }).programs[0];
   assert.deepEqual(p.priceTerms, ['13% можно вернуть налоговым вычетом', 'Скидка выпускникам']);
@@ -157,7 +185,7 @@ test('длинное тире в текстах каталога станови�
 });
 
 const { renderPage } = require(path.join(ROOT, 'scripts', 'build-tg-app.js'));
-const { integrityFor } = require(path.join(ROOT, 'lib', 'sri.js'));
+const { integrityFor, versionFor } = require(path.join(ROOT, 'lib', 'sri.js'));
 
 test('страница: CSP без unsafe-inline, скрипт Telegram, свои скрипты по порядку и с integrity', () => {
   const html = renderPage(data);
@@ -169,7 +197,7 @@ test('страница: CSP без unsafe-inline, скрипт Telegram, сво�
   assert.match(html, /<script src="https:\/\/telegram\.org\/js\/telegram-web-app\.js"><\/script>/);
   assert.match(
     html,
-    /<script src="\.\.\/js\/tg-core\.js" defer integrity="sha384-[^"]+"><\/script>\s*<script src="\.\.\/js\/tg-app\.js" defer integrity="sha384-[^"]+"><\/script>/
+    /<script src="\.\.\/js\/tg-core\.js\?v=[0-9a-f]{10}" defer integrity="sha384-[^"]+"><\/script>\s*<script src="\.\.\/js\/tg-app\.js\?v=[0-9a-f]{10}" defer integrity="sha384-[^"]+"><\/script>/
   );
   assert.doesNotMatch(html, /\sstyle="/, 'инлайн-стиль заблокирует CSP');
   assert.doesNotMatch(html, /\son[a-z]+="/, 'инлайн-обработчик заблокирует CSP');
@@ -194,7 +222,16 @@ test('tg/index.html собран из текущих скриптов: integrity
   // Правка js/tg-app.js или js/tg-core.js без пересборки ломает страницу:
   // браузер не исполнит скрипт с чужим хешем.
   const html = fs.readFileSync(path.join(ROOT, 'tg', 'index.html'), 'utf8');
-  const tags = [...html.matchAll(/<script src="\.\.\/(js\/[^"]+)" defer integrity="([^"]+)"/g)];
+  // Версия в адресе (?v=) – от содержимого файла: после выкладки WebView с
+  // закэшированным старым скриптом иначе получил бы новую страницу со старым
+  // файлом, и SRI оставил бы экран пустым (ревью 14.09.2026).
+  const tags = [...html.matchAll(/<script src="\.\.\/(js\/[^"?]+)\?v=([0-9a-f]+)" defer integrity="([^"]+)"/g)];
   assert.equal(tags.length, 2);
-  for (const m of tags) assert.equal(m[2], integrityFor(m[1]), `${m[1]}: пересоберите node scripts/build-tg-app.js`);
+  for (const m of tags) {
+    assert.equal(m[3], integrityFor(m[1]), `${m[1]}: пересоберите node scripts/build-tg-app.js`);
+    assert.equal(m[2], versionFor(m[1]), `${m[1]}: версия в адресе устарела`);
+  }
+  const css = /<link rel="stylesheet" href="tg-app\.css\?v=([0-9a-f]+)">/.exec(html);
+  assert.ok(css, 'стили без версии в адресе');
+  assert.equal(css[1], versionFor('tg/tg-app.css'));
 });

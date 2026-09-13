@@ -21,8 +21,8 @@ const { SPHERES, sphereOf } = require('../lib/program-spheres');
 const { docBadge, shortFormat } = require('../lib/program-labels');
 const { upcomingStartLabel } = require('../lib/hse-catalog');
 const { isNoticeFresh } = require('../lib/catalog-store');
-const { buildPayUrl } = require('./build-program-pages');
-const { scriptTag } = require('../lib/sri');
+const { buildPayUrl, normalizeProgram, splitGluedAbout } = require('./build-program-pages');
+const { scriptTag, versionFor } = require('../lib/sri');
 
 const ROOT = path.resolve(__dirname, '..');
 const STORE = path.join(ROOT, '.catalog-data.json');
@@ -57,7 +57,7 @@ const CSP = [
 const FIELDS = Object.freeze([
   'id', 'title', 'sphere', 'badge', 'doc', 'format', 'duration', 'hours', 'startLabel',
   'price', 'oldPrice', 'tagline', 'audience', 'results', 'modules', 'cover', 'thumb', 'pay',
-  'about', 'audienceIntro', 'advantages', 'language', 'schedule', 'priceTerms', 'notice',
+  'about', 'lead', 'aboutItems', 'audienceIntro', 'advantages', 'language', 'schedule', 'priceTerms', 'notice',
   'files', 'teachers', 'feedback', 'admissionDocs', 'faq',
 ]);
 
@@ -85,8 +85,15 @@ function resolveThumb(id) {
 }
 
 function existing(rel, re) {
-  return rel && re.test(rel) && fs.existsSync(path.join(ROOT, rel)) ? '../' + rel : null;
+  if (typeof rel !== 'string' || !re.test(rel)) return null;
+  try {
+    return fs.statSync(path.join(ROOT, rel)).isFile() ? '../' + rel : null;
+  } catch {
+    return null;
+  }
 }
+
+const str = (v) => (typeof v === 'string' ? v : '');
 
 const texts = (list) => (Array.isArray(list) ? list.filter((x) => typeof x === 'string' && x.trim()) : []);
 
@@ -94,23 +101,31 @@ const texts = (list) => (Array.isArray(list) ? list.filter((x) => typeof x === '
 function noticeOf(notice, now) {
   if (!isNoticeFresh(notice, now.getTime())) return null;
   const url = typeof notice.url === 'string' && /^https:\/\//i.test(notice.url) ? notice.url : null;
-  return { date: notice.date || null, text: notice.text, url };
+  return { date: str(notice.date) || null, text: str(notice.text), url };
 }
 
 function teachersOf(p, photos, pages) {
-  return (p.teachers || []).filter((t) => t && t.name).map((t) => ({
-    name: t.name,
-    about: t.about || '',
-    photo: existing(photos[t.name], TEACHER_PHOTO_RE),
-    page: typeof pages[t.name] === 'string' && TEACHER_PAGE_RE.test(pages[t.name]) ? pages[t.name] : null,
-  }));
+  const own = (map, key) => (Object.prototype.hasOwnProperty.call(map, key) ? map[key] : null);
+  return (p.teachers || []).filter((t) => t && t.name).map((t) => {
+    const page = own(pages, t.name);
+    return {
+      name: t.name,
+      about: str(t.about),
+      photo: existing(own(photos, t.name), TEACHER_PHOTO_RE),
+      page: typeof page === 'string' && TEACHER_PAGE_RE.test(page) ? page : null,
+    };
+  });
 }
 
 function filesOf(p) {
   return (p.files || [])
     .map((f) => ({ f, path: f && existing(f.path, FILE_PATH_RE) }))
     .filter((x) => x.path)
-    .map(({ f, path: rel }) => ({ title: FILE_LABELS[f.kind] || f.title || 'Документ', size: f.size || '', path: rel }));
+    .map(({ f, path: rel }) => ({
+      title: (Object.prototype.hasOwnProperty.call(FILE_LABELS, f.kind) && FILE_LABELS[f.kind]) || str(f.title) || 'Документ',
+      size: str(f.size),
+      path: rel,
+    }));
 }
 
 /** «Итоговый документ – диплом о … НИУ ВШЭ.» -> «Диплом о … НИУ ВШЭ». */
@@ -131,7 +146,20 @@ function typography(value) {
   return value;
 }
 
-function programOf(p, now, photos, pages) {
+/**
+ * Лид над описанием – по тому же правилу, что renderAbout на страницах
+ * программ: tagline выводится, только если он не начало about (иначе
+ * это дубль абзаца, иногда оборванный на полуслове).
+ */
+function leadOf(p) {
+  const norm = (s) => String(s || '').replace(/\s+/g, ' ').trim().toLowerCase();
+  if (!p.tagline || !p.about) return null;
+  return norm(p.about).startsWith(norm(p.tagline).slice(0, 60)) ? null : p.tagline;
+}
+
+function programOf(raw, now, photos, pages) {
+  // Та же чистка текстов и канон имён преподавателей, что у страниц программ.
+  const p = normalizeProgram(raw);
   const id = String(p.id);
   const badge = docBadge(p.type);
   const sphere = sphereOf(p);
@@ -161,6 +189,8 @@ function programOf(p, now, photos, pages) {
     thumb,
     pay: /^\d+$/.test(id) ? buildPayUrl(id) : null,
     about: p.about || '',
+    lead: leadOf(p),
+    aboutItems: splitGluedAbout(p.about),
     audienceIntro: (p.audience && p.audience.intro) || null,
     advantages: texts(p.advantages),
     language: p.language || null,
@@ -202,7 +232,7 @@ function renderPage(data) {
 <title>Программы Центра ДПО · мини-приложение</title>
 <link rel="icon" type="image/png" sizes="32x32" href="../images/logo/favicon-32.png">
 <link rel="stylesheet" href="../fonts/fonts-hse.css">
-<link rel="stylesheet" href="tg-app.css">
+<link rel="stylesheet" href="tg-app.css?v=${versionFor('tg/tg-app.css')}">
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
 <body>
@@ -214,8 +244,8 @@ function renderPage(data) {
 <div class="main-btn" hidden><button type="button"></button></div>
 <noscript><p class="noscript">Для витрины программ нужен JavaScript.</p></noscript>
 <script type="application/json" id="tg-data">${json}</script>
-${scriptTag('js/tg-core.js', { prefix: '../' })}
-${scriptTag('js/tg-app.js', { prefix: '../' })}
+${scriptTag('js/tg-core.js', { prefix: '../', version: true })}
+${scriptTag('js/tg-app.js', { prefix: '../', version: true })}
 </body>
 </html>
 `;

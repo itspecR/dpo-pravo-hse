@@ -147,10 +147,12 @@ function syncIntegrity() {
   for (const rel of pages) {
     const file = path.join(OUT, rel);
     const html = fs.readFileSync(file, 'utf8');
-    const out = html.replace(/(<script src="([^"]+)"[^>]*\sintegrity=")[^"]+"/g, (tag, head, src) => {
+    const out = html.replace(/<script src="([^"?]+)(\?v=[0-9a-f]+)?"([^>]*\sintegrity=")[^"]+"/g, (tag, src, version, rest) => {
       const buf = fs.readFileSync(path.join(OUT, path.dirname(rel), src));
       n++;
-      return `${head}sha384-${crypto.createHash('sha384').update(buf).digest('base64')}"`;
+      // Версия в адресе (?v=) тоже от опубликованного файла: после сжатия он другой.
+      const v = version ? `?v=${crypto.createHash('sha384').update(buf).digest('hex').slice(0, 10)}` : '';
+      return `<script src="${src}${v}"${rest}sha384-${crypto.createHash('sha384').update(buf).digest('base64')}"`;
     });
     if (out !== html) fs.writeFileSync(file, out, 'utf8');
   }

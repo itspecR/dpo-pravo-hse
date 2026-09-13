@@ -385,9 +385,12 @@
 
   function feedbackBlock(p) {
     if (!p.feedback.length) return null;
-    return section('Отзывы выпускников', 'С официальной страницы программы на hse.ru', h('ul', { class: 'reviews', tabindex: '0', 'aria-label': 'Отзывы, листаются вбок' }, p.feedback.map(function (f) {
-      return h('li', null, [h('blockquote', { text: f.text }), f.author ? h('p', { class: 'review-author', text: f.author }) : null]);
-    })));
+    // Прокручиваемая лента – регион с фокусом (стрелки клавиатуры), список внутри.
+    return section('Отзывы выпускников', 'С официальной страницы программы на hse.ru', h('div', { class: 'reviews-scroll', role: 'region', tabindex: '0', 'aria-label': 'Отзывы, листаются вбок' }, [
+      h('ul', { class: 'reviews' }, p.feedback.map(function (f) {
+        return h('li', null, [h('blockquote', { text: f.text }), f.author ? h('p', { class: 'review-author', text: f.author }) : null]);
+      })),
+    ]));
   }
 
   function faqBlock(p) {
@@ -395,6 +398,14 @@
     return section('Вопросы и ответы', 'С официальной страницы программы на hse.ru', h('ul', { class: 'faq' }, p.faq.map(function (x) {
       return h('li', null, [h('details', null, [h('summary', { text: x.q }), h('p', { class: 'faq-a', text: x.a })])]);
     })));
+  }
+
+  /** «О программе» как на сайте: лид, если он не начало описания; склеенное описание – списком. */
+  function aboutBlock(p) {
+    var text = p.about || p.tagline;
+    if (!text) return null;
+    var body = p.aboutItems ? list('bul', p.aboutItems) : clamped('about', text, 320);
+    return section('О программе', null, h('div', null, [p.lead ? h('p', { class: 'about-lead', text: p.lead }) : null, body]));
   }
 
   function programScreen() {
@@ -411,7 +422,6 @@
     ].filter(function (f) {
       return f[1];
     });
-    var about = p.about || p.tagline;
 
     setMain(price ? 'Подать заявку · ' + price : 'Подать заявку', function () {
       go('form');
@@ -428,7 +438,7 @@
           }))
         : null,
       priceBlock(p, price),
-      about ? section('О программе', null, clamped('about', about, 320)) : null,
+      aboutBlock(p),
       // В источнике пункты – части одной фразы («Предпринимателям,»); в плашке запятая лишняя.
       section('Кому подойдёт программа', p.audienceIntro, list('pills', p.audience.map(function (x) {
         return x.replace(/[,;.]\s*$/, '');
@@ -439,7 +449,7 @@
       filesBlock(p),
       teachersBlock(p),
       feedbackBlock(p),
-      section('Документы для приёма', null, list('checks', p.admissionDocs)),
+      section('Документы для приёма', null, list('bul', p.admissionDocs)),
       faqBlock(p),
     ]);
   }
