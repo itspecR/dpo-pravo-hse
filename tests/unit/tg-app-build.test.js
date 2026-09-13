@@ -67,3 +67,43 @@ test('длинное тире в текстах каталога станови�
   assert.equal(JSON.stringify(d).includes(EM), false);
   assert.equal(d.programs[0].title, 'А ' + EN + ' Б');
 });
+
+const { renderPage } = require(path.join(ROOT, 'scripts', 'build-tg-app.js'));
+const { integrityFor } = require(path.join(ROOT, 'lib', 'sri.js'));
+
+test('страница: CSP без unsafe-inline, скрипт Telegram, свои скрипты по порядку и с integrity', () => {
+  const html = renderPage(data);
+  const csp = /http-equiv="Content-Security-Policy" content="([^"]+)"/.exec(html);
+  assert.ok(csp, 'нет CSP');
+  assert.doesNotMatch(csp[1], /unsafe-inline|unsafe-eval/);
+  assert.match(csp[1], /default-src 'none'/);
+  assert.match(csp[1], /script-src 'self' https:\/\/telegram\.org/);
+  assert.match(html, /<script src="https:\/\/telegram\.org\/js\/telegram-web-app\.js"><\/script>/);
+  assert.match(
+    html,
+    /<script src="\.\.\/js\/tg-core\.js" defer integrity="sha384-[^"]+"><\/script>\s*<script src="\.\.\/js\/tg-app\.js" defer integrity="sha384-[^"]+"><\/script>/
+  );
+  assert.doesNotMatch(html, /\sstyle="/, 'инлайн-стиль заблокирует CSP');
+  assert.doesNotMatch(html, /\son[a-z]+="/, 'инлайн-обработчик заблокирует CSP');
+  for (const hook of ['<header class="bar" hidden>', '<main id="app">', '<div class="main-btn" hidden>', 'id="tg-data"']) {
+    assert.ok(html.includes(hook), `нет разметки ${hook}`);
+  }
+});
+
+test('название с </script> не закрывает блок данных и читается обратно без искажений', () => {
+  const evil = '</script><script>alert(1)</script>';
+  const html = renderPage(buildData({ programs: [{ id: '1', title: evil }] }, { now: NOW }));
+  const block = /<script type="application\/json" id="tg-data">([\s\S]*?)<\/script>/.exec(html)[1];
+  assert.equal(block.includes('<'), false, 'в блоке данных остался «<»');
+  assert.equal(JSON.parse(block).programs[0].title, evil);
+  assert.equal((html.match(/<script/g) || []).length, 4, 'появился лишний тег script');
+});
+
+test('tg/index.html собран из текущих скриптов: integrity совпадает с файлами', () => {
+  // Правка js/tg-app.js или js/tg-core.js без пересборки ломает страницу:
+  // браузер не исполнит скрипт с чужим хешем.
+  const html = fs.readFileSync(path.join(ROOT, 'tg', 'index.html'), 'utf8');
+  const tags = [...html.matchAll(/<script src="\.\.\/(js\/[^"]+)" defer integrity="([^"]+)"/g)];
+  assert.equal(tags.length, 2);
+  for (const m of tags) assert.equal(m[2], integrityFor(m[1]), `${m[1]}: пересоберите node scripts/build-tg-app.js`);
+});

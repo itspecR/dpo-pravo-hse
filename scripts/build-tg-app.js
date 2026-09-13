@@ -19,6 +19,7 @@ const { SPHERES, sphereOf } = require('../lib/program-spheres');
 const { docBadge, shortFormat } = require('../lib/program-labels');
 const { upcomingStartLabel } = require('../lib/hse-catalog');
 const { buildPayUrl } = require('./build-program-pages');
+const { scriptTag } = require('../lib/sri');
 
 const ROOT = path.resolve(__dirname, '..');
 const STORE = path.join(ROOT, '.catalog-data.json');
@@ -28,6 +29,21 @@ const OUT = path.join(ROOT, 'tg', 'index.html');
 const IMAGE_PATH_RE = /^images\/programs\/[a-z0-9_.-]+$/i;
 const EM_DASH = String.fromCharCode(0x2014);
 const EN_DASH = String.fromCharCode(0x2013);
+// «<» в JSON уходит в escape-последовательность с кодом 003C: для HTML-парсера это не тег, для JSON.parse тот
+// же символ. Иначе «</script» из названия закрыл бы блок данных (аудит 13.09.2026).
+const LT_ESCAPED = String.fromCharCode(92) + 'u003C';
+
+const CSP = [
+  "default-src 'none'",
+  "script-src 'self' https://telegram.org",
+  "style-src 'self'",
+  "img-src 'self' data:",
+  "font-src 'self'",
+  "connect-src 'none'",
+  "base-uri 'self'",
+  "form-action 'none'",
+  "object-src 'none'",
+].join('; ');
 
 const FIELDS = Object.freeze([
   'id', 'title', 'sphere', 'badge', 'doc', 'format', 'duration', 'hours', 'startLabel',
@@ -118,4 +134,50 @@ function buildData(catalog, { now = new Date() } = {}) {
   return typography({ programs, spheres });
 }
 
-module.exports = { FIELDS, buildData };
+function renderPage(data) {
+  const json = JSON.stringify(data).split('<').join(LT_ESCAPED);
+  return `<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta http-equiv="Content-Security-Policy" content="${CSP}">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#FBF9F5">
+<title>Программы Центра ДПО · мини-приложение</title>
+<link rel="icon" type="image/png" sizes="32x32" href="../images/logo/favicon-32.png">
+<link rel="stylesheet" href="../fonts/fonts-hse.css">
+<link rel="stylesheet" href="tg-app.css">
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+</head>
+<body>
+<header class="bar" hidden>
+  <button class="bar-back" type="button" hidden>‹ Назад</button>
+  <span class="bar-title">Центр ДПО</span>
+</header>
+<main id="app"></main>
+<div class="main-btn" hidden><button type="button"></button></div>
+<noscript><p class="noscript">Для витрины программ нужен JavaScript.</p></noscript>
+<script type="application/json" id="tg-data">${json}</script>
+${scriptTag('js/tg-core.js', { prefix: '../' })}
+${scriptTag('js/tg-app.js', { prefix: '../' })}
+</body>
+</html>
+`;
+}
+
+function build() {
+  if (!fs.existsSync(STORE)) {
+    console.error('Нет .catalog-data.json – сначала запустите node update-catalog.js');
+    process.exit(1);
+  }
+  const data = buildData(JSON.parse(fs.readFileSync(STORE, 'utf8')));
+  fs.mkdirSync(path.dirname(OUT), { recursive: true });
+  fs.writeFileSync(OUT, renderPage(data), 'utf8');
+  console.log(`tg/index.html: ${data.programs.length} программ, ${(fs.statSync(OUT).size / 1024).toFixed(0)} КБ`);
+}
+
+if (require.main === module) build();
+
+module.exports = { FIELDS, buildData, renderPage, build };
