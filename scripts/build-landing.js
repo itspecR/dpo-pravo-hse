@@ -1109,7 +1109,23 @@ function renderTop5Data(template, programs) {
     picked.push(p);
   }
 
-  const q = (s) => String(s == null ? '' : s).replace(/\\/g, '\\\\').replace(/'/g, "\\'");
+  // Значение живёт в одинарных кавычках JavaScript ВНУТРИ <script> шаблона,
+  // а шаблон – JSON-строкой во внешнем script. Внешняя оболочка экранирует
+  // «</script» только для себя: после JSON.parse и DOMParser внутренний
+  // «</script» из названия программы закрыл бы data-блок, а следующий тег
+  // стал бы исполняемым (аудит 13.09.2026). Поэтому каждый «<» уходит в
+  // \u003C – для HTML-парсера это не тег, для JavaScript тот же символ.
+  // Переводы строк тоже экранируются: буквальный \n в одинарных кавычках –
+  // синтаксическая ошибка всего data-блока.
+  const q = (s) =>
+    String(s == null ? '' : s)
+      .replace(/\\/g, '\\\\')
+      .replace(/'/g, "\\'")
+      .replace(/</g, '\\u003C')
+      .replace(/\r/g, '\\r')
+      .replace(/\n/g, '\\n')
+      .replace(/\u2028/g, '\\u2028')
+      .replace(/\u2029/g, '\\u2029');
   const priceOf = (p) => {
     const value = p.discountPrice != null ? p.discountPrice : p.educationPricing;
     if (value == null) return 'Цена по запросу';
