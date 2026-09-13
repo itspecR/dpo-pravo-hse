@@ -43,6 +43,24 @@ npm run test:security
 
 `tests/run.sh` гоняет smoke **и** security подряд.
 
+Регрессии аудита 13.09.2026 (`docs/security-fixes-2026-09-13.md`) лежат в
+юнит-тестах: `landing-top5-escape` (вложенный script лендинга),
+`admin-basic-totp` (живая админка: Basic не обходит TOTP),
+`application-form` и `admin-applications-ui` (адрес заявителя и mailto:),
+`dockerignore` (сторож `.dockerignore`).
+
+## Контекст сборки Docker (`tests/docker_context_test.py`)
+
+Собирает образ из синтетического дерева с файлами-маркерами на закрытых
+путях (`.data/`, `backups/`, `certs/`, `.admin-password.txt`, `.env` …) и
+просматривает все слои через `docker save`: маркеров быть не должно, а
+исходники – должны. Нужен запущенный Docker; без него код выхода 2, это не
+«прошло». В `tests/run.sh` не входит.
+
+```bash
+python tests/docker_context_test.py
+```
+
 ## Замечания
 
 - Каждая страница смоука — свежий контекст (чистый `localStorage`).

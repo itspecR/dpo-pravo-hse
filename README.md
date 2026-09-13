@@ -27,8 +27,11 @@ node update-catalog.js
 node admin-server.js
 # затем открыть http://127.0.0.1:5178/admin.html
 ```
-Логин/пароль печатаются в терминал при первом запуске и хранятся в
-`.admin-credentials.json` (в git не попадает). Сервер слушает только `127.0.0.1`.
+При первом запуске логин, одноразовый пароль и секрет TOTP записываются в
+`.admin-password.txt` рядом с `.admin-credentials.json` (в Docker – в `.data/`);
+в терминал и логи пароль не печатается. Сохраните пароль, подключите TOTP в
+приложении-аутентификаторе и удалите файл. Оба файла в git и в образ Docker не
+попадают. Сервер слушает только `127.0.0.1`.
 
 Скрипт тянет **только актуальные** программы (каталог hse.ru без `onlyActual=0`),
 разбирает встроенный JSON, обновляет карточки, фильтры, дату и Schema.org
@@ -215,12 +218,12 @@ STARTTLS, отправка прерывается. Осознанное искл
 
 | Слой | Меры |
 |---|---|
-| **Админ-сервер** (только локально) | Bind `127.0.0.1`; HTTP Basic Auth; пароль **scrypt-хеш** (не plaintext); CSRF и проверка Origin на всех изменяющих запросах (`/api/update`, `/api/programs`, `/api/schedule`); проверка Origin/Referer; lockout 5 ошибок → 15 мин; throttle 120 req/min; URI ≤ 2048; allowlist файлов + path traversal block; single-flight на обновление каталога; атомарная запись HTML; заголовки `X-Content-Type-Options`, `X-Frame-Options`, `Referrer-Policy`, `Permissions-Policy`, `COOP`/`CORP`, CSP, `Cache-Control: no-store` |
-| **Публичные страницы** | CSP + Referrer-Policy (meta) на всех лендингах, каталоге, privacy и `index.html` (shell + post-swap inject); email из `data-u`/`data-d`; нет форм ПДн; шрифты локальные |
+| **Админ-сервер** (только локально) | Bind `127.0.0.1`; вход по форме: пароль (**scrypt-хеш**, не plaintext) и TOTP, cookie-сессия HttpOnly/SameSite=Strict; HTTP Basic выключен по умолчанию (`ADMIN_ALLOW_BASIC=1` – только для автотестов и только пока TOTP не подключён); CSRF и проверка Origin на всех изменяющих запросах (`/api/update`, `/api/programs`, `/api/schedule`); проверка Origin/Referer; lockout 5 ошибок → 15 мин; throttle 120 req/min; URI ≤ 2048; allowlist файлов + path traversal block; single-flight на обновление каталога; атомарная запись HTML; заголовки `X-Content-Type-Options`, `X-Frame-Options`, `Referrer-Policy`, `Permissions-Policy`, `COOP`/`CORP`, CSP, `Cache-Control: no-store` |
+| **Публичные страницы** | CSP + Referrer-Policy (meta) на всех лендингах, каталоге, privacy и `index.html` (shell + post-swap inject); email из `data-u`/`data-d`; форма заявки собирает ПДн и уходит в отдельный процесс приёма (`intake-server.js`, раздел «Заявки на программы»); шрифты локальные |
 | **Превью static-server** | Allowlist HTML/assets; deny dotfiles и исходники; bind только loopback (иначе `ALLOW_NON_LOOPBACK=1`); `/api/collect` без CORS |
-| **Данные с hse.ru** | URL только `https://*.hse.ru`; HTML-escape всех полей; JSON-LD с экранированием `</` |
+| **Данные с hse.ru** | URL только `https://*.hse.ru`; HTML-escape всех полей на страницах; в data-блоке лендинга («Топ-5») значения сериализуются как строки JavaScript с экранированием `<` и переводов строк (`scripts/build-landing.js`, тест `landing-top5-escape`); JSON-LD с экранированием `</` |
 
-`.admin-credentials.json` и `.admin-status.json` в git **не** попадают.
+`.admin-credentials.json`, `.admin-password.txt`, `.admin-status.json`, `.data/`, `backups/` и `certs/` в git **не** попадают и в образ Docker (`.dockerignore`) **не** копируются – живая проверка: `python tests/docker_context_test.py`.
 
 ### Реалистичная модель угроз
 
@@ -232,7 +235,7 @@ STARTTLS, отправка прерывается. Осознанное искл
    деплоить на хостинг; на Pages/S3/Nginx отдавать только HTML/CSS/JS/шрифты.
 2. **Подмена файлов на хостинге** — доступ по FTP/SFTP/CI скомпрометирован.
    Лечится: SSH-ключи, 2FA у хостера, read-only deploy, WAF, регулярные бэкапы.
-3. **XSS через каталог hse.ru** — снижено: escape + whitelist URL. Держите
+3. **XSS через каталог hse.ru** – снижено: escape на страницах, экранирование `<` во вложенном script лендинга, whitelist URL. Держите
    CSP жёстким; не подключайте сторонние скрипты без необходимости.
 4. **DDoS / сканеры** — на стороне хостинга (Cloudflare / DDoS-Guard / WAF).
 5. **Фишинг / поддельный сайт** — HTTPS + HSTS у хостера, корректный canonical.
@@ -240,14 +243,14 @@ STARTTLS, отправка прерывается. Осознанное искл
 ### Что усилить при публикации (рекомендации)
 
 - **HTTPS + HSTS** на реальном домене (Let's Encrypt / сертификат хостера).
-- **Не публиковать** `admin.html` / `admin-server.js` (или закрыть Basic Auth +
+- **Не публиковать** `admin.html` / `admin-server.js` (или закрыть паролем с TOTP +
   IP allowlist, если когда-нибудь понадобится удалённый апдейт — лучше CI-job).
 - **WAF / anti-bot** у CDN или хостера.
 - **CSP** на уровне HTTP-заголовков (надёжнее meta); при возможности убрать
   `'unsafe-inline'` через nonces (нужен шаблонизатор/сервер).
 - **Subresource Integrity (SRI)** если появятся CDN-скрипты (сейчас их нет).
 - **Регулярно** обновлять Node (для локальной админки) и зависимости хостинга.
-- **Пароль админки**: при первом запуске сохраните из терминала; сброс — удалить
+- **Пароль админки**: при первом запуске сохраните из `.admin-password.txt` и удалите файл; сброс – удалить
   `.admin-credentials.json` и перезапустить `node admin-server.js`.
 
 ## Соответствие законодательству
@@ -299,11 +302,11 @@ STARTTLS, отправка прерывается. Осознанное искл
 
 ## Развёртывание
 
-Боевая конфигурация — два контейнера: nginx со статикой и Node-админка.
+Боевая конфигурация – три контейнера: nginx со статикой, приём заявок (`intake-server.js`, публичный `/api/application` через nginx) и Node-админка (порт только на `127.0.0.1` хоста).
 
 ```bash
 docker compose up -d      # сайт: http://localhost:8080, админка: http://localhost:5178/admin.html
-docker compose logs admin # здесь печатается пароль при первом запуске
+cat .data/.admin-password.txt   # пароль и секрет TOTP первого запуска; в логи не печатаются
 ```
 
 **Что здесь важно знать.**
@@ -343,5 +346,5 @@ docker compose logs admin # здесь печатается пароль при 
 | Задать `APPLICATION_MAIL_TO` и доступ к SMTP, иначе заявки копятся только в админке | подать тестовую заявку, проверить письмо |
 | Подтвердить срок хранения заявок (`APPLICATION_RETENTION_DAYS`, сейчас год) и ответственного за обработку | — |
 | Включить HTTPS и HSTS (строка `Strict-Transport-Security` в `docker/nginx.conf` закомментирована до появления сертификата) | `curl -I https://домен` |
-| Сохранить пароль админки из `docker compose logs admin` | вход на `/admin.html` |
-| Прогнать тесты | `tests/run.sh` — 88 unit + 33 smoke + 67 security |
+| Сохранить пароль и секрет TOTP из `.data/.admin-password.txt`, подключить TOTP в аутентификаторе и удалить файл | вход на `/admin.html` |
+| Прогнать тесты | `tests/run.sh` (unit + smoke + security); отдельно `python tests/docker_context_test.py` – контекст сборки Docker, нужен запущенный Docker |

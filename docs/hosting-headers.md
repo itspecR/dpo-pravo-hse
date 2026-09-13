@@ -31,7 +31,11 @@
 
 ### nginx
 
+Заголовки вынесены в отдельный файл и подключаются в каждом `location`, где
+есть свой `add_header`: иначе они там молча пропадут (см. ниже).
+
 ```nginx
+# /etc/nginx/snippets/dpo-security-headers.conf
 add_header X-Frame-Options "DENY" always;
 add_header Content-Security-Policy "frame-ancestors 'none'" always;
 add_header X-Content-Type-Options "nosniff" always;
@@ -39,10 +43,22 @@ add_header Referrer-Policy "no-referrer" always;
 # Включать только после того, как TLS работает: браузер запомнит https для
 # домена, и при неготовом сертификате сайт станет недоступен.
 # add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
+```
 
-# Шрифты и картинки кешируются надолго, HTML — нет: каталог обновляется.
-location ~* \.(woff2|jpg|png|webp|svg|ico)$ { add_header Cache-Control "public, max-age=31536000, immutable"; }
-location ~* \.html$                         { add_header Cache-Control "no-cache"; }
+```nginx
+# внутри server { ... }
+include snippets/dpo-security-headers.conf;
+
+# Шрифты и картинки кешируются надолго, HTML – нет: каталог обновляется.
+# В каждом location с собственным add_header заголовки подключаются заново.
+location ~* \.(woff2|jpg|png|webp|svg|ico)$ {
+    include snippets/dpo-security-headers.conf;
+    add_header Cache-Control "public, max-age=31536000, immutable";
+}
+location ~* \.html$ {
+    include snippets/dpo-security-headers.conf;
+    add_header Cache-Control "no-cache";
+}
 ```
 
 Важно про nginx: `add_header` внутри `location` **отменяет** все заголовки,
