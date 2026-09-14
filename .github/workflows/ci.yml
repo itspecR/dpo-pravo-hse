@@ -133,7 +133,7 @@ jobs:
             fi
           }
           echo "Публичное:"
-          for p in / /favicon.svg /robots.txt /sitemap.xml /js/cookie-consent.js; do check "$p" 200; done
+          for p in / /images/logo/favicon-32.png /robots.txt /sitemap.xml /js/cookie-consent.js; do check "$p" 200; done
           check /catalog 200
           check /privacy 200
           echo "Приватное:"
