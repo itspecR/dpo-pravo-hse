@@ -79,7 +79,9 @@ test('Каталог программ.html: слот вызывается чер
   assert.match(CATALOG, /CrowMascot\.mountWalkIn\(slot,\s*\{\s*assetPath:\s*'images\/crow\/'\s*\}\)/, 'mountWalkIn не вызывается в каталоге');
   const cssMatch = CATALOG.match(/\.crow-walk-slot\{\s*width:\s*(\d+)px;\s*height:\s*(\d+)px;\s*\}/);
   assert.ok(cssMatch, 'нет фиксированного размера у .crow-walk-slot – блок под маскотом будет прыгать по высоте (CLS) в момент появления в кадре');
-  assert.equal(cssMatch[1], '120', 'ширина слота должна совпадать с width, который передаётся в mountWalkIn ниже');
+  assert.equal(cssMatch[1], '160', 'ширина слота должна совпадать с width маскота на широком экране (mountWalkIn)');
+  assert.equal(cssMatch[2], '167', 'высота слота – round(160 * 1465 / 1400)');
+  assert.match(CATALOG, /@media \(max-width: 1023px\)\s*\{\s*\.crow-walk-slot\{\s*width:\s*96px;\s*height:\s*100px;\s*\}/, 'на узком экране слот обязан быть 96×100, как маскот');
 });
 
 test('.landing-template.html: слот у правого края ленты «Топ-5» на месте, вне шапки со стрелками', () => {
@@ -129,4 +131,25 @@ test('js/crow-mascot.js: mountWalkIn замыкает контекст нало�
   // elementFromPoint в зоне перекрытия возвращал .crow-walk-hit.
   const fn = CROW.slice(CROW.indexOf('function mountWalkIn'));
   assert.match(fn, /slot\.style\.isolation\s*=\s*'isolate'/, 'слот должен быть собственным контекстом наложения (isolation:isolate)');
+});
+
+// Размер вороны (владелец 14.09.2026): 160px на широком экране, 96 на узком,
+// угловая и в содержимом ОДНОГО размера. Раньше угловая была 200, в
+// содержимом 120 – на компьютере вторая выглядела птенцом, на телефоне
+// была крупнее угловой.
+test('размер вороны: угловая и в содержимом – 160 шире 1023px, 96 уже', () => {
+  const launcher = read('js/crow-launcher.js');
+  assert.match(launcher, /var narrow = window\.matchMedia\('\(max-width: 1023px\)'\)\.matches;/);
+  assert.match(launcher, /var width = narrow \? 96 : 160;/, 'угловая ворона: 96 / 160');
+  const fn = CROW.slice(CROW.indexOf('function mountWalkIn'), CROW.indexOf('function mountWalkIn') + 800);
+  assert.match(fn, /var width = opts\.width \|\| \(typeof matchMedia === 'function' && matchMedia\('\(max-width: 1023px\)'\)\.matches \? 96 : 160\);/, 'ворона в содержимом: 96 / 160 по тому же порогу');
+});
+
+test('.landing-template.html: слот вороны 160×167, на узком экране 96×100', () => {
+  const os = require('node:os');
+  const tmp = path.join(os.tmpdir(), 'dpo-crow-size-template.html');
+  const tpl = require('../../scripts/landing-template').extract(tmp);
+  fs.rmSync(tmp, { force: true });
+  assert.match(tpl, /\.crow-walk-slot \{ width: 160px; height: 167px; \}/, 'слот на лендинге не совпадает с маскотом 160');
+  assert.match(tpl, /@media \(max-width: 1023px\) \{ \.crow-walk-slot \{ width: 96px; height: 100px; \} \}/, 'на узком экране слот лендинга обязан быть 96×100');
 });

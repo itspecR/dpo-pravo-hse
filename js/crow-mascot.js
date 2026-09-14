@@ -703,7 +703,10 @@ function ensureWalkStyle() {
 function mountWalkIn(slot, opts) {
   opts = opts || {};
   var assetPath = opts.assetPath || 'images/crow/';
-  var width = opts.width || 120;
+  // Тот же размер и порог, что у угловой вороны (js/crow-launcher.js):
+  // 160 на широком экране, 96 на узком (владелец 14.09.2026). Слоты
+  // .crow-walk-slot в index.html и каталоге заданы теми же числами.
+  var width = opts.width || (typeof matchMedia === 'function' && matchMedia('(max-width: 1023px)').matches ? 96 : 160);
   slot.style.position = 'relative';
   // Собственный контекст наложения: z-index маскота (40) и кнопки-хита (41)
   // нужны только друг относительно друга. Без isolation они действовали в

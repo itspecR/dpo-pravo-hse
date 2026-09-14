@@ -373,9 +373,10 @@
      соседний блок). Размер слота задан ЗАРАНЕЕ, а не в момент монтирования
      маскота: без этого высота строки прыгала бы с 0 на ~126px ровно в
      момент появления блока в кадре (сдвиг сетки карточек под курсором,
-     CLS) – ширина/высота здесь совпадают с width:120 у mountWalkIn ниже. */
+     CLS) – ширина/высота здесь совпадают с width у mountWalkIn (160, на узком 96). */
   .crow-walk-row{ display: flex; justify-content: flex-end; padding: 6px clamp(20px, 5vw, 56px) 0; }
-  .crow-walk-slot{ width: 120px; height: 126px; }
+  .crow-walk-slot{ width: 160px; height: 167px; }
+  @media (max-width: 1023px) { .crow-walk-slot{ width: 96px; height: 100px; } }
   .toolbar{
     display: flex; flex-wrap: wrap; align-items: center; gap: 10px;
     padding: 14px clamp(20px, 5vw, 56px) 4px;
