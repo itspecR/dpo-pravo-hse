@@ -536,18 +536,29 @@ function pluralModules(n) {
 }
 
 /**
+ * Имя преподавателя: ссылка на личную страницу hse.ru, если адрес есть в
+ * справочнике teacherPages (ведётся руками, см. build-landing.js), иначе текст.
+ */
+function teacherName(name, pages) {
+  const own = pages && Object.prototype.hasOwnProperty.call(pages, name) ? pages[name] : null;
+  const href = typeof own === 'string' ? safeUrl(own.trim()) : null;
+  if (!href) return esc(name);
+  return `<a href="${esc(href)}" target="_blank" rel="noopener noreferrer">${esc(name)}<span aria-hidden="true"> ↗</span></a>`;
+}
+
+/**
  * Преподаватели: имя и краткая справка. Фотографий нет намеренно – снимки
  * лежат на hse.ru, а CSP страницы запрещает внешние картинки. Тянуть их к
  * себе это отдельное решение, а не побочный эффект обновления каталога.
  */
-function renderTeachers(p) {
+function renderTeachers(p, pages) {
   if (!p.teachers || !p.teachers.length) {
     return slot('Преподаватели-практики', 'Состав преподавателей пока не заполнен. Заполняется полем teachers у программы – его подтягивает scripts/fetch-program-descriptions.js.');
   }
   const items = p.teachers
     .map(
       (t) =>
-        `          <li>\n            <p class="teacher-name">${esc(t.name)}</p>` +
+        `          <li>\n            <p class="teacher-name">${teacherName(t.name, pages)}</p>` +
         (t.about ? `\n            <p class="teacher-about">${esc(t.about)}</p>` : '') +
         '\n          </li>',
     )
@@ -949,7 +960,7 @@ function structuredData(p, sphere, official) {
     `<script type="application/ld+json">${json(breadcrumbs)}</script>`;
 }
 
-function renderPage(rawProgram, sphere) {
+function renderPage(rawProgram, sphere, teacherPages) {
   // Тексты чистятся здесь, при генерации; хранилище остаётся как есть.
   const p = normalizeProgram(rawProgram);
   const official = safeUrl(p.url);
@@ -1104,7 +1115,7 @@ ${renderResults(p)}
 ${renderAdvantages(p)}
 ${renderModules(p)}
 ${renderFiles(p)}
-${renderTeachers(p)}
+${renderTeachers(p, teacherPages)}
 ${renderFeedback(p)}
 ${renderAdmissionDocs(p)}
 ${renderFaq(p)}
@@ -1200,7 +1211,7 @@ function build() {
   const written = new Set(['program.css']);
   for (const p of programs) {
     const file = path.basename(programHref(p));
-    fs.writeFileSync(path.join(OUT_DIR, file), renderPage(p, byId.get(p.id) || null), 'utf8');
+    fs.writeFileSync(path.join(OUT_DIR, file), renderPage(p, byId.get(p.id) || null, store.teacherPages), 'utf8');
     written.add(file);
   }
 
@@ -1481,6 +1492,9 @@ html.vi-mode .brand-mark{display:none}
 .reviews blockquote::after{content:" »"}
 .review-author{margin:12px 0 0;font-size:0.8125rem;font-weight:600;color:rgb(var(--ink))}
 .teacher-name{font-size:1rem;font-weight:600;margin:0 0 4px;color:rgb(var(--ink))}
+/* Имя-ссылка: мишень 44px отступом с обратным полем, строка не растёт. */
+.teacher-name a{position:relative;display:inline-block;padding:10px 0;margin:-10px 0;color:rgb(var(--accent))}
+.teacher-name a:hover{text-decoration:underline}
 .teacher-about{font-size:0.9375rem;line-height:1.55;color:var(--ink-soft);margin:0}
 
 @media (max-width:520px){

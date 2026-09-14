@@ -134,7 +134,8 @@ details[open] > summary.module-row::after { content: '▴' }
 .teacher-about { margin: 0; font-size: 13px; color: var(--ink-soft) }
 .teacher-about.clamp { -webkit-line-clamp: 3 }
 .teacher .more { min-height: 44px; padding-top: 2px; font-size: 13px }
-.teacher-page { display: inline-flex; align-items: center; min-height: 44px; font-size: 13px; font-weight: 600; color: rgb(var(--accent)) }
+/* Имя-ссылка: мишень 44px отступом с обратным полем, карточка не растёт. */
+.teacher-name a { position: relative; display: inline-block; padding: 13px 0; margin: -13px 0; color: rgb(var(--accent)); text-decoration: none }
 .reviews-scroll { overflow-x: auto; margin: 0 -16px; padding: 0 16px 4px; scroll-snap-type: x mandatory; scrollbar-width: none }
 .reviews-scroll::-webkit-scrollbar { display: none }
 .reviews { display: flex; align-items: flex-start; gap: 10px; width: max-content; margin: 0; padding: 0; list-style: none }

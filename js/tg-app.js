@@ -375,9 +375,10 @@
       return h('li', { class: 'teacher' }, [
         t.photo ? h('img', { class: 'teacher-photo', src: t.photo, alt: '', loading: 'lazy', decoding: 'async' }) : h('span', { class: 'teacher-photo', 'aria-hidden': 'true' }),
         h('div', null, [
-          h('p', { class: 'teacher-name', text: t.name }),
+          t.page
+            ? h('p', { class: 'teacher-name' }, [outLink(null, t.page, [t.name, h('span', { 'aria-hidden': 'true', text: ' ↗' })])])
+            : h('p', { class: 'teacher-name', text: t.name }),
           t.about ? clamped('teacher-about', t.about, 110) : null,
-          t.page ? outLink('teacher-page', t.page, ['Страница на hse.ru ↗']) : null,
         ]),
       ]);
     })));

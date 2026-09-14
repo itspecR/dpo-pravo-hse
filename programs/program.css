@@ -247,6 +247,9 @@ html.vi-mode .brand-mark{display:none}
 .reviews blockquote::after{content:" »"}
 .review-author{margin:12px 0 0;font-size:0.8125rem;font-weight:600;color:rgb(var(--ink))}
 .teacher-name{font-size:1rem;font-weight:600;margin:0 0 4px;color:rgb(var(--ink))}
+/* Имя-ссылка: мишень 44px отступом с обратным полем, строка не растёт. */
+.teacher-name a{position:relative;display:inline-block;padding:10px 0;margin:-10px 0;color:rgb(var(--accent))}
+.teacher-name a:hover{text-decoration:underline}
 .teacher-about{font-size:0.9375rem;line-height:1.55;color:var(--ink-soft);margin:0}
 
 @media (max-width:520px){

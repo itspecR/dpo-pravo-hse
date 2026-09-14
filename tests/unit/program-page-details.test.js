@@ -74,3 +74,34 @@ test('сетка строки модуля не достаёт до подтем
   assert.match(css, /\.modules > li\{/, 'сетка модуля снова достаёт до подтем');
   assert.match(css, /\.modules > li\.module-open\{display:block/, 'вес правила раскрытия занижен');
 });
+
+// Ссылки на личные страницы hse.ru (владелец 14.09.2026): ссылкой служит само
+// имя. Адреса – из справочника teacherPages, который ведётся руками.
+const store = JSON.parse(read('.catalog-data.json'));
+const escAttr = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
+test('имя преподавателя со страницей на hse.ru – ссылка на неё', () => {
+  const program = store.programs.find((p) => p.id === '837181759');
+  const linked = program.teachers.filter((t) => store.teacherPages[t.name]);
+  assert.ok(linked.length > 0, 'у проверочной программы нет преподавателей с адресом');
+  for (const t of linked) {
+    const re = new RegExp(
+      `<p class="teacher-name"><a href="${escAttr(store.teacherPages[t.name])}" target="_blank" rel="noopener noreferrer">` +
+        `${escAttr(t.name)}<span aria-hidden="true"> ↗</span></a></p>`,
+    );
+    assert.match(html, re, `${t.name}: имя не ведёт на страницу hse.ru`);
+  }
+  assert.match(css, /\.teacher-name a\{[^}]*position:relative;display:inline-block;padding:10px 0;margin:-10px 0/, 'мишень ссылки-имени меньше 44px');
+});
+
+test('без адреса или с адресом не на hse.ru имя остаётся текстом', () => {
+  const { renderPage } = require(path.join(ROOT, 'scripts', 'build-program-pages.js'));
+  const page = renderPage(
+    { id: '1', title: 'Т', teachers: [{ name: 'Иванов Иван' }, { name: 'Петров Пётр' }, { name: 'Сидоров Сидор' }] },
+    null,
+    { 'Иванов Иван': 'https://www.hse.ru/org/persons/1/', 'Петров Пётр': 'https://evil.example/hse.ru' },
+  );
+  assert.match(page, /<p class="teacher-name"><a href="https:\/\/www\.hse\.ru\/org\/persons\/1\/"/);
+  assert.match(page, /<p class="teacher-name">Петров Пётр<\/p>/, 'ссылка не на hse.ru попала на страницу');
+  assert.match(page, /<p class="teacher-name">Сидоров Сидор<\/p>/);
+});
