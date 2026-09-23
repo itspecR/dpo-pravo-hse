@@ -1085,7 +1085,7 @@ ${structuredData(p, sphere, official)}
     <img class="brand-mark" src="../images/logo/brand-mark-96.webp" width="34" height="34" alt="">
     <!-- Слово «Право» снято по решению владельца 08.09.2026: имя центру даёт
          знак слева, словами плашка называет, что это. -->
-    <span class="sub">Центр ДПО · НИУ ВШЭ</span>
+    <span class="sub">Центр ДПО факультета права НИУ ВШЭ</span>
   </a>
   <span class="header-side">
     <nav class="header-nav" aria-label="Разделы сайта">
@@ -1158,7 +1158,7 @@ ${cta}
 </div>
 
 <footer>
-  <span>Центр дополнительного профессионального образования · Факультет права НИУ ВШЭ</span>
+  <span>Центр дополнительного профессионального образования факультета права НИУ ВШЭ</span>
   <span class="footer-links">
     <a href="../privacy.html">Политика обработки персональных данных</a>
     <a href="https://www.hse.ru/sveden/" rel="noopener">Сведения об образовательной организации</a>

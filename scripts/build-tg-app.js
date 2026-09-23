@@ -238,7 +238,7 @@ function renderPage(data) {
 <body>
 <header class="bar" hidden>
   <button class="bar-back" type="button" hidden>‹ Назад</button>
-  <span class="bar-title">Центр ДПО</span>
+  <span class="bar-title">Центр ДПО факультета права</span>
 </header>
 <main id="app"></main>
 <div class="main-btn" hidden><button type="button"></button></div>
