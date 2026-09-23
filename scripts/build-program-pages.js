@@ -1085,7 +1085,7 @@ ${structuredData(p, sphere, official)}
     <img class="brand-mark" src="../images/logo/brand-mark-96.webp" width="34" height="34" alt="">
     <!-- Слово «Право» снято по решению владельца 08.09.2026: имя центру даёт
          знак слева, словами плашка называет, что это. -->
-    <span class="sub">Центр ДПО факультета права НИУ ВШЭ</span>
+    <span class="sub">Центр ДПО факультета права</span>
   </a>
   <span class="header-side">
     <nav class="header-nav" aria-label="Разделы сайта">
