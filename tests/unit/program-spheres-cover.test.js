@@ -10,11 +10,15 @@ const ROOT = path.resolve(__dirname, '..', '..');
 const store = JSON.parse(fs.readFileSync(path.join(ROOT, '.catalog-data.json'), 'utf8'));
 const programs = store.programs || [];
 
+// Вне сфер намеренно, по решению владельца 24.09.2026: программа для
+// абитуриентов и учителей, ни в одну сферу не подходит.
+const OUTSIDE_SPHERES = ['Право и обществознание'];
+
 test('у каждой программы каталога есть сфера', () => {
   assert.ok(programs.length > 0);
   const { unassigned } = groupBySphere(programs);
   assert.deepEqual(
-    unassigned.map((p) => p.title),
+    unassigned.map((p) => p.title).filter((t) => !OUTSIDE_SPHERES.includes(t)),
     [],
     'программы без сферы снова выпали из панели «Направления»',
   );
