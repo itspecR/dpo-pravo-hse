@@ -448,6 +448,18 @@ function extractAboutFromSection(html) {
 }
 
 /**
+ * Подзаголовок под названием программы. Классом dpo-program-card__desc на
+ * странице помечены два блока, первый обычно пустой, – берём первый непустой.
+ */
+function extractLead(html) {
+  for (const m of html.matchAll(/<(div|p)[^>]*class="[^"]*dpo-program-card__desc[^"]*"[^>]*>([\s\S]*?)<\/\1>/gi)) {
+    const text = textOf(m[2]);
+    if (text.length > 40) return text;
+  }
+  return null;
+}
+
+/**
  * Всё, что добавилось 09.09.2026 по разведке страниц маркетплейса:
  * подтемы модулей, факты формата, условия оплаты, документы для приёма,
  * преимущества и приложенные файлы. Вынесено отдельной функцией, чтобы
@@ -506,8 +518,10 @@ function extract(html) {
     if (out.about) break;
   }
 
-  // Микроразметка предпочтительнее, но когда её нет – берём текст секции.
-  if (!out.about) out.about = extractAboutFromSection(html);
+  // Микроразметка предпочтительнее. Без неё – подзаголовок под названием
+  // программы: у «Права и обществознания» (24.09.2026) секция «О программе»
+  // занята пунктами о формате обучения. Секция – последний запасной путь.
+  if (!out.about) out.about = extractLead(html) || extractAboutFromSection(html);
 
   return out;
 }
