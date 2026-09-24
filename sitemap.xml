@@ -32,47 +32,17 @@
   <!-- Адреса страниц программ дописывает scripts/build-program-pages.js. -->
   <!-- PROGRAMS:BEGIN -->
   <url>
-    <loc>https://example.com/programs/frantsuzskoe-evropeyskoe-ekonomicheskoe-pravo-droit-economiq-961021723.html</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://example.com/programs/kontraktnoe-pravo-gonkonga-1025688553.html</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://example.com/programs/pravovye-voprosy-bankrotstva-teorii-i-praktiki-1008772871.html</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://example.com/programs/personalnyy-assistent-829977883.html</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://example.com/programs/aktualnye-voprosy-grazhdanskogo-prava-958734693.html</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://example.com/programs/intellektualnaya-sobstvennost-ot-zakona-k-praktike-816497962.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://example.com/programs/tsifrovoe-pravo-dlya-biznesa-837181759.html</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://example.com/programs/islamskie-finansy-pravovye-osnovy-komplaens-i-biznes-praktik-814248062.html</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://example.com/programs/pravo-na-angliyskom-legal-english-474776084.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://example.com/programs/tsifrovoe-pravo-dlya-biznesa-837181759.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -83,6 +53,11 @@
   </url>
   <url>
     <loc>https://example.com/programs/avtorskoe-pravo-v-informatsionnom-obschestve-472681893.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://example.com/programs/aktualnye-voprosy-grazhdanskogo-prava-958734693.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -98,6 +73,11 @@
   </url>
   <url>
     <loc>https://example.com/programs/biznes-mediatsiya-494685723.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://example.com/programs/frantsuzskoe-evropeyskoe-ekonomicheskoe-pravo-droit-economiq-961021723.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -118,6 +98,11 @@
   </url>
   <url>
     <loc>https://example.com/programs/vvedenie-v-pravovuyu-sistemu-kitaya-894108285.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://example.com/programs/nalogovye-proverki-i-razreshenie-nalogovyh-sporov-815005412.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -162,7 +147,57 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://example.com/programs/personalnyy-assistent-829977883.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://example.com/programs/neyropravo-905186485.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://example.com/programs/kontraktnoe-pravo-gonkonga-1025688553.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://example.com/programs/pravovye-voprosy-bankrotstva-teorii-i-praktiki-1008772871.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://example.com/programs/yuridicheskaya-otvetstvennost-vracha-i-meditsinskoy-organiza-1029651795.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://example.com/programs/fundamentalnye-osnovy-translyatsionnoy-meditsiny-1031531700.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://example.com/programs/trudovoe-pravo-dlya-kadrovyh-rabotnikov-1052823497.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://example.com/programs/dostup-na-rynok-market-access-lekarstvennyh-preparatov-strat-1162952114.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://example.com/programs/iskusstvo-sostavleniya-dogovorov-474413637.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://example.com/programs/pravo-i-obschestvoznanie-909192654.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://example.com/programs/islamskie-finansy-pravovye-osnovy-komplaens-i-biznes-praktik-814248062.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>

@@ -37,6 +37,12 @@
       "sphere": "Корпоративное и договорное право"
     },
     {
+      "id": "474413637",
+      "title": "Искусство составления договоров",
+      "url": "programs/iskusstvo-sostavleniya-dogovorov-474413637.html",
+      "sphere": "Корпоративное и договорное право"
+    },
+    {
       "id": "816497962",
       "title": "Интеллектуальная собственность: от закона к практике",
       "url": "programs/intellektualnaya-sobstvennost-ot-zakona-k-praktike-816497962.html",
@@ -109,6 +115,12 @@
       "sphere": "Финансы, налоги и банкротство"
     },
     {
+      "id": "815005412",
+      "title": "Налоговые проверки и разрешение налоговых споров",
+      "url": "programs/nalogovye-proverki-i-razreshenie-nalogovyh-sporov-815005412.html",
+      "sphere": "Финансы, налоги и банкротство"
+    },
+    {
       "id": "959312137",
       "title": "Мастерство юридического английского: продвинутые навыки для юристов / Legal English Mastery: Advanced Skills for Lawyers",
       "url": "programs/masterstvo-yuridicheskogo-angliyskogo-prodvinutye-navyki-dly-959312137.html",
@@ -160,6 +172,36 @@
       "id": "802031223",
       "title": "Транспортное право",
       "url": "programs/transportnoe-pravo-802031223.html",
+      "sphere": "Практика, переговоры и отраслевое регулирование"
+    },
+    {
+      "id": "1052823497",
+      "title": "Трудовое право для кадровых работников",
+      "url": "programs/trudovoe-pravo-dlya-kadrovyh-rabotnikov-1052823497.html",
+      "sphere": "Практика, переговоры и отраслевое регулирование"
+    },
+    {
+      "id": "1029651795",
+      "title": "Юридическая ответственность врача и медицинской организации: актуализация и профилактика",
+      "url": "programs/yuridicheskaya-otvetstvennost-vracha-i-meditsinskoy-organiza-1029651795.html",
+      "sphere": "Практика, переговоры и отраслевое регулирование"
+    },
+    {
+      "id": "1031531700",
+      "title": "Фундаментальные основы трансляционной медицины",
+      "url": "programs/fundamentalnye-osnovy-translyatsionnoy-meditsiny-1031531700.html",
+      "sphere": "Практика, переговоры и отраслевое регулирование"
+    },
+    {
+      "id": "1162952114",
+      "title": "Доступ на рынок (Market Access) лекарственных препаратов: стратегии и правовое сопровождение",
+      "url": "programs/dostup-na-rynok-market-access-lekarstvennyh-preparatov-strat-1162952114.html",
+      "sphere": "Практика, переговоры и отраслевое регулирование"
+    },
+    {
+      "id": "909192654",
+      "title": "Право и обществознание",
+      "url": "programs/pravo-i-obschestvoznanie-909192654.html",
       "sphere": "Практика, переговоры и отраслевое регулирование"
     }
   ]

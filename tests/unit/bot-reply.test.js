@@ -47,7 +47,7 @@ test('«Онлайн»: подбор программ, не готовый от�
   assert.ok(out.programs.length > 0);
   assert.equal(
     catalog.programs.filter((p) => p.format === 'online').length,
-    15,
+    19,
     'если каталог изменился, поправь сам ассерт, а не просто число здесь',
   );
 });
@@ -146,15 +146,19 @@ test('«банкротство»: слабые совпадения (налог�
   assert.match(out.programs[0].title, /банкротств/i);
 });
 
+// С 24.09.2026 в каталоге две «налоговые» программы: администрирование и
+// налоговые проверки. Исламские финансы по-прежнему не подмешиваются.
 test('«налоги»: то же самое', () => {
   const out = DpoBotReply.reply('налоги', data);
   assert.equal(out.kind, 'programs');
-  assert.equal(out.programs.length, 1);
-  assert.match(out.programs[0].title, /налог/i);
+  assert.equal(out.programs.length, 2);
+  for (const p of out.programs) assert.match(p.title, /налог/i);
 });
 
-test('«договор»: ни у одной программы нет слова в названии – честно «близкое по теме»', () => {
-  const out = DpoBotReply.reply('договор', data);
+// «договор» с 24.09.2026 находит «Искусство составления договоров» по
+// названию, поэтому слабое совпадение проверяется на «сделке».
+test('«сделка»: ни у одной программы нет слова в названии – честно «близкое по теме»', () => {
+  const out = DpoBotReply.reply('сделка', data);
   assert.equal(out.kind, 'programs-weak');
   assert.ok(out.programs.length > 0);
 });
