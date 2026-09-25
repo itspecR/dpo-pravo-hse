@@ -1,0 +1,36 @@
+(function (root, factory) {
+var api = factory();
+if (typeof module === 'object' && module.exports) module.exports = api;
+else root.DpoProgramBranches = api;
+})(typeof self !== 'undefined' ? self : this, function () {
+'use strict';
+var BRANCHES = [
+{
+title: 'Гражданское и договорное право',
+match: ['гражданского права', 'договорного права', 'контрактное право', 'составления договоров'],
+},
+{ title: 'Корпоративное право', match: ['корпоративное право'] },
+{ title: 'Интеллектуальная собственность', match: ['интеллектуальная собственность', 'авторское право'] },
+{ title: 'Цифровое право', match: ['цифровое право', 'цифровых инструментов', 'нейроправо'] },
+{
+title: 'Международное и зарубежное право',
+match: ['международное частное право', 'правовую систему китая', 'французское (европейское) экономическое право', 'контрактное право гонконга', 'английское контрактное право', 'морской арбитраж'],
+},
+{ title: 'Налоговое и финансовое право', match: ['налогового администрирования', 'налоговые проверки', 'исламские финансы'] },
+{ title: 'Банкротство', match: ['правовые вопросы банкротства'] },
+{ title: 'Трудовое право', match: ['трудовое право', 'кадровую работу'] },
+{ title: 'Семейное право', match: ['имущественные отношения в семье'] },
+{
+title: 'Медицинское и фармацевтическое право',
+match: ['фармацевтических компаний', 'юридическая ответственность врача', 'лекарственных препаратов'],
+},
+{ title: 'Транспортное право', match: ['транспортное право', 'морской арбитраж'] },
+];
+function branchesFor(program) {
+var title = String(program && program.title || '').toLowerCase();
+return BRANCHES.filter(function (branch) {
+return branch.match.some(function (fragment) { return title.includes(fragment); });
+});
+}
+return { BRANCHES: BRANCHES, branchesFor: branchesFor };
+});
