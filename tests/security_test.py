@@ -109,6 +109,9 @@ def test_admin_authed() -> None:
             if src.exists():
                 shutil.copy2(src, sandbox / name)
         shutil.copytree(ROOT / "lib", sandbox / "lib")
+        # Генератор каталога использует общий с браузером справочник отраслей.
+        (sandbox / "js").mkdir()
+        shutil.copy2(ROOT / "js/program-branches.js", sandbox / "js/program-branches.js")
 
         env = os.environ.copy()
         env.update({
