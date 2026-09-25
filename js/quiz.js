@@ -9,26 +9,35 @@
  *   <a href="Каталог программ.html" data-quiz>Пройти опрос</a>
  *
  * href остаётся фолбэком без JavaScript. Сам опрос никуда ничего не
- * отправляет: три вопроса переводятся в параметры адреса каталога
- * (?type=…&format=…&sphere=…), которые каталог уже умеет читать и
- * превращать в нажатые чипы фильтров. Значения ниже обязаны совпадать
- * с data-value чипов каталога – при переименовании фильтров править тут.
+ * отправляет: три ответа переводятся в параметры адреса каталога
+ * (?type=…&format=…&q=…). Тип и формат включают чипы фильтров, отрасль
+ * показывается в поисковой строке. Единый перечень областей и привязка
+ * программ к ним живут в js/program-branches.js.
  */
 
 (function () {
   'use strict';
 
   var CATALOG_URL = 'Каталог программ.html';
+  var branches = window.DpoProgramBranches && window.DpoProgramBranches.BRANCHES;
+  if (!branches || !branches.length) return;
 
   /** [значение чипа каталога | '' = фильтр не ставим, подпись] */
   var QUESTIONS = [
     {
+      group: 'q',
+      title: 'Какая отрасль или область права вас интересует?',
+      options: [['', 'Пока не определился']].concat(branches.map(function (branch) {
+        return [branch.title, branch.title];
+      })),
+    },
+    {
       group: 'type',
-      title: 'Какая у вас цель?',
+      title: 'Какой документ об обучении вам нужен?',
       options: [
-        ['', 'Пока смотрю'],
-        ['ПК', 'Углубить квалификацию в своей области'],
-        ['ПП', 'Освоить новую специализацию'],
+        ['', 'Пока не определился'],
+        ['ПК', 'Удостоверение о повышении квалификации'],
+        ['ПП', 'Диплом о профессиональной переподготовке'],
       ],
     },
     {
@@ -39,19 +48,7 @@
         ['online', 'Онлайн'],
         ['offline', 'Очно'],
         ['mixed', 'Смешанный'],
-      ],
-    },
-    {
-      group: 'sphere',
-      title: 'Какое направление вам ближе?',
-      options: [
-        ['', 'Все направления'],
-        ['corporate', 'Корпоративное и договорное право'],
-        ['digital', 'Цифровое право и интеллектуальная собственность'],
-        ['international', 'Международное и зарубежное право'],
-        ['finance', 'Финансы, налоги и банкротство'],
-        ['language', 'Юридический язык'],
-        ['practice', 'Практика, переговоры и отраслевое регулирование'],
+        ['hybrid', 'Гибридный'],
       ],
     },
   ];
@@ -71,6 +68,11 @@
     '.dpo-quiz-sub{font-size:0.9375rem;line-height:1.55;color:#48423A;margin:0 0 18px}',
     '.dpo-quiz fieldset{border:0;padding:0;margin:0 0 18px}',
     '.dpo-quiz legend{font-size:0.9375rem;font-weight:600;margin:0 0 10px;padding:0}',
+    '.dpo-quiz-field{margin:0 0 18px}',
+    '.dpo-quiz-field label{display:block;font-size:0.9375rem;font-weight:600;margin:0 0 10px}',
+    '.dpo-quiz-select{width:100%;min-height:44px;padding:10px 12px;font:inherit;font-size:0.9375rem;',
+    'border:1px solid rgb(var(--ink) / .22);border-radius:10px;background:rgb(var(--surface));color:rgb(var(--ink))}',
+    '.dpo-quiz-select:focus-visible{outline:2px solid rgb(var(--accent));outline-offset:2px}',
     '.dpo-quiz-opts{display:flex;flex-wrap:wrap;gap:8px}',
     '.dpo-quiz-opt{position:relative}',
     '.dpo-quiz-opt input{position:absolute;inset:0;opacity:0;cursor:pointer}',
@@ -86,7 +88,7 @@
     '.dpo-quiz-close{position:absolute;top:18px;right:18px;width:36px;height:36px;border:0;',
     'border-radius:999px;background:var(--bg-tint);color:rgb(var(--ink));font-size:1.125rem;line-height:36px;',
     'cursor:pointer;transition:background .15s}',
-    '.dpo-quiz-close:hover{background:#E6DccA}',
+    '.dpo-quiz-close:hover{background:rgb(var(--accent) / .1)}',
     '@media (prefers-reduced-motion: reduce){.dpo-quiz-backdrop,.dpo-quiz{transition:none}}',
     // Режим для слабовидящих. Правил не было вовсе, и окно опроса в нём
     // оказывалось прозрачным: глобальное html.vi-mode *{background:
@@ -114,6 +116,14 @@
     backdrop.className = 'dpo-quiz-backdrop';
 
     var groupsHtml = QUESTIONS.map(function (q) {
+      if (q.group === 'q') {
+        var selectOptions = q.options.map(function (opt) {
+          return '<option value="' + opt[0] + '">' + opt[1] + '</option>';
+        }).join('');
+        return '<div class="dpo-quiz-field"><label for="dpoQuizBranch">' + q.title +
+          '</label><select class="dpo-quiz-select" id="dpoQuizBranch" name="dpo-quiz-q">' +
+          selectOptions + '</select></div>';
+      }
       var opts = q.options
         .map(function (opt, i) {
           return (
@@ -130,7 +140,7 @@
       '<div class="dpo-quiz" role="dialog" aria-modal="true" aria-labelledby="dpoQuizTitle">' +
       '<button type="button" class="dpo-quiz-close" aria-label="Закрыть опрос">×</button>' +
       '<h2 id="dpoQuizTitle">Подберём программу</h2>' +
-      '<p class="dpo-quiz-sub">Три вопроса – и мы покажем программы, которые соответствуют вашим задачам и уровню подготовки.</p>' +
+      '<p class="dpo-quiz-sub">Три вопроса – и вы увидите программы по интересующей области права, документу и формату обучения.</p>' +
       '<form>' + groupsHtml +
       '<button type="submit" class="dpo-quiz-submit">Показать программы</button>' +
       '</form></div>';
@@ -143,7 +153,8 @@
       e.preventDefault();
       var params = new URLSearchParams();
       QUESTIONS.forEach(function (q) {
-        var checked = backdrop.querySelector('input[name="dpo-quiz-' + q.group + '"]:checked');
+        var checked = backdrop.querySelector('input[name="dpo-quiz-' + q.group + '"]:checked') ||
+          backdrop.querySelector('select[name="dpo-quiz-' + q.group + '"]');
         if (checked && checked.value) params.set(q.group, checked.value);
       });
       var qs = params.toString();
@@ -160,7 +171,7 @@
     }
     if (e.key !== 'Tab' || !backdrop) return;
     // Ловушка фокуса: Tab ходит по кругу внутри окна.
-    var focusables = backdrop.querySelectorAll('button, input');
+    var focusables = backdrop.querySelectorAll('button, input, select');
     if (!focusables.length) return;
     var first = focusables[0];
     var last = focusables[focusables.length - 1];
@@ -197,7 +208,7 @@
       backdrop.classList.add('is-open');
     });
     document.addEventListener('keydown', onKeydown, true);
-    var firstInput = backdrop.querySelector('input');
+    var firstInput = backdrop.querySelector('select, input');
     if (firstInput) firstInput.focus();
   }
 

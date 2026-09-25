@@ -202,7 +202,6 @@
     font-size: 0.8125rem; letter-spacing: 0.12em; text-transform: uppercase;
     font-weight: 600; color: rgb(var(--accent)); margin: 0;
   }
-  .starts-sub{ margin: 0; font-size: 0.875rem; color: var(--ink-mute); }
   .starts-months{ display: flex; flex-wrap: wrap; gap: 8px; margin: 0 clamp(20px, 5vw, 56px) 16px; }
   .starts-chip{
     font: inherit; font-size: 0.875rem; font-weight: 600; cursor: pointer;
@@ -228,7 +227,7 @@
   .tl-wrap::-webkit-scrollbar-thumb{ background: rgb(var(--ink) / .28); border-radius: 999px; }
   .tl-wrap:focus-visible{ outline: 3px solid rgb(var(--accent)); outline-offset: 2px; }
   .tl{
-    --tl-card-h: 96px; --tl-near: 40px; --tl-far: calc(var(--tl-near) + var(--tl-card-h) + 12px);
+    --tl-card-h: 116px; --tl-near: 40px; --tl-far: calc(var(--tl-near) + var(--tl-card-h) + 12px);
     /* Ось не по центру: над дальней дорожкой 32px под подпись месяца, под
        нижней – ещё 28px под метку «Сегодня». */
     --tl-axis: calc(var(--tl-far) + var(--tl-card-h) + 32px);
@@ -285,7 +284,8 @@
     display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
     font-size: 0.8125rem; font-weight: 600; line-height: 1.35; color: rgb(var(--ink));
   }
-  .tl-meta{ margin-top: auto; font-size: 0.7188rem; line-height: 1.3; color: var(--ink-mute); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .tl-meta{ font-size: 0.7188rem; line-height: 1.3; color: var(--ink-mute); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .tl-price{ flex: none; margin-top: auto; font-size: 0.8125rem; line-height: 1.25; color: rgb(var(--ink)); white-space: nowrap; }
   .tl-dot{ display: inline-block; width: 7px; height: 7px; border-radius: 50%; margin-right: 6px; vertical-align: 1px; background: #A39A8C; }
   .tl-dot[data-sphere="corporate"]{ background: #1658DA; }
   .tl-dot[data-sphere="digital"]{ background: #7FA6F0; }
@@ -862,7 +862,6 @@
 <section class="starts" aria-label="Ближайшие старты программ">
   <div class="starts-head">
     <h2>Ближайшие старты</h2>
-    <p class="starts-sub">25 стартов с сентября по ноябрь – каждый на своей дате. Прокрутите ось или выберите месяц.</p>
   </div>
   <div class="starts-months" aria-label="Месяцы">
     <button type="button" class="starts-chip" data-scroll="0" aria-pressed="true">Сентябрь <b>3</b></button>
@@ -875,12 +874,13 @@
       <div class="tl-month" style="left:960px;width:992px" aria-hidden="true"><span class="tl-month-label">Октябрь <b>10</b></span></div>
       <div class="tl-month" style="left:1952px;width:960px" aria-hidden="true"><span class="tl-month-label">Ноябрь <b>12</b></span></div>
       <div class="tl-axis" aria-hidden="true"><i class="tl-tick is-month" style="left:16px"></i><i class="tl-tick" style="left:48px"></i><i class="tl-tick" style="left:80px"></i><i class="tl-tick" style="left:112px"></i><i class="tl-tick" style="left:144px"></i><i class="tl-tick" style="left:176px"></i><i class="tl-tick is-week" style="left:208px"></i><i class="tl-tick" style="left:240px"></i><i class="tl-tick" style="left:272px"></i><i class="tl-tick" style="left:304px"></i><i class="tl-tick" style="left:336px"></i><i class="tl-tick" style="left:368px"></i><i class="tl-tick" style="left:400px"></i><i class="tl-tick is-week" style="left:432px"></i><i class="tl-tick" style="left:464px"></i><i class="tl-tick" style="left:496px"></i><i class="tl-tick" style="left:528px"></i><i class="tl-tick" style="left:560px"></i><i class="tl-tick" style="left:592px"></i><i class="tl-tick" style="left:624px"></i><i class="tl-tick is-week" style="left:656px"></i><i class="tl-tick" style="left:688px"></i><i class="tl-tick" style="left:720px"></i><i class="tl-tick" style="left:752px"></i><i class="tl-tick" style="left:784px"></i><i class="tl-tick" style="left:816px"></i><i class="tl-tick" style="left:848px"></i><i class="tl-tick is-week" style="left:880px"></i><i class="tl-tick" style="left:912px"></i><i class="tl-tick" style="left:944px"></i><i class="tl-tick is-month" style="left:976px"></i><i class="tl-tick" style="left:1008px"></i><i class="tl-tick" style="left:1040px"></i><i class="tl-tick" style="left:1072px"></i><i class="tl-tick" style="left:1104px"></i><i class="tl-tick" style="left:1136px"></i><i class="tl-tick is-week" style="left:1168px"></i><i class="tl-tick" style="left:1200px"></i><i class="tl-tick" style="left:1232px"></i><i class="tl-tick" style="left:1264px"></i><i class="tl-tick" style="left:1296px"></i><i class="tl-tick" style="left:1328px"></i><i class="tl-tick" style="left:1360px"></i><i class="tl-tick is-week" style="left:1392px"></i><i class="tl-tick" style="left:1424px"></i><i class="tl-tick" style="left:1456px"></i><i class="tl-tick" style="left:1488px"></i><i class="tl-tick" style="left:1520px"></i><i class="tl-tick" style="left:1552px"></i><i class="tl-tick" style="left:1584px"></i><i class="tl-tick is-week" style="left:1616px"></i><i class="tl-tick" style="left:1648px"></i><i class="tl-tick" style="left:1680px"></i><i class="tl-tick" style="left:1712px"></i><i class="tl-tick" style="left:1744px"></i><i class="tl-tick" style="left:1776px"></i><i class="tl-tick" style="left:1808px"></i><i class="tl-tick is-week" style="left:1840px"></i><i class="tl-tick" style="left:1872px"></i><i class="tl-tick" style="left:1904px"></i><i class="tl-tick" style="left:1936px"></i><i class="tl-tick is-month" style="left:1968px"></i><i class="tl-tick" style="left:2000px"></i><i class="tl-tick" style="left:2032px"></i><i class="tl-tick" style="left:2064px"></i><i class="tl-tick" style="left:2096px"></i><i class="tl-tick" style="left:2128px"></i><i class="tl-tick is-week" style="left:2160px"></i><i class="tl-tick" style="left:2192px"></i><i class="tl-tick" style="left:2224px"></i><i class="tl-tick" style="left:2256px"></i><i class="tl-tick" style="left:2288px"></i><i class="tl-tick" style="left:2320px"></i><i class="tl-tick" style="left:2352px"></i><i class="tl-tick is-week" style="left:2384px"></i><i class="tl-tick" style="left:2416px"></i><i class="tl-tick" style="left:2448px"></i><i class="tl-tick" style="left:2480px"></i><i class="tl-tick" style="left:2512px"></i><i class="tl-tick" style="left:2544px"></i><i class="tl-tick" style="left:2576px"></i><i class="tl-tick is-week" style="left:2608px"></i><i class="tl-tick" style="left:2640px"></i><i class="tl-tick" style="left:2672px"></i><i class="tl-tick" style="left:2704px"></i><i class="tl-tick" style="left:2736px"></i><i class="tl-tick" style="left:2768px"></i><i class="tl-tick" style="left:2800px"></i><i class="tl-tick is-week" style="left:2832px"></i><i class="tl-tick" style="left:2864px"></i><i class="tl-tick" style="left:2896px"></i></div>
-      <div class="tl-today" style="left:752px" aria-hidden="true"><span>Сегодня</span></div>
+      <div class="tl-today" style="left:784px" aria-hidden="true"><span>Сегодня</span></div>
       <div class="tl-item tl-up1" style="left:728px;--tl-pin:152px">
         <a class="tl-card" href="programs/intellektualnaya-sobstvennost-ot-zakona-k-praktike-816497962.html" title="Интеллектуальная собственность: от закона к практике – старт: 28 сентября 2026 г.">
           <span class="tl-when">28 сентября</span>
           <span class="tl-name">Интеллектуальная собственность: от закона к практике</span>
-          <span class="tl-meta"><i class="tl-dot" data-sphere="digital" aria-hidden="true"></i>ПК · Очный · 45 000 ₽</span>
+          <span class="tl-meta"><i class="tl-dot" data-sphere="digital" aria-hidden="true"></i>ПК · Очный</span>
+          <span class="tl-price">45 000 ₽</span>
         </a>
         <span class="tl-pin" aria-hidden="true"></span>
       </div>
@@ -888,7 +888,8 @@
         <a class="tl-card" href="programs/pravo-na-angliyskom-legal-english-474776084.html" title="Право на английском / Legal English – старт: 30 сентября 2026 г.">
           <span class="tl-when">30 сентября</span>
           <span class="tl-name">Право на английском / Legal English</span>
-          <span class="tl-meta"><i class="tl-dot" data-sphere="language" aria-hidden="true"></i>ПП · Гибридный · 140 000 ₽</span>
+          <span class="tl-meta"><i class="tl-dot" data-sphere="language" aria-hidden="true"></i>ПП · Гибридный</span>
+          <span class="tl-price">140 000 ₽</span>
         </a>
         <span class="tl-pin" aria-hidden="true"></span>
       </div>
@@ -896,7 +897,8 @@
         <a class="tl-card" href="programs/tsifrovoe-pravo-dlya-biznesa-837181759.html" title="Цифровое право для бизнеса – старт: 30 сентября 2026 г.">
           <span class="tl-when">30 сентября</span>
           <span class="tl-name">Цифровое право для бизнеса</span>
-          <span class="tl-meta"><i class="tl-dot" data-sphere="digital" aria-hidden="true"></i>ПК · Онлайн синхронный · 55 000 ₽</span>
+          <span class="tl-meta"><i class="tl-dot" data-sphere="digital" aria-hidden="true"></i>ПК · Онлайн синхронный</span>
+          <span class="tl-price">55 000 ₽</span>
         </a>
         <span class="tl-pin" aria-hidden="true"></span>
       </div>
@@ -904,7 +906,8 @@
         <a class="tl-card" href="programs/masterstvo-yuridicheskogo-angliyskogo-prodvinutye-navyki-dly-959312137.html" title="Мастерство юридического английского: продвинутые навыки для юристов / Legal English Mastery: Advanced Skills for Lawyers – старт: 2 октября 2026 г.">
           <span class="tl-when">2 октября</span>
           <span class="tl-name">Мастерство юридического английского: продвинутые навыки для юристов / Legal English Mastery: Advanced Skills for Lawyers</span>
-          <span class="tl-meta"><i class="tl-dot" data-sphere="language" aria-hidden="true"></i>ПК · Онлайн асинхронный · 45 000 ₽</span>
+          <span class="tl-meta"><i class="tl-dot" data-sphere="language" aria-hidden="true"></i>ПК · Онлайн асинхронный</span>
+          <span class="tl-price">45 000 ₽</span>
         </a>
         <span class="tl-pin" aria-hidden="true"></span>
       </div>
@@ -912,7 +915,8 @@
         <a class="tl-card" href="programs/avtorskoe-pravo-v-informatsionnom-obschestve-472681893.html" title="Авторское право в информационном обществе – старт: 5 октября 2026 г.">
           <span class="tl-when">5 октября</span>
           <span class="tl-name">Авторское право в информационном обществе</span>
-          <span class="tl-meta"><i class="tl-dot" data-sphere="digital" aria-hidden="true"></i>ПК · Очный · 75 000 ₽</span>
+          <span class="tl-meta"><i class="tl-dot" data-sphere="digital" aria-hidden="true"></i>ПК · Очный</span>
+          <span class="tl-price">75 000 ₽</span>
         </a>
         <span class="tl-pin" aria-hidden="true"></span>
       </div>
@@ -920,7 +924,8 @@
         <a class="tl-card" href="programs/aktualnye-voprosy-grazhdanskogo-prava-958734693.html" title="Актуальные вопросы гражданского права – старт: 5 октября 2026 г.">
           <span class="tl-when">5 октября</span>
           <span class="tl-name">Актуальные вопросы гражданского права</span>
-          <span class="tl-meta"><i class="tl-dot" data-sphere="corporate" aria-hidden="true"></i>ПК · Онлайн асинхронный · 30 000 ₽</span>
+          <span class="tl-meta"><i class="tl-dot" data-sphere="corporate" aria-hidden="true"></i>ПК · Онлайн асинхронный</span>
+          <span class="tl-price">30 000 ₽</span>
         </a>
         <span class="tl-pin" aria-hidden="true"></span>
       </div>
@@ -928,7 +933,8 @@
         <a class="tl-card" href="programs/aktualnye-voprosy-nalogovogo-administrirovaniya-i-sovremenny-1129129055.html" title="Актуальные вопросы налогового администрирования и современные подходы в налоговой оптимизации бизнеса – старт: 12 октября 2026 г.">
           <span class="tl-when">12 октября</span>
           <span class="tl-name">Актуальные вопросы налогового администрирования и современные подходы в налоговой оптимизации бизнеса</span>
-          <span class="tl-meta"><i class="tl-dot" data-sphere="finance" aria-hidden="true"></i>ПК · Онлайн асинхронный · 57 000 ₽</span>
+          <span class="tl-meta"><i class="tl-dot" data-sphere="finance" aria-hidden="true"></i>ПК · Онлайн асинхронный</span>
+          <span class="tl-price">57 000 ₽</span>
         </a>
         <span class="tl-pin" aria-hidden="true"></span>
       </div>
@@ -936,7 +942,8 @@
         <a class="tl-card" href="programs/pravovye-mehanizmy-i-strategii-effektivnogo-vzaimodeystviya-1163275658.html" title="Правовые механизмы и стратегии эффективного взаимодействия фармацевтических компаний с органами государственной власти (GR в фарме) – старт: 13 октября 2026 г.">
           <span class="tl-when">13 октября</span>
           <span class="tl-name">Правовые механизмы и стратегии эффективного взаимодействия фармацевтических компаний с органами государственной власти (GR в фарме)</span>
-          <span class="tl-meta"><i class="tl-dot" data-sphere="practice" aria-hidden="true"></i>ПК · Гибридный · 150 000 ₽</span>
+          <span class="tl-meta"><i class="tl-dot" data-sphere="practice" aria-hidden="true"></i>ПК · Гибридный</span>
+          <span class="tl-price">150 000 ₽</span>
         </a>
         <span class="tl-pin" aria-hidden="true"></span>
       </div>
@@ -944,7 +951,8 @@
         <a class="tl-card" href="programs/biznes-mediatsiya-494685723.html" title="Бизнес-медиация – старт: 14 октября 2026 г.">
           <span class="tl-when">14 октября</span>
           <span class="tl-name">Бизнес-медиация</span>
-          <span class="tl-meta"><i class="tl-dot" data-sphere="practice" aria-hidden="true"></i>ПП · Смешанный · 390 000 ₽</span>
+          <span class="tl-meta"><i class="tl-dot" data-sphere="practice" aria-hidden="true"></i>ПП · Смешанный</span>
+          <span class="tl-price">390 000 ₽</span>
         </a>
         <span class="tl-pin" aria-hidden="true"></span>
       </div>
@@ -952,7 +960,8 @@
         <a class="tl-card" href="programs/frantsuzskoe-evropeyskoe-ekonomicheskoe-pravo-droit-economiq-961021723.html" title="Французское (европейское) экономическое право / Droit économique français (européen) – старт: 19 октября 2026 г.">
           <span class="tl-when">19 октября</span>
           <span class="tl-name">Французское (европейское) экономическое право / Droit économique français (européen)</span>
-          <span class="tl-meta"><i class="tl-dot" data-sphere="international" aria-hidden="true"></i>ПП · Смешанный · 180 000 ₽</span>
+          <span class="tl-meta"><i class="tl-dot" data-sphere="international" aria-hidden="true"></i>ПП · Смешанный</span>
+          <span class="tl-price">180 000 ₽</span>
         </a>
         <span class="tl-pin" aria-hidden="true"></span>
       </div>
@@ -960,7 +969,8 @@
         <a class="tl-card" href="programs/bezopasnoe-vnedrenie-tsifrovyh-instrumentov-v-kadrovuyu-rabo-1129129056.html" title="Безопасное внедрение цифровых инструментов в кадровую работу: юридические требования – старт: 24 октября 2026 г.">
           <span class="tl-when">24 октября</span>
           <span class="tl-name">Безопасное внедрение цифровых инструментов в кадровую работу: юридические требования</span>
-          <span class="tl-meta"><i class="tl-dot" data-sphere="digital" aria-hidden="true"></i>ПК · Очный · 40 000 ₽</span>
+          <span class="tl-meta"><i class="tl-dot" data-sphere="digital" aria-hidden="true"></i>ПК · Очный</span>
+          <span class="tl-price">40 000 ₽</span>
         </a>
         <span class="tl-pin" aria-hidden="true"></span>
       </div>
@@ -968,7 +978,8 @@
         <a class="tl-card" href="programs/frantsuzskiy-yuridicheskiy-yazyk-pravo-terminologiya-i-argum-1057557281.html" title="Французский юридический язык: право, терминология и аргументация (Le français juridique: droit, terminologie et argumentation) – старт: 26 октября 2026 г.">
           <span class="tl-when">26 октября</span>
           <span class="tl-name">Французский юридический язык: право, терминология и аргументация (Le français juridique: droit, terminologie et argumentation)</span>
-          <span class="tl-meta"><i class="tl-dot" data-sphere="language" aria-hidden="true"></i>ПК · Онлайн синхронный · 90 000 ₽</span>
+          <span class="tl-meta"><i class="tl-dot" data-sphere="language" aria-hidden="true"></i>ПК · Онлайн синхронный</span>
+          <span class="tl-price">90 000 ₽</span>
         </a>
         <span class="tl-pin" aria-hidden="true"></span>
       </div>
@@ -976,7 +987,8 @@
         <a class="tl-card" href="programs/mezhdunarodnoe-chastnoe-pravo-transgranichnye-operatsii-474599435.html" title="Международное частное право: трансграничные операции – старт: 29 октября 2026 г.">
           <span class="tl-when">29 октября</span>
           <span class="tl-name">Международное частное право: трансграничные операции</span>
-          <span class="tl-meta"><i class="tl-dot" data-sphere="international" aria-hidden="true"></i>ПК · Смешанный · 50 000 ₽</span>
+          <span class="tl-meta"><i class="tl-dot" data-sphere="international" aria-hidden="true"></i>ПК · Смешанный</span>
+          <span class="tl-price">50 000 ₽</span>
         </a>
         <span class="tl-pin" aria-hidden="true"></span>
       </div>
@@ -984,7 +996,8 @@
         <a class="tl-card" href="programs/vvedenie-v-pravovuyu-sistemu-kitaya-894108285.html" title="Введение в правовую систему Китая – старт: 2 ноября 2026 г.">
           <span class="tl-when">2 ноября</span>
           <span class="tl-name">Введение в правовую систему Китая</span>
-          <span class="tl-meta"><i class="tl-dot" data-sphere="international" aria-hidden="true"></i>ПК · Онлайн синхронный · 125 000 ₽</span>
+          <span class="tl-meta"><i class="tl-dot" data-sphere="international" aria-hidden="true"></i>ПК · Онлайн синхронный</span>
+          <span class="tl-price">125 000 ₽</span>
         </a>
         <span class="tl-pin" aria-hidden="true"></span>
       </div>
@@ -992,7 +1005,8 @@
         <a class="tl-card" href="programs/nalogovye-proverki-i-razreshenie-nalogovyh-sporov-815005412.html" title="Налоговые проверки и разрешение налоговых споров – старт: 6 ноября 2026 г.">
           <span class="tl-when">6 ноября</span>
           <span class="tl-name">Налоговые проверки и разрешение налоговых споров</span>
-          <span class="tl-meta"><i class="tl-dot" data-sphere="finance" aria-hidden="true"></i>ПК · Очный · 50 000 ₽</span>
+          <span class="tl-meta"><i class="tl-dot" data-sphere="finance" aria-hidden="true"></i>ПК · Очный</span>
+          <span class="tl-price">50 000 ₽</span>
         </a>
         <span class="tl-pin" aria-hidden="true"></span>
       </div>
@@ -1000,7 +1014,8 @@
         <a class="tl-card" href="programs/angliyskoe-kontraktnoe-pravo-856421092.html" title="Английское контрактное право – старт: 9 ноября 2026 г.">
           <span class="tl-when">9 ноября</span>
           <span class="tl-name">Английское контрактное право</span>
-          <span class="tl-meta"><i class="tl-dot" data-sphere="corporate" aria-hidden="true"></i>ПК · Онлайн синхронный · 50 000 ₽</span>
+          <span class="tl-meta"><i class="tl-dot" data-sphere="corporate" aria-hidden="true"></i>ПК · Онлайн синхронный</span>
+          <span class="tl-price">50 000 ₽</span>
         </a>
         <span class="tl-pin" aria-hidden="true"></span>
       </div>
@@ -1008,7 +1023,8 @@
         <a class="tl-card" href="programs/morskoy-arbitrazh-906651510.html" title="Морской арбитраж – старт: 10 ноября 2026 г.">
           <span class="tl-when">10 ноября</span>
           <span class="tl-name">Морской арбитраж</span>
-          <span class="tl-meta"><i class="tl-dot" data-sphere="international" aria-hidden="true"></i>ПК · Онлайн синхронный · 60 000 ₽</span>
+          <span class="tl-meta"><i class="tl-dot" data-sphere="international" aria-hidden="true"></i>ПК · Онлайн синхронный</span>
+          <span class="tl-price">60 000 ₽</span>
         </a>
         <span class="tl-pin" aria-hidden="true"></span>
       </div>
@@ -1016,7 +1032,8 @@
         <a class="tl-card" href="programs/korporativnoe-pravo-osnovnye-problemy-474596729.html" title="Корпоративное право: основные проблемы – старт: 16 ноября 2026 г.">
           <span class="tl-when">16 ноября</span>
           <span class="tl-name">Корпоративное право: основные проблемы</span>
-          <span class="tl-meta"><i class="tl-dot" data-sphere="corporate" aria-hidden="true"></i>ПК · Онлайн синхронный · 60 000 ₽</span>
+          <span class="tl-meta"><i class="tl-dot" data-sphere="corporate" aria-hidden="true"></i>ПК · Онлайн синхронный</span>
+          <span class="tl-price">60 000 ₽</span>
         </a>
         <span class="tl-pin" aria-hidden="true"></span>
       </div>
@@ -1024,7 +1041,8 @@
         <a class="tl-card" href="programs/tehniki-effektivnogo-analiza-yuridicheskih-dokumentov-820703080.html" title="Техники эффективного анализа юридических документов – старт: 16 ноября 2026 г.">
           <span class="tl-when">16 ноября</span>
           <span class="tl-name">Техники эффективного анализа юридических документов</span>
-          <span class="tl-meta"><i class="tl-dot" data-sphere="practice" aria-hidden="true"></i>ПК · Онлайн синхронный · 40 000 ₽</span>
+          <span class="tl-meta"><i class="tl-dot" data-sphere="practice" aria-hidden="true"></i>ПК · Онлайн синхронный</span>
+          <span class="tl-price">40 000 ₽</span>
         </a>
         <span class="tl-pin" aria-hidden="true"></span>
       </div>
@@ -1032,7 +1050,8 @@
         <a class="tl-card" href="programs/delovye-peregovory-pravovye-strategii-589527758.html" title="Деловые переговоры: правовые стратегии – старт: 17 ноября 2026 г.">
           <span class="tl-when">17 ноября</span>
           <span class="tl-name">Деловые переговоры: правовые стратегии</span>
-          <span class="tl-meta"><i class="tl-dot" data-sphere="corporate" aria-hidden="true"></i>ПК · Смешанный · 45 000 ₽</span>
+          <span class="tl-meta"><i class="tl-dot" data-sphere="corporate" aria-hidden="true"></i>ПК · Смешанный</span>
+          <span class="tl-price">45 000 ₽</span>
         </a>
         <span class="tl-pin" aria-hidden="true"></span>
       </div>
@@ -1040,7 +1059,8 @@
         <a class="tl-card" href="programs/transportnoe-pravo-802031223.html" title="Транспортное право – старт: 18 ноября 2026 г.">
           <span class="tl-when">18 ноября</span>
           <span class="tl-name">Транспортное право</span>
-          <span class="tl-meta"><i class="tl-dot" data-sphere="practice" aria-hidden="true"></i>ПК · Онлайн синхронный · 45 000 ₽</span>
+          <span class="tl-meta"><i class="tl-dot" data-sphere="practice" aria-hidden="true"></i>ПК · Онлайн синхронный</span>
+          <span class="tl-price">45 000 ₽</span>
         </a>
         <span class="tl-pin" aria-hidden="true"></span>
       </div>
@@ -1048,7 +1068,8 @@
         <a class="tl-card" href="programs/imuschestvennye-otnosheniya-v-seme-pravo-i-mediatsiya-934858556.html" title="Имущественные отношения в семье: право и медиация – старт: 21 ноября 2026 г.">
           <span class="tl-when">21 ноября</span>
           <span class="tl-name">Имущественные отношения в семье: право и медиация</span>
-          <span class="tl-meta"><i class="tl-dot" data-sphere="practice" aria-hidden="true"></i>ПК · Очный · 40 000 ₽</span>
+          <span class="tl-meta"><i class="tl-dot" data-sphere="practice" aria-hidden="true"></i>ПК · Очный</span>
+          <span class="tl-price">40 000 ₽</span>
         </a>
         <span class="tl-pin" aria-hidden="true"></span>
       </div>
@@ -1056,7 +1077,8 @@
         <a class="tl-card" href="programs/obschie-voprosy-dogovornogo-prava-907279244.html" title="Общие вопросы договорного права – старт: 25 ноября 2026 г.">
           <span class="tl-when">25 ноября</span>
           <span class="tl-name">Общие вопросы договорного права</span>
-          <span class="tl-meta"><i class="tl-dot" data-sphere="corporate" aria-hidden="true"></i>ПК · Онлайн синхронный · 40 000 ₽</span>
+          <span class="tl-meta"><i class="tl-dot" data-sphere="corporate" aria-hidden="true"></i>ПК · Онлайн синхронный</span>
+          <span class="tl-price">40 000 ₽</span>
         </a>
         <span class="tl-pin" aria-hidden="true"></span>
       </div>
@@ -1064,7 +1086,8 @@
         <a class="tl-card" href="programs/personalnyy-assistent-829977883.html" title="Персональный ассистент – старт: 28 ноября 2026 г.">
           <span class="tl-when">28 ноября</span>
           <span class="tl-name">Персональный ассистент</span>
-          <span class="tl-meta"><i class="tl-dot" data-sphere="practice" aria-hidden="true"></i>ПК · Смешанный · 47 000 ₽</span>
+          <span class="tl-meta"><i class="tl-dot" data-sphere="practice" aria-hidden="true"></i>ПК · Смешанный</span>
+          <span class="tl-price">47 000 ₽</span>
         </a>
         <span class="tl-pin" aria-hidden="true"></span>
       </div>
@@ -1072,14 +1095,15 @@
         <a class="tl-card" href="programs/neyropravo-905186485.html" title="Нейроправо – старт: 30 ноября 2026 г.">
           <span class="tl-when">30 ноября</span>
           <span class="tl-name">Нейроправо</span>
-          <span class="tl-meta"><i class="tl-dot" data-sphere="digital" aria-hidden="true"></i>ПК · Очный · 50 000 ₽</span>
+          <span class="tl-meta"><i class="tl-dot" data-sphere="digital" aria-hidden="true"></i>ПК · Очный</span>
+          <span class="tl-price">50 000 ₽</span>
         </a>
         <span class="tl-pin" aria-hidden="true"></span>
       </div>
     </div>
   </div>
 </section>
-  <!-- /CATALOG:STARTS -->
+<!-- /CATALOG:STARTS -->
 
 <div class="filters" id="filters" data-group="type">
   <!-- CATALOG:FILTERS_TYPE -->
@@ -1152,7 +1176,7 @@
   <h2 class="visually-hidden">Программы повышения квалификации и профессиональной переподготовки для юристов</h2>
   <div class="grid" id="grid">
     <!-- CATALOG:LIST -->
-    <div class="card" data-type="ПК" data-format="offline" data-sphere="digital" data-duration="short" data-price="45000" data-start="1790542800000" data-title="интеллектуальная собственность: от закона к практике" data-search="интеллектуальная собственность: от закона к практике пк очный 6 недель старт: 28 сентября 2026 г." data-id="816497962" data-cmp-format="Очный" data-cmp-duration="6 недель" data-cmp-start="Старт: 28 сентября 2026 г." data-cmp-modules="Интеллектуальная собственность – результат творчества не только гениев · Авторское право сквозь призму интересов интеллектуалов, в том числе режиссеров – постановщиков и продюсеров · Произведение и его виды, баланс частных и публичных интересов · Интеллектуальные права на произведения, способы охраны и защиты · Коллективное управление авторскими и смежными правами – необходимость или архаизм? Посредники нового типа на рынке авторских и смежных прав. · Программы для ЭВМ как объекты авторского права, базы данных · Объекты смежных прав, сроки действия, охрана и защита · Патентное право · Служебные произведения – стимул или тормоз общественного прогресса? · Селекционные достижения · Средства индивидуализации как парадигма баланса публичных и частных интересов · Доменное имя · ГУ и НМПТ - основа коммерциализации результатов творческой деятельности · Право на секрет производства (ноу-хау) и топологию · Услуги и работы как объекты интеллектуальной собственности · Юридические факты, сделки, договоры и иные соглашения – юридическая платформа творческого сотрудничества · Договор коммерческой концессии (франчайзинга) · Переход прав на результаты творческой деятельности · Реклама – пределы добросовестности, нравственности и морали · Круглый стол: обсуждаем конфликт интересов и прав: идем в суд или используем примирительные процедуры? · Инициативное обсуждение актуальных вопросов · Итоговое тестирование" data-cmp-teachers="1" data-cmp-audience="Юристам и экономистам · Интернет предпринимателям · Диджитал-маркетологам, медиаменеджерам · Специалистам в медиа, рекламе, сетевых коммуникациях · Людям творческих профессий · ИТ-разработчикам и робототехникам">
+    <div class="card" data-type="ПК" data-format="offline" data-sphere="digital" data-duration="short" data-price="45000" data-start="1790542800000" data-title="интеллектуальная собственность: от закона к практике" data-search="интеллектуальная собственность: от закона к практике пк очный 6 недель старт: 28 сентября 2026 г. интеллектуальная собственность" data-id="816497962" data-cmp-format="Очный" data-cmp-duration="6 недель" data-cmp-start="Старт: 28 сентября 2026 г." data-cmp-modules="Интеллектуальная собственность – результат творчества не только гениев · Авторское право сквозь призму интересов интеллектуалов, в том числе режиссеров – постановщиков и продюсеров · Произведение и его виды, баланс частных и публичных интересов · Интеллектуальные права на произведения, способы охраны и защиты · Коллективное управление авторскими и смежными правами – необходимость или архаизм? Посредники нового типа на рынке авторских и смежных прав. · Программы для ЭВМ как объекты авторского права, базы данных · Объекты смежных прав, сроки действия, охрана и защита · Патентное право · Служебные произведения – стимул или тормоз общественного прогресса? · Селекционные достижения · Средства индивидуализации как парадигма баланса публичных и частных интересов · Доменное имя · ГУ и НМПТ - основа коммерциализации результатов творческой деятельности · Право на секрет производства (ноу-хау) и топологию · Услуги и работы как объекты интеллектуальной собственности · Юридические факты, сделки, договоры и иные соглашения – юридическая платформа творческого сотрудничества · Договор коммерческой концессии (франчайзинга) · Переход прав на результаты творческой деятельности · Реклама – пределы добросовестности, нравственности и морали · Круглый стол: обсуждаем конфликт интересов и прав: идем в суд или используем примирительные процедуры? · Инициативное обсуждение актуальных вопросов · Итоговое тестирование" data-cmp-teachers="1" data-cmp-audience="Юристам и экономистам · Интернет предпринимателям · Диджитал-маркетологам, медиаменеджерам · Специалистам в медиа, рекламе, сетевых коммуникациях · Людям творческих профессий · ИТ-разработчикам и робототехникам">
       <button type="button" class="card-compare" data-compare-toggle aria-pressed="false"
         aria-label="Сравнить: Интеллектуальная собственность: от закона к практике"><span class="card-compare-box" aria-hidden="true"></span>Сравнить</button>
       <a href="programs/intellektualnaya-sobstvennost-ot-zakona-k-praktike-816497962.html" class="card-link">
@@ -1196,7 +1220,7 @@
         </span>
       </div>
     </div>
-    <div class="card" data-type="ПК" data-format="online" data-sphere="digital" data-duration="medium" data-price="55000" data-start="1790715600000" data-title="цифровое право для бизнеса" data-search="цифровое право для бизнеса пк онлайн синхронный 1,5 месяца старт: 30 сентября 2026 г." data-id="837181759" data-cmp-format="Онлайн синхронный" data-cmp-duration="1,5 месяца" data-cmp-start="Старт: 30 сентября 2026 г." data-cmp-modules="Общие вопросы цифрового права. Настоящее и будущее ИT-юриспруденции · Правовое регулирование цифровых технологий · Правовое регулирование правоотношений в сети Интернет · Право интеллектуальной собственности в цифровой среде · Договорные аспекты цифрового права · Правовое регулирование цифровых платформ (экосистем) · Основы правового регулирования больших данных (Big Data) · Правовой режим персональных данных · Правовые основы информационной безопасности" data-cmp-teachers="8" data-cmp-audience="Юристам · Интернет предпринимателям · ИТ-разработчикам и робототехникам · Специалистам в области медиа, рекламы, сетевых коммуникаций">
+    <div class="card" data-type="ПК" data-format="online" data-sphere="digital" data-duration="medium" data-price="55000" data-start="1790715600000" data-title="цифровое право для бизнеса" data-search="цифровое право для бизнеса пк онлайн синхронный 1,5 месяца старт: 30 сентября 2026 г. цифровое право" data-id="837181759" data-cmp-format="Онлайн синхронный" data-cmp-duration="1,5 месяца" data-cmp-start="Старт: 30 сентября 2026 г." data-cmp-modules="Общие вопросы цифрового права. Настоящее и будущее ИT-юриспруденции · Правовое регулирование цифровых технологий · Правовое регулирование правоотношений в сети Интернет · Право интеллектуальной собственности в цифровой среде · Договорные аспекты цифрового права · Правовое регулирование цифровых платформ (экосистем) · Основы правового регулирования больших данных (Big Data) · Правовой режим персональных данных · Правовые основы информационной безопасности" data-cmp-teachers="8" data-cmp-audience="Юристам · Интернет предпринимателям · ИТ-разработчикам и робототехникам · Специалистам в области медиа, рекламы, сетевых коммуникаций">
       <button type="button" class="card-compare" data-compare-toggle aria-pressed="false"
         aria-label="Сравнить: Цифровое право для бизнеса"><span class="card-compare-box" aria-hidden="true"></span>Сравнить</button>
       <a href="programs/tsifrovoe-pravo-dlya-biznesa-837181759.html" class="card-link">
@@ -1240,7 +1264,7 @@
         </span>
       </div>
     </div>
-    <div class="card" data-type="ПК" data-format="offline" data-sphere="digital" data-duration="short" data-price="75000" data-start="1791147600000" data-title="авторское право в информационном обществе" data-search="авторское право в информационном обществе пк очный 5 недель старт: 5 октября 2026 г." data-id="472681893" data-cmp-format="Очный" data-cmp-duration="5 недель" data-cmp-start="Старт: 5 октября 2026 г." data-cmp-modules="Модуль 1. Эволюция технологий и практическая защита авторских прав в информационном обществе · Цели и задачи авторского права (АП) · Специфика объектов авторских прав и других результатов интеллектуальной деятельности (РИД) · Эволюция авторского права под влиянием научно-технологического прогресса · Актуальное регулирование авторского права на международном и национальных уровнях · Новые концепции авторских прав · Альтернативные концепции авторских прав · Монетизация контента в эпоху технологий · Сервисы распространения и коммерциализации контента · Посредник нового типа на рынке авторских прав · Авторское право, искусственный интеллект и роботы · Нейроправо и авторские права · Технологии трансгуманизма и авторские права · Институциональная природа NFT · NFT и будущее творческих индустрий · Модуль 2. Лучшие авторско-правовые практики в топ-сегментах медиаиндустрии · Организация и создание аудиовизуальных произведений/телепрограмм · Книжные издания, программы и базы данных, цифровая среда · Коллективные авторские права, передача прав · Защита интеллектуальных прав" data-cmp-teachers="2" data-cmp-audience="Руководителям государственных и коммерческих предприятий · Юристам и экономистам · Инновационным менеджерам · Основателям стартапов · Венчурным капиталистам">
+    <div class="card" data-type="ПК" data-format="offline" data-sphere="digital" data-duration="short" data-price="75000" data-start="1791147600000" data-title="авторское право в информационном обществе" data-search="авторское право в информационном обществе пк очный 5 недель старт: 5 октября 2026 г. интеллектуальная собственность" data-id="472681893" data-cmp-format="Очный" data-cmp-duration="5 недель" data-cmp-start="Старт: 5 октября 2026 г." data-cmp-modules="Модуль 1. Эволюция технологий и практическая защита авторских прав в информационном обществе · Цели и задачи авторского права (АП) · Специфика объектов авторских прав и других результатов интеллектуальной деятельности (РИД) · Эволюция авторского права под влиянием научно-технологического прогресса · Актуальное регулирование авторского права на международном и национальных уровнях · Новые концепции авторских прав · Альтернативные концепции авторских прав · Монетизация контента в эпоху технологий · Сервисы распространения и коммерциализации контента · Посредник нового типа на рынке авторских прав · Авторское право, искусственный интеллект и роботы · Нейроправо и авторские права · Технологии трансгуманизма и авторские права · Институциональная природа NFT · NFT и будущее творческих индустрий · Модуль 2. Лучшие авторско-правовые практики в топ-сегментах медиаиндустрии · Организация и создание аудиовизуальных произведений/телепрограмм · Книжные издания, программы и базы данных, цифровая среда · Коллективные авторские права, передача прав · Защита интеллектуальных прав" data-cmp-teachers="2" data-cmp-audience="Руководителям государственных и коммерческих предприятий · Юристам и экономистам · Инновационным менеджерам · Основателям стартапов · Венчурным капиталистам">
       <button type="button" class="card-compare" data-compare-toggle aria-pressed="false"
         aria-label="Сравнить: Авторское право в информационном обществе"><span class="card-compare-box" aria-hidden="true"></span>Сравнить</button>
       <a href="programs/avtorskoe-pravo-v-informatsionnom-obschestve-472681893.html" class="card-link">
@@ -1262,7 +1286,7 @@
         </span>
       </div>
     </div>
-    <div class="card" data-type="ПК" data-format="online" data-sphere="corporate" data-duration="unknown" data-price="30000" data-start="1791147600000" data-title="актуальные вопросы гражданского права" data-search="актуальные вопросы гражданского права пк онлайн асинхронный старт: 5 октября 2026 г." data-id="958734693" data-cmp-format="Онлайн асинхронный" data-cmp-duration="" data-cmp-start="Старт: 5 октября 2026 г." data-cmp-modules="Принципы гражданского права · Объекты гражданских прав · Общие положения о сделках и их недействительности · Вещное право · Договорное право · Наследственное право" data-cmp-teachers="1" data-cmp-audience="Юристы · Предприниматели · Студенты старших курсов юридических факультетов">
+    <div class="card" data-type="ПК" data-format="online" data-sphere="corporate" data-duration="unknown" data-price="30000" data-start="1791147600000" data-title="актуальные вопросы гражданского права" data-search="актуальные вопросы гражданского права пк онлайн асинхронный старт: 5 октября 2026 г. гражданское и договорное право" data-id="958734693" data-cmp-format="Онлайн асинхронный" data-cmp-duration="" data-cmp-start="Старт: 5 октября 2026 г." data-cmp-modules="Принципы гражданского права · Объекты гражданских прав · Общие положения о сделках и их недействительности · Вещное право · Договорное право · Наследственное право" data-cmp-teachers="1" data-cmp-audience="Юристы · Предприниматели · Студенты старших курсов юридических факультетов">
       <button type="button" class="card-compare" data-compare-toggle aria-pressed="false"
         aria-label="Сравнить: Актуальные вопросы гражданского права"><span class="card-compare-box" aria-hidden="true"></span>Сравнить</button>
       <a href="programs/aktualnye-voprosy-grazhdanskogo-prava-958734693.html" class="card-link">
@@ -1284,7 +1308,7 @@
         </span>
       </div>
     </div>
-    <div class="card" data-type="ПК" data-format="online" data-sphere="finance" data-duration="short" data-price="57000" data-start="1791752400000" data-title="актуальные вопросы налогового администрирования и современные подходы в налоговой оптимизации бизнеса" data-search="актуальные вопросы налогового администрирования и современные подходы в налоговой оптимизации бизнеса пк онлайн асинхронный 5 недель старт: 12 октября 2026 г." data-id="1129129055" data-cmp-format="Онлайн асинхронный" data-cmp-duration="5 недель" data-cmp-start="Старт: 12 октября 2026 г." data-cmp-modules="Модуль 1. Актуальные вопросы налогового администрирования бизнеса. · Тема 1. Налоговый контроль – основная функция Федеральной налоговой службы. · Тема 2. Особенности налогового администрирования крупного бизнеса. · Тема 3. Особенности налогового администрирования субъектов малого и среднего бизнеса. · Тема 4. Налоговый мониторинг – новый этап развития налогового контроля. · Модуль 2. Налоговая оптимизация бизнеса. · Тема 1. Налоговые льготы – законные и эффективные механизмы снижения нагрузки бизнеса. · Тема 2. Механизмы оптимизации крупного бизнеса. · Тема 3. Механизмы оптимизации бизнеса для субъектов МСП. · Тема 4. IT сфера. Способы оптимизации инноваций и разработок. · Итоговая аттестация." data-cmp-teachers="2" data-cmp-audience="Финансовые директора и руководители финансово-экономических служб, · Собственники и топ-менеджеры компаний, · Налоговые консультанты и юристы, · Главные бухгалтеры и аудиторы, · Специалисты консалтинговых компаний,">
+    <div class="card" data-type="ПК" data-format="online" data-sphere="finance" data-duration="short" data-price="57000" data-start="1791752400000" data-title="актуальные вопросы налогового администрирования и современные подходы в налоговой оптимизации бизнеса" data-search="актуальные вопросы налогового администрирования и современные подходы в налоговой оптимизации бизнеса пк онлайн асинхронный 5 недель старт: 12 октября 2026 г. налоговое и финансовое право" data-id="1129129055" data-cmp-format="Онлайн асинхронный" data-cmp-duration="5 недель" data-cmp-start="Старт: 12 октября 2026 г." data-cmp-modules="Модуль 1. Актуальные вопросы налогового администрирования бизнеса. · Тема 1. Налоговый контроль – основная функция Федеральной налоговой службы. · Тема 2. Особенности налогового администрирования крупного бизнеса. · Тема 3. Особенности налогового администрирования субъектов малого и среднего бизнеса. · Тема 4. Налоговый мониторинг – новый этап развития налогового контроля. · Модуль 2. Налоговая оптимизация бизнеса. · Тема 1. Налоговые льготы – законные и эффективные механизмы снижения нагрузки бизнеса. · Тема 2. Механизмы оптимизации крупного бизнеса. · Тема 3. Механизмы оптимизации бизнеса для субъектов МСП. · Тема 4. IT сфера. Способы оптимизации инноваций и разработок. · Итоговая аттестация." data-cmp-teachers="2" data-cmp-audience="Финансовые директора и руководители финансово-экономических служб, · Собственники и топ-менеджеры компаний, · Налоговые консультанты и юристы, · Главные бухгалтеры и аудиторы, · Специалисты консалтинговых компаний,">
       <button type="button" class="card-compare" data-compare-toggle aria-pressed="false"
         aria-label="Сравнить: Актуальные вопросы налогового администрирования и современные подходы в налоговой оптимизации бизнеса"><span class="card-compare-box" aria-hidden="true"></span>Сравнить</button>
       <a href="programs/aktualnye-voprosy-nalogovogo-administrirovaniya-i-sovremenny-1129129055.html" class="card-link">
@@ -1306,7 +1330,7 @@
         </span>
       </div>
     </div>
-    <div class="card" data-type="ПК" data-format="hybrid" data-sphere="practice" data-duration="unknown" data-price="150000" data-start="1791838800000" data-title="правовые механизмы и стратегии эффективного взаимодействия фармацевтических компаний с органами государственной власти (gr в фарме)" data-search="правовые механизмы и стратегии эффективного взаимодействия фармацевтических компаний с органами государственной власти (gr в фарме) пк гибридный (обучение проходит очно и параллельно в онлайн) старт: 13 октября 2026 г." data-id="1163275658" data-cmp-format="Гибридный" data-cmp-duration="" data-cmp-start="Старт: 13 октября 2026 г." data-cmp-modules="Модуль 1. Правовой ландшафт и правила игры: кто принимает решения в фарме · Модуль 2. Инструментарий и стратегии: как реально влиять · Модуль 3. Практика и интеграция: взаимодействие с гос органами (GR) в полях" data-cmp-teachers="4" data-cmp-audience="Руководители и специалисты по взаимодействию с органами государственной власти (GR) · Менеджеры по разработкам (R&amp;D) и клиническим исследованиям · Коммерческие директора и руководители отдела продаж · Юристы фармкомпаний · Специалисты в сфере регуляторики (RA) · Руководители и сотрудники отделов доступа на рынок и ценообразования и (Market Access&amp; Pricing) · Сотрудники отраслевых ассоциаций (АРФП, АПФ, СПП) · Руководители в сфере комплаенс">
+    <div class="card" data-type="ПК" data-format="hybrid" data-sphere="practice" data-duration="unknown" data-price="150000" data-start="1791838800000" data-title="правовые механизмы и стратегии эффективного взаимодействия фармацевтических компаний с органами государственной власти (gr в фарме)" data-search="правовые механизмы и стратегии эффективного взаимодействия фармацевтических компаний с органами государственной власти (gr в фарме) пк гибридный (обучение проходит очно и параллельно в онлайн) старт: 13 октября 2026 г. медицинское и фармацевтическое право" data-id="1163275658" data-cmp-format="Гибридный" data-cmp-duration="" data-cmp-start="Старт: 13 октября 2026 г." data-cmp-modules="Модуль 1. Правовой ландшафт и правила игры: кто принимает решения в фарме · Модуль 2. Инструментарий и стратегии: как реально влиять · Модуль 3. Практика и интеграция: взаимодействие с гос органами (GR) в полях" data-cmp-teachers="4" data-cmp-audience="Руководители и специалисты по взаимодействию с органами государственной власти (GR) · Менеджеры по разработкам (R&amp;D) и клиническим исследованиям · Коммерческие директора и руководители отдела продаж · Юристы фармкомпаний · Специалисты в сфере регуляторики (RA) · Руководители и сотрудники отделов доступа на рынок и ценообразования и (Market Access&amp; Pricing) · Сотрудники отраслевых ассоциаций (АРФП, АПФ, СПП) · Руководители в сфере комплаенс">
       <button type="button" class="card-compare" data-compare-toggle aria-pressed="false"
         aria-label="Сравнить: Правовые механизмы и стратегии эффективного взаимодействия фармацевтических компаний с органами государственной власти (GR в фарме)"><span class="card-compare-box" aria-hidden="true"></span>Сравнить</button>
       <a href="programs/pravovye-mehanizmy-i-strategii-effektivnogo-vzaimodeystviya-1163275658.html" class="card-link">
@@ -1350,7 +1374,7 @@
         </span>
       </div>
     </div>
-    <div class="card" data-type="ПП" data-format="mixed" data-sphere="international" data-duration="unknown" data-price="180000" data-start="1792357200000" data-title="французское (европейское) экономическое право / droit économique français (européen)" data-search="французское (европейское) экономическое право / droit économique français (européen) пп смешанный старт: 19 октября 2026 г." data-id="961021723" data-cmp-format="Смешанный" data-cmp-duration="" data-cmp-start="Старт: 19 октября 2026 г." data-cmp-modules="Источники и отрасли права / Sources et domaines du droit · Юрисдикции / Les juridictions Действующие лица юриспруденции /Acteurs et Procédures · Физические лица / юридические лица: права, обязательства, имущество, ответственность / Personnes physiques et personnes morales: droits, obligations, biens, responsabilité · Европейское право, европейские институты / le droit communautaire, les institutions européennes · Предпринимательское право / Le droit commerciale · Предприятия: юридические формы, создание, ликвидация / Les entreprises: formes juridiques, création, liquidation · Клиенты, партнеры, конкуренты предприятия / Clients, partenaires, concurrents d’une entreprise · Трудовое право / le droit du travail · Предприятие и государство /Les relations entre les entreprises et les pouvoirs publiques" data-cmp-teachers="1" data-cmp-audience="Юристы и экономисты · Студенты и выпускники факультетов права, экономики, менеджмента · Предприниматели, работающие в международной сфере">
+    <div class="card" data-type="ПП" data-format="mixed" data-sphere="international" data-duration="unknown" data-price="180000" data-start="1792357200000" data-title="французское (европейское) экономическое право / droit économique français (européen)" data-search="французское (европейское) экономическое право / droit économique français (européen) пп смешанный старт: 19 октября 2026 г. международное и зарубежное право" data-id="961021723" data-cmp-format="Смешанный" data-cmp-duration="" data-cmp-start="Старт: 19 октября 2026 г." data-cmp-modules="Источники и отрасли права / Sources et domaines du droit · Юрисдикции / Les juridictions Действующие лица юриспруденции /Acteurs et Procédures · Физические лица / юридические лица: права, обязательства, имущество, ответственность / Personnes physiques et personnes morales: droits, obligations, biens, responsabilité · Европейское право, европейские институты / le droit communautaire, les institutions européennes · Предпринимательское право / Le droit commerciale · Предприятия: юридические формы, создание, ликвидация / Les entreprises: formes juridiques, création, liquidation · Клиенты, партнеры, конкуренты предприятия / Clients, partenaires, concurrents d’une entreprise · Трудовое право / le droit du travail · Предприятие и государство /Les relations entre les entreprises et les pouvoirs publiques" data-cmp-teachers="1" data-cmp-audience="Юристы и экономисты · Студенты и выпускники факультетов права, экономики, менеджмента · Предприниматели, работающие в международной сфере">
       <button type="button" class="card-compare" data-compare-toggle aria-pressed="false"
         aria-label="Сравнить: Французское (европейское) экономическое право / Droit économique français (européen)"><span class="card-compare-box" aria-hidden="true"></span>Сравнить</button>
       <a href="programs/frantsuzskoe-evropeyskoe-ekonomicheskoe-pravo-droit-economiq-961021723.html" class="card-link">
@@ -1372,7 +1396,7 @@
         </span>
       </div>
     </div>
-    <div class="card" data-type="ПК" data-format="offline" data-sphere="digital" data-duration="unknown" data-price="40000" data-start="1792789200000" data-title="безопасное внедрение цифровых инструментов в кадровую работу: юридические требования" data-search="безопасное внедрение цифровых инструментов в кадровую работу: юридические требования пк очный старт: 24 октября 2026 г." data-id="1129129056" data-cmp-format="Очный" data-cmp-duration="" data-cmp-start="Старт: 24 октября 2026 г." data-cmp-modules="Основные понятия и принципы управления рисками в HR · Правовые аспекты применения электронного кадрового документооборота и искусственного интеллекта в HR-управлении · Кодекс этики в цифровую эпоху · Цифровая адаптация работников · Оценка HR-рисков и управление ими · Управление трудовыми спорами с применением технологий электронного кадрового документооборота и искусственного интеллекта · Подходы Роскомнадзора, Прокуратуры и госинспекции труда по обработке персональных данных работников и с использованием цифровых технологий · Заключение и перспективы цифровизации в HR" data-cmp-teachers="2" data-cmp-audience="Директора по управлению персоналом (HRD) и HR-бизнес-партнеры · Сотрудники HR-подразделений и кадровых служб · Юристы в сфере трудового права · Специалисты по комплаенсу, риск-менеджменту и внутренним коммуникациям">
+    <div class="card" data-type="ПК" data-format="offline" data-sphere="digital" data-duration="unknown" data-price="40000" data-start="1792789200000" data-title="безопасное внедрение цифровых инструментов в кадровую работу: юридические требования" data-search="безопасное внедрение цифровых инструментов в кадровую работу: юридические требования пк очный старт: 24 октября 2026 г. цифровое право трудовое право" data-id="1129129056" data-cmp-format="Очный" data-cmp-duration="" data-cmp-start="Старт: 24 октября 2026 г." data-cmp-modules="Основные понятия и принципы управления рисками в HR · Правовые аспекты применения электронного кадрового документооборота и искусственного интеллекта в HR-управлении · Кодекс этики в цифровую эпоху · Цифровая адаптация работников · Оценка HR-рисков и управление ими · Управление трудовыми спорами с применением технологий электронного кадрового документооборота и искусственного интеллекта · Подходы Роскомнадзора, Прокуратуры и госинспекции труда по обработке персональных данных работников и с использованием цифровых технологий · Заключение и перспективы цифровизации в HR" data-cmp-teachers="2" data-cmp-audience="Директора по управлению персоналом (HRD) и HR-бизнес-партнеры · Сотрудники HR-подразделений и кадровых служб · Юристы в сфере трудового права · Специалисты по комплаенсу, риск-менеджменту и внутренним коммуникациям">
       <button type="button" class="card-compare" data-compare-toggle aria-pressed="false"
         aria-label="Сравнить: Безопасное внедрение цифровых инструментов в кадровую работу: юридические требования"><span class="card-compare-box" aria-hidden="true"></span>Сравнить</button>
       <a href="programs/bezopasnoe-vnedrenie-tsifrovyh-instrumentov-v-kadrovuyu-rabo-1129129056.html" class="card-link">
@@ -1416,7 +1440,7 @@
         </span>
       </div>
     </div>
-    <div class="card" data-type="ПК" data-format="mixed" data-sphere="international" data-duration="medium" data-price="50000" data-start="1793221200000" data-title="международное частное право: трансграничные операции" data-search="международное частное право: трансграничные операции пк смешанный 3 месяца старт: 29 октября 2026 г." data-id="474599435" data-cmp-format="Смешанный" data-cmp-duration="3 месяца" data-cmp-start="Старт: 29 октября 2026 г." data-cmp-modules="Сфера регулирования внешнеэкономического частного права, ключевые источники · Способы разрешения коллизий различных правовых систем. Субъекты МЧП и корпоративные структуры · Международная интеллектуальная собственность и её защита · Международные коммерческие контракты и договорные обязательства: практические навыки договорной работы · Международные транспортные сделки и операции · Международное инвестиционное право · Международные расчёты и их обеспечение · Международные финансовые операции. Защита собственности посредством МЧП · Противостояние деликтам в МЧП. Брачно-семейные правоотношения с иностранным элементом · Международное налоговое планирование · Международный гражданский процесс и международный коммерческий арбитраж · Международные трудовые отношения и договоры. Международное наследственное планирование · Санкционное регулирование и параллельный импорт. Влияние санкций и антисанкций на международный коммерческий арбитраж" data-cmp-teachers="4" data-cmp-audience="для юристов и студентов юридических факультетов · для экономистов · для управленцев">
+    <div class="card" data-type="ПК" data-format="mixed" data-sphere="international" data-duration="medium" data-price="50000" data-start="1793221200000" data-title="международное частное право: трансграничные операции" data-search="международное частное право: трансграничные операции пк смешанный 3 месяца старт: 29 октября 2026 г. международное и зарубежное право" data-id="474599435" data-cmp-format="Смешанный" data-cmp-duration="3 месяца" data-cmp-start="Старт: 29 октября 2026 г." data-cmp-modules="Сфера регулирования внешнеэкономического частного права, ключевые источники · Способы разрешения коллизий различных правовых систем. Субъекты МЧП и корпоративные структуры · Международная интеллектуальная собственность и её защита · Международные коммерческие контракты и договорные обязательства: практические навыки договорной работы · Международные транспортные сделки и операции · Международное инвестиционное право · Международные расчёты и их обеспечение · Международные финансовые операции. Защита собственности посредством МЧП · Противостояние деликтам в МЧП. Брачно-семейные правоотношения с иностранным элементом · Международное налоговое планирование · Международный гражданский процесс и международный коммерческий арбитраж · Международные трудовые отношения и договоры. Международное наследственное планирование · Санкционное регулирование и параллельный импорт. Влияние санкций и антисанкций на международный коммерческий арбитраж" data-cmp-teachers="4" data-cmp-audience="для юристов и студентов юридических факультетов · для экономистов · для управленцев">
       <button type="button" class="card-compare" data-compare-toggle aria-pressed="false"
         aria-label="Сравнить: Международное частное право: трансграничные операции"><span class="card-compare-box" aria-hidden="true"></span>Сравнить</button>
       <a href="programs/mezhdunarodnoe-chastnoe-pravo-transgranichnye-operatsii-474599435.html" class="card-link">
@@ -1438,7 +1462,7 @@
         </span>
       </div>
     </div>
-    <div class="card" data-type="ПК" data-format="online" data-sphere="international" data-duration="unknown" data-price="125000" data-start="1793566800000" data-title="введение в правовую систему китая" data-search="введение в правовую систему китая пк онлайн синхронный старт: 2 ноября 2026 г." data-id="894108285" data-cmp-format="Онлайн синхронный" data-cmp-duration="" data-cmp-start="Старт: 2 ноября 2026 г." data-cmp-modules="Введение в правовую систему Китая. Политическое устройство Китая. Знакомство с реалиями КНР · Основы китайского гражданского права. Договорное право · Основы корпоративного права Китая · Введение в административное право Китая · Основы трудового права КНР · Дискуссия со спикерами об основах правовой системы Китая (часть 1) · Основы цифрового права КНР · Введение в инвестиционное право Китая · Введение в уголовное право КНР · Способы разрешения споров с китайскими компаниями · Внешнеторговое и торговое законодательство КНР · Дискуссия со спикерами об основах правовой системы Китая (часть 2)" data-cmp-teachers="18" data-cmp-audience="Юристы и экономисты · Руководители и сотрудники компаний · Предприниматели">
+    <div class="card" data-type="ПК" data-format="online" data-sphere="international" data-duration="unknown" data-price="125000" data-start="1793566800000" data-title="введение в правовую систему китая" data-search="введение в правовую систему китая пк онлайн синхронный старт: 2 ноября 2026 г. международное и зарубежное право" data-id="894108285" data-cmp-format="Онлайн синхронный" data-cmp-duration="" data-cmp-start="Старт: 2 ноября 2026 г." data-cmp-modules="Введение в правовую систему Китая. Политическое устройство Китая. Знакомство с реалиями КНР · Основы китайского гражданского права. Договорное право · Основы корпоративного права Китая · Введение в административное право Китая · Основы трудового права КНР · Дискуссия со спикерами об основах правовой системы Китая (часть 1) · Основы цифрового права КНР · Введение в инвестиционное право Китая · Введение в уголовное право КНР · Способы разрешения споров с китайскими компаниями · Внешнеторговое и торговое законодательство КНР · Дискуссия со спикерами об основах правовой системы Китая (часть 2)" data-cmp-teachers="18" data-cmp-audience="Юристы и экономисты · Руководители и сотрудники компаний · Предприниматели">
       <button type="button" class="card-compare" data-compare-toggle aria-pressed="false"
         aria-label="Сравнить: Введение в правовую систему Китая"><span class="card-compare-box" aria-hidden="true"></span>Сравнить</button>
       <a href="programs/vvedenie-v-pravovuyu-sistemu-kitaya-894108285.html" class="card-link">
@@ -1460,7 +1484,7 @@
         </span>
       </div>
     </div>
-    <div class="card" data-type="ПК" data-format="offline" data-sphere="finance" data-duration="short" data-price="50000" data-start="1793912400000" data-title="налоговые проверки и разрешение налоговых споров" data-search="налоговые проверки и разрешение налоговых споров пк очный 5 недель старт: 6 ноября 2026 г." data-id="815005412" data-cmp-format="Очный" data-cmp-duration="5 недель" data-cmp-start="Старт: 6 ноября 2026 г." data-cmp-modules="Налоговый контроль, предпроверочный анализ, налоговые проверки. Понятие налогового спора · Истребование документов и пояснений у налогоплательщика · Допрос как ключевой метод налогового контроля · Другие мероприятия налогового контроля · Идентификация налоговых рисков, способных привести к возникновению налогового спора. Тенденции налоговых споров · Акт налоговой проверки · Возражения налогоплательщика по акту налоговой проверки. Дополнительные мероприятия налогового контроля. Решение по налоговой проверке · Административное и судебное обжалование решений по налоговой проверке · Актуальные налоговые споры" data-cmp-teachers="1" data-cmp-audience="Юристам · Экономистам · Главным бухгалтерам · Аудиторам · Руководителям и собственникам бизнеса · Сотрудникам юридических и финансовых отделов компаний всех отраслей">
+    <div class="card" data-type="ПК" data-format="offline" data-sphere="finance" data-duration="short" data-price="50000" data-start="1793912400000" data-title="налоговые проверки и разрешение налоговых споров" data-search="налоговые проверки и разрешение налоговых споров пк очный 5 недель старт: 6 ноября 2026 г. налоговое и финансовое право" data-id="815005412" data-cmp-format="Очный" data-cmp-duration="5 недель" data-cmp-start="Старт: 6 ноября 2026 г." data-cmp-modules="Налоговый контроль, предпроверочный анализ, налоговые проверки. Понятие налогового спора · Истребование документов и пояснений у налогоплательщика · Допрос как ключевой метод налогового контроля · Другие мероприятия налогового контроля · Идентификация налоговых рисков, способных привести к возникновению налогового спора. Тенденции налоговых споров · Акт налоговой проверки · Возражения налогоплательщика по акту налоговой проверки. Дополнительные мероприятия налогового контроля. Решение по налоговой проверке · Административное и судебное обжалование решений по налоговой проверке · Актуальные налоговые споры" data-cmp-teachers="1" data-cmp-audience="Юристам · Экономистам · Главным бухгалтерам · Аудиторам · Руководителям и собственникам бизнеса · Сотрудникам юридических и финансовых отделов компаний всех отраслей">
       <button type="button" class="card-compare" data-compare-toggle aria-pressed="false"
         aria-label="Сравнить: Налоговые проверки и разрешение налоговых споров"><span class="card-compare-box" aria-hidden="true"></span>Сравнить</button>
       <a href="programs/nalogovye-proverki-i-razreshenie-nalogovyh-sporov-815005412.html" class="card-link">
@@ -1482,7 +1506,7 @@
         </span>
       </div>
     </div>
-    <div class="card" data-type="ПК" data-format="online" data-sphere="corporate" data-duration="short" data-price="50000" data-start="1794171600000" data-title="английское контрактное право" data-search="английское контрактное право пк онлайн синхронный 1 месяц старт: 9 ноября 2026 г." data-id="856421092" data-cmp-format="Онлайн синхронный" data-cmp-duration="1 месяц" data-cmp-start="Старт: 9 ноября 2026 г." data-cmp-modules="Введение в английское право · Заключение договоров по английскому праву · Основные типы договорных условий · Ошибка (mistake) и доктрина недостижимости цели договора (frustration) · Договоры, противоречащие закону (illegal contracts) и принуждение к заключению договора (duress) · Ответственность за введение в заблуждение (misrepresentation) · Нарушение договора и меры защиты · Практический тренинг (имитационная отработка нескольких сценариев: заключение сделки в области международной сделке по энергетики, урегулирование конфликта, и судебная защита по при нарушении договора)" data-cmp-teachers="1" data-cmp-audience="Юристам и экономистам · Руководителям бизнеса · Стартап-предпринимателям · Студентам юридических факультетов">
+    <div class="card" data-type="ПК" data-format="online" data-sphere="corporate" data-duration="short" data-price="50000" data-start="1794171600000" data-title="английское контрактное право" data-search="английское контрактное право пк онлайн синхронный 1 месяц старт: 9 ноября 2026 г. гражданское и договорное право международное и зарубежное право" data-id="856421092" data-cmp-format="Онлайн синхронный" data-cmp-duration="1 месяц" data-cmp-start="Старт: 9 ноября 2026 г." data-cmp-modules="Введение в английское право · Заключение договоров по английскому праву · Основные типы договорных условий · Ошибка (mistake) и доктрина недостижимости цели договора (frustration) · Договоры, противоречащие закону (illegal contracts) и принуждение к заключению договора (duress) · Ответственность за введение в заблуждение (misrepresentation) · Нарушение договора и меры защиты · Практический тренинг (имитационная отработка нескольких сценариев: заключение сделки в области международной сделке по энергетики, урегулирование конфликта, и судебная защита по при нарушении договора)" data-cmp-teachers="1" data-cmp-audience="Юристам и экономистам · Руководителям бизнеса · Стартап-предпринимателям · Студентам юридических факультетов">
       <button type="button" class="card-compare" data-compare-toggle aria-pressed="false"
         aria-label="Сравнить: Английское контрактное право"><span class="card-compare-box" aria-hidden="true"></span>Сравнить</button>
       <a href="programs/angliyskoe-kontraktnoe-pravo-856421092.html" class="card-link">
@@ -1504,7 +1528,7 @@
         </span>
       </div>
     </div>
-    <div class="card" data-type="ПК" data-format="online" data-sphere="international" data-duration="unknown" data-price="60000" data-start="1794258000000" data-title="морской арбитраж" data-search="морской арбитраж пк онлайн синхронный старт: 10 ноября 2026 г." data-id="906651510" data-cmp-format="Онлайн синхронный" data-cmp-duration="" data-cmp-start="Старт: 10 ноября 2026 г." data-cmp-modules="Правила ведения морского арбитража · Основные источники морского арбитража в России, Англии, Китае, Гонконге · Медиация и арбитраж в морских спорах · Арбитражное соглашение · Коллизионные нормы · Споры о компетенции арбитров · Приостановление процесса в государственном суде, начатого в нарушение арбитражного соглашения · Запреты на начало арбитража или начало судебного процесса · Выбор арбитров и суперарбитров. Квалификация и полномочия морских арбитров · Процедура арбитража и доказательства · Конфиденциальность в морском арбитраже · Участие третьих лиц в арбитраже · Арбитражные решения · Гонорары и расходы арбитров · Расходы в морском арбитраже · Оспаривание арбитражных решений · Исполнение арбитражных решений · Ходатайства в государственные суды, относящиеся к морскому арбитражу" data-cmp-teachers="1" data-cmp-audience="Юристам и адвокатам · Представителям морских предприятий, учреждений · Управленцам, принимающим решения в морском бизнесе">
+    <div class="card" data-type="ПК" data-format="online" data-sphere="international" data-duration="unknown" data-price="60000" data-start="1794258000000" data-title="морской арбитраж" data-search="морской арбитраж пк онлайн синхронный старт: 10 ноября 2026 г. международное и зарубежное право транспортное право" data-id="906651510" data-cmp-format="Онлайн синхронный" data-cmp-duration="" data-cmp-start="Старт: 10 ноября 2026 г." data-cmp-modules="Правила ведения морского арбитража · Основные источники морского арбитража в России, Англии, Китае, Гонконге · Медиация и арбитраж в морских спорах · Арбитражное соглашение · Коллизионные нормы · Споры о компетенции арбитров · Приостановление процесса в государственном суде, начатого в нарушение арбитражного соглашения · Запреты на начало арбитража или начало судебного процесса · Выбор арбитров и суперарбитров. Квалификация и полномочия морских арбитров · Процедура арбитража и доказательства · Конфиденциальность в морском арбитраже · Участие третьих лиц в арбитраже · Арбитражные решения · Гонорары и расходы арбитров · Расходы в морском арбитраже · Оспаривание арбитражных решений · Исполнение арбитражных решений · Ходатайства в государственные суды, относящиеся к морскому арбитражу" data-cmp-teachers="1" data-cmp-audience="Юристам и адвокатам · Представителям морских предприятий, учреждений · Управленцам, принимающим решения в морском бизнесе">
       <button type="button" class="card-compare" data-compare-toggle aria-pressed="false"
         aria-label="Сравнить: Морской арбитраж"><span class="card-compare-box" aria-hidden="true"></span>Сравнить</button>
       <a href="programs/morskoy-arbitrazh-906651510.html" class="card-link">
@@ -1526,7 +1550,7 @@
         </span>
       </div>
     </div>
-    <div class="card" data-type="ПК" data-format="online" data-sphere="corporate" data-duration="short" data-price="60000" data-start="1794776400000" data-title="корпоративное право: основные проблемы" data-search="корпоративное право: основные проблемы пк онлайн синхронный 5 недель старт: 16 ноября 2026 г." data-id="474596729" data-cmp-format="Онлайн синхронный" data-cmp-duration="5 недель" data-cmp-start="Старт: 16 ноября 2026 г." data-cmp-modules="Понятие и сущность корпорации как юридического лица · Учреждение, реорганизация и ликвидация корпорации · Понятие и правовой режим акций и долей корпорации · Правовое регулирование управления корпорацией · Правовые средства повышения эффективности корпоративного управления · Ответственность в корпоративном праве · Правовое регулирование сделок, заключаемых корпорацией · Особенности правового регулирования отдельных видов корпораций" data-cmp-teachers="1" data-cmp-audience="Юристам и экономистам · Предпринимателям и основателям стартапов · Специалистам смежных областей · Студентам и молодым исследователям">
+    <div class="card" data-type="ПК" data-format="online" data-sphere="corporate" data-duration="short" data-price="60000" data-start="1794776400000" data-title="корпоративное право: основные проблемы" data-search="корпоративное право: основные проблемы пк онлайн синхронный 5 недель старт: 16 ноября 2026 г. корпоративное право" data-id="474596729" data-cmp-format="Онлайн синхронный" data-cmp-duration="5 недель" data-cmp-start="Старт: 16 ноября 2026 г." data-cmp-modules="Понятие и сущность корпорации как юридического лица · Учреждение, реорганизация и ликвидация корпорации · Понятие и правовой режим акций и долей корпорации · Правовое регулирование управления корпорацией · Правовые средства повышения эффективности корпоративного управления · Ответственность в корпоративном праве · Правовое регулирование сделок, заключаемых корпорацией · Особенности правового регулирования отдельных видов корпораций" data-cmp-teachers="1" data-cmp-audience="Юристам и экономистам · Предпринимателям и основателям стартапов · Специалистам смежных областей · Студентам и молодым исследователям">
       <button type="button" class="card-compare" data-compare-toggle aria-pressed="false"
         aria-label="Сравнить: Корпоративное право: основные проблемы"><span class="card-compare-box" aria-hidden="true"></span>Сравнить</button>
       <a href="programs/korporativnoe-pravo-osnovnye-problemy-474596729.html" class="card-link">
@@ -1592,7 +1616,7 @@
         </span>
       </div>
     </div>
-    <div class="card" data-type="ПК" data-format="online" data-sphere="practice" data-duration="short" data-price="45000" data-start="1794949200000" data-title="транспортное право" data-search="транспортное право пк онлайн синхронный 1 месяц старт: 18 ноября 2026 г." data-id="802031223" data-cmp-format="Онлайн синхронный" data-cmp-duration="1 месяц" data-cmp-start="Старт: 18 ноября 2026 г." data-cmp-modules="Организация перевозок · Договор перевозки · Претензии и иски к перевозчику · Железнодорожные перевозки · Воздушные перевозки · Автомобильные перевозки · Морские перевозки · Договор морской перевозки · Договор лоцманской проводки · Спасание на море · Внутренний водный транспорт · Договор транспортной экспедиции · Смешанные перевозки (перевозки грузов с участием нескольких видов транспорта)" data-cmp-teachers="1" data-cmp-audience="Юристы, адвокаты · Владельцы бизнеса и руководители компаний · Менеджеры по ВЭД · Менеджеры по логистике · Сотрудники транспортных и логистических компаний">
+    <div class="card" data-type="ПК" data-format="online" data-sphere="practice" data-duration="short" data-price="45000" data-start="1794949200000" data-title="транспортное право" data-search="транспортное право пк онлайн синхронный 1 месяц старт: 18 ноября 2026 г. транспортное право" data-id="802031223" data-cmp-format="Онлайн синхронный" data-cmp-duration="1 месяц" data-cmp-start="Старт: 18 ноября 2026 г." data-cmp-modules="Организация перевозок · Договор перевозки · Претензии и иски к перевозчику · Железнодорожные перевозки · Воздушные перевозки · Автомобильные перевозки · Морские перевозки · Договор морской перевозки · Договор лоцманской проводки · Спасание на море · Внутренний водный транспорт · Договор транспортной экспедиции · Смешанные перевозки (перевозки грузов с участием нескольких видов транспорта)" data-cmp-teachers="1" data-cmp-audience="Юристы, адвокаты · Владельцы бизнеса и руководители компаний · Менеджеры по ВЭД · Менеджеры по логистике · Сотрудники транспортных и логистических компаний">
       <button type="button" class="card-compare" data-compare-toggle aria-pressed="false"
         aria-label="Сравнить: Транспортное право"><span class="card-compare-box" aria-hidden="true"></span>Сравнить</button>
       <a href="programs/transportnoe-pravo-802031223.html" class="card-link">
@@ -1614,7 +1638,7 @@
         </span>
       </div>
     </div>
-    <div class="card" data-type="ПК" data-format="offline" data-sphere="practice" data-duration="unknown" data-price="40000" data-start="1795208400000" data-title="имущественные отношения в семье: право и медиация" data-search="имущественные отношения в семье: право и медиация пк очный интенсив 2 полных дня старт: 21 ноября 2026 г." data-id="934858556" data-cmp-format="Очный" data-cmp-duration="Интенсив 2 полных дня" data-cmp-start="Старт: 21 ноября 2026 г." data-cmp-modules="Блок 1. Имущественные отношения в семье: основы и практика · Блок 2. Управление общим имуществом супругов · Блок 3. Ответственность супругов по обязательствам · Блок 4. Договорные инструменты · Блок 5. Медиация в имущественных конфликтах · Итоговая аттестация: рефлексивное тестирование" data-cmp-teachers="2" data-cmp-audience="Семейные юристы и адвокаты · Медиаторы · Юристы широкого профиля · Собственники бизнеса и активов · Частные лица">
+    <div class="card" data-type="ПК" data-format="offline" data-sphere="practice" data-duration="unknown" data-price="40000" data-start="1795208400000" data-title="имущественные отношения в семье: право и медиация" data-search="имущественные отношения в семье: право и медиация пк очный интенсив 2 полных дня старт: 21 ноября 2026 г. семейное право" data-id="934858556" data-cmp-format="Очный" data-cmp-duration="Интенсив 2 полных дня" data-cmp-start="Старт: 21 ноября 2026 г." data-cmp-modules="Блок 1. Имущественные отношения в семье: основы и практика · Блок 2. Управление общим имуществом супругов · Блок 3. Ответственность супругов по обязательствам · Блок 4. Договорные инструменты · Блок 5. Медиация в имущественных конфликтах · Итоговая аттестация: рефлексивное тестирование" data-cmp-teachers="2" data-cmp-audience="Семейные юристы и адвокаты · Медиаторы · Юристы широкого профиля · Собственники бизнеса и активов · Частные лица">
       <button type="button" class="card-compare" data-compare-toggle aria-pressed="false"
         aria-label="Сравнить: Имущественные отношения в семье: право и медиация"><span class="card-compare-box" aria-hidden="true"></span>Сравнить</button>
       <a href="programs/imuschestvennye-otnosheniya-v-seme-pravo-i-mediatsiya-934858556.html" class="card-link">
@@ -1636,7 +1660,7 @@
         </span>
       </div>
     </div>
-    <div class="card" data-type="ПК" data-format="online" data-sphere="corporate" data-duration="short" data-price="40000" data-start="1795554000000" data-title="общие вопросы договорного права" data-search="общие вопросы договорного права пк онлайн синхронный 3 недели старт: 25 ноября 2026 г." data-id="907279244" data-cmp-format="Онлайн синхронный" data-cmp-duration="3 недели" data-cmp-start="Старт: 25 ноября 2026 г." data-cmp-modules="Понятие договора и принципы договорного права · Основные правила о сделках по российскому праву · Заключение договора · Толкование договора · Исполнение договорных обязательств · Общие положения об ответственности за нарушение договорных обязательств · Изменение и расторжение договора" data-cmp-teachers="1" data-cmp-audience="Практикующие и начинающие юристы · Работники организаций, отвечающие за ведение переговоров с контрагентами · Руководители бизнеса · Стартап-предприниматели · Студенты старших курсов юридических факультетов">
+    <div class="card" data-type="ПК" data-format="online" data-sphere="corporate" data-duration="short" data-price="40000" data-start="1795554000000" data-title="общие вопросы договорного права" data-search="общие вопросы договорного права пк онлайн синхронный 3 недели старт: 25 ноября 2026 г. гражданское и договорное право" data-id="907279244" data-cmp-format="Онлайн синхронный" data-cmp-duration="3 недели" data-cmp-start="Старт: 25 ноября 2026 г." data-cmp-modules="Понятие договора и принципы договорного права · Основные правила о сделках по российскому праву · Заключение договора · Толкование договора · Исполнение договорных обязательств · Общие положения об ответственности за нарушение договорных обязательств · Изменение и расторжение договора" data-cmp-teachers="1" data-cmp-audience="Практикующие и начинающие юристы · Работники организаций, отвечающие за ведение переговоров с контрагентами · Руководители бизнеса · Стартап-предприниматели · Студенты старших курсов юридических факультетов">
       <button type="button" class="card-compare" data-compare-toggle aria-pressed="false"
         aria-label="Сравнить: Общие вопросы договорного права"><span class="card-compare-box" aria-hidden="true"></span>Сравнить</button>
       <a href="programs/obschie-voprosy-dogovornogo-prava-907279244.html" class="card-link">
@@ -1680,7 +1704,7 @@
         </span>
       </div>
     </div>
-    <div class="card" data-type="ПК" data-format="offline" data-sphere="digital" data-duration="unknown" data-price="50000" data-start="1795986000000" data-title="нейроправо" data-search="нейроправо пк очный старт: 30 ноября 2026 г." data-id="905186485" data-cmp-format="Очный" data-cmp-duration="" data-cmp-start="Старт: 30 ноября 2026 г." data-cmp-modules="Социокультурные, технологические и правовые предпосылки становления нейроправа · Основные концепции, понятия и структура нейроправа · Акты международного и национального права, конституирующие нормы нейроправа · Нейроправо и трансгуманизм: хартия и билль о правах · Соотношение авторского права и нейроправа · Влияние патентного права на нейроправа человека" data-cmp-teachers="1" data-cmp-audience="Юристам · Представителям творческих профессий · ИТ-разработчикам и робототехникам · Диджитал-маркетологам, медиаменеджерам · Инновационным менеджерам · Предпринимателям и основателям стартапов · Специалистам в медиа, рекламе, сетевых коммуникациях · Всем, кому интересна тема нейроправа">
+    <div class="card" data-type="ПК" data-format="offline" data-sphere="digital" data-duration="unknown" data-price="50000" data-start="1795986000000" data-title="нейроправо" data-search="нейроправо пк очный старт: 30 ноября 2026 г. цифровое право" data-id="905186485" data-cmp-format="Очный" data-cmp-duration="" data-cmp-start="Старт: 30 ноября 2026 г." data-cmp-modules="Социокультурные, технологические и правовые предпосылки становления нейроправа · Основные концепции, понятия и структура нейроправа · Акты международного и национального права, конституирующие нормы нейроправа · Нейроправо и трансгуманизм: хартия и билль о правах · Соотношение авторского права и нейроправа · Влияние патентного права на нейроправа человека" data-cmp-teachers="1" data-cmp-audience="Юристам · Представителям творческих профессий · ИТ-разработчикам и робототехникам · Диджитал-маркетологам, медиаменеджерам · Инновационным менеджерам · Предпринимателям и основателям стартапов · Специалистам в медиа, рекламе, сетевых коммуникациях · Всем, кому интересна тема нейроправа">
       <button type="button" class="card-compare" data-compare-toggle aria-pressed="false"
         aria-label="Сравнить: Нейроправо"><span class="card-compare-box" aria-hidden="true"></span>Сравнить</button>
       <a href="programs/neyropravo-905186485.html" class="card-link">
@@ -1702,7 +1726,7 @@
         </span>
       </div>
     </div>
-    <div class="card" data-type="ПК" data-format="online" data-sphere="corporate" data-duration="unknown" data-price="50000" data-start="0" data-title="контрактное право гонконга" data-search="контрактное право гонконга пк онлайн синхронный" data-id="1025688553" data-cmp-format="Онлайн синхронный" data-cmp-duration="" data-cmp-start="" data-cmp-modules="Природа и источники контрактного права Гонконга · Оферта, акцепт · Встречное удовлетворение; намерение вступить в договор; правоспособность · Форма контракта, виды условий договора; введение в заблуждение · Ошибка; принуждение; злоупотребление влиянием · Недобросовестность; ничтожные контракты; прекращение контрактов · Средства правовой защиты от нарушения контрактов; доктрина договорной связи" data-cmp-teachers="1" data-cmp-audience="Адвокатам и юристам · Руководителям и собственникам бизнеса · Cпециалистам, которые работают с китайскими или гонконгскими компаниями · Студентам юридических вузов">
+    <div class="card" data-type="ПК" data-format="online" data-sphere="corporate" data-duration="unknown" data-price="50000" data-start="0" data-title="контрактное право гонконга" data-search="контрактное право гонконга пк онлайн синхронный гражданское и договорное право международное и зарубежное право" data-id="1025688553" data-cmp-format="Онлайн синхронный" data-cmp-duration="" data-cmp-start="" data-cmp-modules="Природа и источники контрактного права Гонконга · Оферта, акцепт · Встречное удовлетворение; намерение вступить в договор; правоспособность · Форма контракта, виды условий договора; введение в заблуждение · Ошибка; принуждение; злоупотребление влиянием · Недобросовестность; ничтожные контракты; прекращение контрактов · Средства правовой защиты от нарушения контрактов; доктрина договорной связи" data-cmp-teachers="1" data-cmp-audience="Адвокатам и юристам · Руководителям и собственникам бизнеса · Cпециалистам, которые работают с китайскими или гонконгскими компаниями · Студентам юридических вузов">
       <button type="button" class="card-compare" data-compare-toggle aria-pressed="false"
         aria-label="Сравнить: Контрактное право Гонконга"><span class="card-compare-box" aria-hidden="true"></span>Сравнить</button>
       <a href="programs/kontraktnoe-pravo-gonkonga-1025688553.html" class="card-link">
@@ -1723,7 +1747,7 @@
         </span>
       </div>
     </div>
-    <div class="card" data-type="ПК" data-format="online" data-sphere="finance" data-duration="unknown" data-price="50000" data-start="0" data-title="правовые вопросы банкротства: теории и практики" data-search="правовые вопросы банкротства: теории и практики пк онлайн синхронный" data-id="1008772871" data-cmp-format="Онлайн синхронный" data-cmp-duration="" data-cmp-start="" data-cmp-modules="Актуальные вопросы российского банкротства · 1. Введение в банкротное право · 2. Установление требований кредиторов (на этапе возбуждения дела и в процедурах банкротства). Основные виды возражений. · 3. Субординация требований кредиторов · 4. Процессуальные особенности производства по делу о банкротстве. Документарное производство · 5. Основные мероприятия ликвидационных процедур. Конкурсная масса, торги · 6. Основные мероприятия реабилитационных процедур. Реабилитационный план. Внесудебная реструктуризация · 7. Кредиторское оспаривание сделок. Сальдирование и зачёт при банкротстве · 8. Ответственность при банкротстве. Субсидиарная ответственность и убытки · 9. Обеспечение при банкротстве · 10. Банкротство граждан; актуальные вопросы правоприменительной практики · Актуальные вопросы трансграничных банкротств · 1. Основные подходы к регулированию трансграничных банкротств. Источники международного и российского права в сфере трансграничной несостоятельности · 2. Банкротство с иностранным элементом в российском суде. Вопросы применимого права, установления содержания иностранного права, извещений и др. Оспаривание · 3. Банкротство иностранных компаний в России: актуальная судебная практика · 4. Признание российских банкротств за рубежом и доступ к зарубежным активам российских должников · 5. Признание последствий иностранных банкротств в России · 6. Взаимодействие банкротство и параллельных исковых производств и разбирательств в международном коммерческом арбитраж" data-cmp-teachers="3" data-cmp-audience="Адвокатам и юристам · Экономистам · Руководителям и собственникам бизнеса · Арбитражным управляющим">
+    <div class="card" data-type="ПК" data-format="online" data-sphere="finance" data-duration="unknown" data-price="50000" data-start="0" data-title="правовые вопросы банкротства: теории и практики" data-search="правовые вопросы банкротства: теории и практики пк онлайн синхронный банкротство" data-id="1008772871" data-cmp-format="Онлайн синхронный" data-cmp-duration="" data-cmp-start="" data-cmp-modules="Актуальные вопросы российского банкротства · 1. Введение в банкротное право · 2. Установление требований кредиторов (на этапе возбуждения дела и в процедурах банкротства). Основные виды возражений. · 3. Субординация требований кредиторов · 4. Процессуальные особенности производства по делу о банкротстве. Документарное производство · 5. Основные мероприятия ликвидационных процедур. Конкурсная масса, торги · 6. Основные мероприятия реабилитационных процедур. Реабилитационный план. Внесудебная реструктуризация · 7. Кредиторское оспаривание сделок. Сальдирование и зачёт при банкротстве · 8. Ответственность при банкротстве. Субсидиарная ответственность и убытки · 9. Обеспечение при банкротстве · 10. Банкротство граждан; актуальные вопросы правоприменительной практики · Актуальные вопросы трансграничных банкротств · 1. Основные подходы к регулированию трансграничных банкротств. Источники международного и российского права в сфере трансграничной несостоятельности · 2. Банкротство с иностранным элементом в российском суде. Вопросы применимого права, установления содержания иностранного права, извещений и др. Оспаривание · 3. Банкротство иностранных компаний в России: актуальная судебная практика · 4. Признание российских банкротств за рубежом и доступ к зарубежным активам российских должников · 5. Признание последствий иностранных банкротств в России · 6. Взаимодействие банкротство и параллельных исковых производств и разбирательств в международном коммерческом арбитраж" data-cmp-teachers="3" data-cmp-audience="Адвокатам и юристам · Экономистам · Руководителям и собственникам бизнеса · Арбитражным управляющим">
       <button type="button" class="card-compare" data-compare-toggle aria-pressed="false"
         aria-label="Сравнить: Правовые вопросы банкротства: теории и практики"><span class="card-compare-box" aria-hidden="true"></span>Сравнить</button>
       <a href="programs/pravovye-voprosy-bankrotstva-teorii-i-praktiki-1008772871.html" class="card-link">
@@ -1744,7 +1768,7 @@
         </span>
       </div>
     </div>
-    <div class="card" data-type="ПК" data-format="online" data-sphere="practice" data-duration="unknown" data-price="45000" data-start="0" data-title="юридическая ответственность врача и медицинской организации: актуализация и профилактика" data-search="юридическая ответственность врача и медицинской организации: актуализация и профилактика пк онлайн синхронный" data-id="1029651795" data-cmp-format="Онлайн синхронный" data-cmp-duration="" data-cmp-start="" data-cmp-modules="Общие вопросы организации оказания медицинской помощи в РФ · Виды юридической ответственности за нарушения прав при оказании медицинской помощи · Теория и практика судебно-медицинской экспертизы дефектов оказания медицинской помощи · Итоговая аттестация: зачет" data-cmp-teachers="6" data-cmp-audience="Адвокаты и юристы · Медицинские работники · Все, кто хочет разобраться в правовых вопросах сферы здравоохранения">
+    <div class="card" data-type="ПК" data-format="online" data-sphere="practice" data-duration="unknown" data-price="45000" data-start="0" data-title="юридическая ответственность врача и медицинской организации: актуализация и профилактика" data-search="юридическая ответственность врача и медицинской организации: актуализация и профилактика пк онлайн синхронный медицинское и фармацевтическое право" data-id="1029651795" data-cmp-format="Онлайн синхронный" data-cmp-duration="" data-cmp-start="" data-cmp-modules="Общие вопросы организации оказания медицинской помощи в РФ · Виды юридической ответственности за нарушения прав при оказании медицинской помощи · Теория и практика судебно-медицинской экспертизы дефектов оказания медицинской помощи · Итоговая аттестация: зачет" data-cmp-teachers="6" data-cmp-audience="Адвокаты и юристы · Медицинские работники · Все, кто хочет разобраться в правовых вопросах сферы здравоохранения">
       <button type="button" class="card-compare" data-compare-toggle aria-pressed="false"
         aria-label="Сравнить: Юридическая ответственность врача и медицинской организации: актуализация и профилактика"><span class="card-compare-box" aria-hidden="true"></span>Сравнить</button>
       <a href="programs/yuridicheskaya-otvetstvennost-vracha-i-meditsinskoy-organiza-1029651795.html" class="card-link">
@@ -1786,7 +1810,7 @@
         </span>
       </div>
     </div>
-    <div class="card" data-type="ПК" data-format="online" data-sphere="practice" data-duration="unknown" data-price="40000" data-start="0" data-title="трудовое право для кадровых работников" data-search="трудовое право для кадровых работников пк онлайн синхронный" data-id="1052823497" data-cmp-format="Онлайн синхронный" data-cmp-duration="" data-cmp-start="" data-cmp-modules="Трудовой договор и его содержание · Основания и порядок изменения трудового договора · Основания и порядок увольнения работника · Ответственность работодателя за нарушение трудового законодательства · Проектный кейс: аудит кадровой документации" data-cmp-teachers="1" data-cmp-audience="Адвокатам и юристам в области трудового права · Руководителям и работникам кадровых служб управления персоналом · Руководителям малого и среднего бизнеса · Студентам и аспирантам · Всем желающим изучить свои трудовые права и правоприменительную практику">
+    <div class="card" data-type="ПК" data-format="online" data-sphere="practice" data-duration="unknown" data-price="40000" data-start="0" data-title="трудовое право для кадровых работников" data-search="трудовое право для кадровых работников пк онлайн синхронный трудовое право" data-id="1052823497" data-cmp-format="Онлайн синхронный" data-cmp-duration="" data-cmp-start="" data-cmp-modules="Трудовой договор и его содержание · Основания и порядок изменения трудового договора · Основания и порядок увольнения работника · Ответственность работодателя за нарушение трудового законодательства · Проектный кейс: аудит кадровой документации" data-cmp-teachers="1" data-cmp-audience="Адвокатам и юристам в области трудового права · Руководителям и работникам кадровых служб управления персоналом · Руководителям малого и среднего бизнеса · Студентам и аспирантам · Всем желающим изучить свои трудовые права и правоприменительную практику">
       <button type="button" class="card-compare" data-compare-toggle aria-pressed="false"
         aria-label="Сравнить: Трудовое право для кадровых работников"><span class="card-compare-box" aria-hidden="true"></span>Сравнить</button>
       <a href="programs/trudovoe-pravo-dlya-kadrovyh-rabotnikov-1052823497.html" class="card-link">
@@ -1807,7 +1831,7 @@
         </span>
       </div>
     </div>
-    <div class="card" data-type="ПК" data-format="hybrid" data-sphere="practice" data-duration="unknown" data-price="150000" data-start="0" data-title="доступ на рынок (market access) лекарственных препаратов: стратегии и правовое сопровождение" data-search="доступ на рынок (market access) лекарственных препаратов: стратегии и правовое сопровождение пк гибридный (обучение проходит очно и параллельно в онлайн)" data-id="1162952114" data-cmp-format="Гибридный" data-cmp-duration="" data-cmp-start="" data-cmp-modules="Модуль 1. Фундамент и стратегия (Ландшафт системы) · Модуль 2. Инструменты и регуляторные процедуры (Ключевой блок) · Модуль 3. Имплементация и Коммуникация (мастерская взаимодействия с государственными органами (GR)" data-cmp-teachers="3" data-cmp-audience="Руководителей и сотрудников отделов доступа на рынок, ценообразования и возмещения (Market Access, Pricing &amp; Reimbursement) · Менеджеров по взаимодействию с органами государственной власти (GR) · Менеджеров по разработкам (R&amp;D) и клиническим исследованиям · Менеджеров по продукту и стратегическому маркетингу · Коммерческих директоров и руководителей отдела продаж · Юристов фармкомпаний">
+    <div class="card" data-type="ПК" data-format="hybrid" data-sphere="practice" data-duration="unknown" data-price="150000" data-start="0" data-title="доступ на рынок (market access) лекарственных препаратов: стратегии и правовое сопровождение" data-search="доступ на рынок (market access) лекарственных препаратов: стратегии и правовое сопровождение пк гибридный (обучение проходит очно и параллельно в онлайн) медицинское и фармацевтическое право" data-id="1162952114" data-cmp-format="Гибридный" data-cmp-duration="" data-cmp-start="" data-cmp-modules="Модуль 1. Фундамент и стратегия (Ландшафт системы) · Модуль 2. Инструменты и регуляторные процедуры (Ключевой блок) · Модуль 3. Имплементация и Коммуникация (мастерская взаимодействия с государственными органами (GR)" data-cmp-teachers="3" data-cmp-audience="Руководителей и сотрудников отделов доступа на рынок, ценообразования и возмещения (Market Access, Pricing &amp; Reimbursement) · Менеджеров по взаимодействию с органами государственной власти (GR) · Менеджеров по разработкам (R&amp;D) и клиническим исследованиям · Менеджеров по продукту и стратегическому маркетингу · Коммерческих директоров и руководителей отдела продаж · Юристов фармкомпаний">
       <button type="button" class="card-compare" data-compare-toggle aria-pressed="false"
         aria-label="Сравнить: Доступ на рынок (Market Access) лекарственных препаратов: стратегии и правовое сопровождение"><span class="card-compare-box" aria-hidden="true"></span>Сравнить</button>
       <a href="programs/dostup-na-rynok-market-access-lekarstvennyh-preparatov-strat-1162952114.html" class="card-link">
@@ -1828,7 +1852,7 @@
         </span>
       </div>
     </div>
-    <div class="card" data-type="ПК" data-format="online" data-sphere="corporate" data-duration="short" data-price="50000" data-start="0" data-title="искусство составления договоров" data-search="искусство составления договоров пк онлайн синхронный 1 месяц" data-id="474413637" data-cmp-format="Онлайн синхронный" data-cmp-duration="1 месяц" data-cmp-start="" data-cmp-modules="Общие принципы составления договоров · Защита информации в компании: как создать рабочее NDA · Договор купли-продажи: стилистические аспекты · Договор купли-продажи доли в уставном капитале: формулировка условий · Договор аренды: формулировка условий · Договоры в сфере интеллектуальной собственности и услуг: детали прав и обязанностей · Пользовательские соглашения: перевод юридических норм в доступную форму · Инструменты для автоматизации договорной работы" data-cmp-teachers="1" data-cmp-audience="руководителям бизнеса · молодым предпринимателям и самозанятым · начинающим юристам и экономистам · специалистам, желающим знать, как заключать сделки правильно">
+    <div class="card" data-type="ПК" data-format="online" data-sphere="corporate" data-duration="short" data-price="50000" data-start="0" data-title="искусство составления договоров" data-search="искусство составления договоров пк онлайн синхронный 1 месяц гражданское и договорное право" data-id="474413637" data-cmp-format="Онлайн синхронный" data-cmp-duration="1 месяц" data-cmp-start="" data-cmp-modules="Общие принципы составления договоров · Защита информации в компании: как создать рабочее NDA · Договор купли-продажи: стилистические аспекты · Договор купли-продажи доли в уставном капитале: формулировка условий · Договор аренды: формулировка условий · Договоры в сфере интеллектуальной собственности и услуг: детали прав и обязанностей · Пользовательские соглашения: перевод юридических норм в доступную форму · Инструменты для автоматизации договорной работы" data-cmp-teachers="1" data-cmp-audience="руководителям бизнеса · молодым предпринимателям и самозанятым · начинающим юристам и экономистам · специалистам, желающим знать, как заключать сделки правильно">
       <button type="button" class="card-compare" data-compare-toggle aria-pressed="false"
         aria-label="Сравнить: Искусство составления договоров"><span class="card-compare-box" aria-hidden="true"></span>Сравнить</button>
       <a href="programs/iskusstvo-sostavleniya-dogovorov-474413637.html" class="card-link">
@@ -1869,7 +1893,7 @@
         </span>
       </div>
     </div>
-    <div class="card" data-type="ПК" data-format="online" data-sphere="finance" data-duration="medium" data-price="78000" data-start="0" data-title="исламские финансы: правовые основы, комплаенс и бизнес-практика" data-search="исламские финансы: правовые основы, комплаенс и бизнес-практика пк онлайн синхронный 3 месяца" data-id="814248062" data-cmp-format="Онлайн синхронный" data-cmp-duration="3 месяца" data-cmp-start="" data-cmp-modules="Источники исламского коммерческого права (фикх муамалят аль-малия) и особенности работы с ними · Основные понятия исламского права, имеющие отношение к имущественным сделкам · Имущественные обязательства. Виды договоров и требования к ним. Ключевые контракты исламского финансирования. Коммерческие ситуации и соответствующие им договоры исламского финансирования (кейс-стади) · Исламский банкинг и финансы: прошлое, настоящее, будущее · Особенности организации шариатского комплаенса в организации · Особенности маркетинга продуктов исламского финансирования · Особенности управления рисками в исламских финансовых институтах · Особенности функционирования исламских финансовых компаний. Ключевые виды организаций, применяемые продукты (проектные занятия)" data-cmp-teachers="1" data-cmp-audience="Руководители и владельцы бизнеса · Юристы · Экономисты и инвесторы · Банковские работники и аудиторы · Сотрудники международных компаний">
+    <div class="card" data-type="ПК" data-format="online" data-sphere="finance" data-duration="medium" data-price="78000" data-start="0" data-title="исламские финансы: правовые основы, комплаенс и бизнес-практика" data-search="исламские финансы: правовые основы, комплаенс и бизнес-практика пк онлайн синхронный 3 месяца налоговое и финансовое право" data-id="814248062" data-cmp-format="Онлайн синхронный" data-cmp-duration="3 месяца" data-cmp-start="" data-cmp-modules="Источники исламского коммерческого права (фикх муамалят аль-малия) и особенности работы с ними · Основные понятия исламского права, имеющие отношение к имущественным сделкам · Имущественные обязательства. Виды договоров и требования к ним. Ключевые контракты исламского финансирования. Коммерческие ситуации и соответствующие им договоры исламского финансирования (кейс-стади) · Исламский банкинг и финансы: прошлое, настоящее, будущее · Особенности организации шариатского комплаенса в организации · Особенности маркетинга продуктов исламского финансирования · Особенности управления рисками в исламских финансовых институтах · Особенности функционирования исламских финансовых компаний. Ключевые виды организаций, применяемые продукты (проектные занятия)" data-cmp-teachers="1" data-cmp-audience="Руководители и владельцы бизнеса · Юристы · Экономисты и инвесторы · Банковские работники и аудиторы · Сотрудники международных компаний">
       <button type="button" class="card-compare" data-compare-toggle aria-pressed="false"
         aria-label="Сравнить: Исламские финансы: правовые основы, комплаенс и бизнес-практика"><span class="card-compare-box" aria-hidden="true"></span>Сравнить</button>
       <a href="programs/islamskie-finansy-pravovye-osnovy-komplaens-i-biznes-praktik-814248062.html" class="card-link">
