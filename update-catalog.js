@@ -33,6 +33,7 @@ const {
 const { programHref } = require('./lib/program-slug');
 const { docBadge, shortFormat, formatTip, formatBucket } = require('./lib/program-labels');
 const { SPHERES, sphereOf } = require('./lib/program-spheres');
+const { branchesFor } = require('./js/program-branches');
 const { webpSibling, picture } = require('./lib/picture');
 
 const CATALOG_FILE = path.join(__dirname, 'Каталог программ.html');
@@ -132,7 +133,8 @@ function renderCard(item) {
   // по «онлайн» должен находить карточки, как раньше.
   const metaBits = [date].filter(Boolean).map(escapeHtml).join(' · ');
   const search = escapeHtml(
-    [item.title, typeShort, format, item.duration, date].filter(Boolean).join(' ').toLowerCase(),
+    [item.title, typeShort, format, item.duration, date, ...branchesFor(item).map((branch) => branch.title)]
+      .filter(Boolean).join(' ').toLowerCase(),
   );
 
   // Карточка ведёт на страницу программы внутри сайта, а не сразу на hse.ru:
@@ -259,7 +261,7 @@ function renderCard(item) {
 /**
  * Блок «Ближайшие старты» на странице каталога (просьба владельца
  * 18.08.2026) – по образцу страницы анонсов pravo.hse.ru/dpo/announcement:
- * месяц -> число -> название-ссылка, без цен и прочих метаданных.
+ * месяц -> число -> название-ссылка; цена видна на каждой карточке.
  *
  * Будущность старта определяет upcomingStartLabel – та же логика, что у
  * подписи «Старт: …» на карточках, поэтому блок не протухает вместе с
@@ -271,15 +273,6 @@ function renderCard(item) {
  * 2027». Если будущих стартов нет, секция не выводится вовсе – маркеры
  * обнимают её целиком.
  */
-/** «10 стартов» / «2 старта» / «1 старт». */
-function pluralStarts(n) {
-  const m10 = n % 10;
-  const m100 = n % 100;
-  if (m10 === 1 && m100 !== 11) return `${n} старт`;
-  if (m10 >= 2 && m10 <= 4 && (m100 < 12 || m100 > 14)) return `${n} старта`;
-  return `${n} стартов`;
-}
-
 /** «5 программ» / «2 программы» / «1 программа». */
 function pluralPrograms(n) {
   const m10 = n % 10;
@@ -400,7 +393,8 @@ function buildStartsBlock(items, now = new Date()) {
       : fmt({ day: 'numeric', month: 'long' }).format(d);
     const whenFull = item.isStartDateWithoutDay ? when : fmt({ day: 'numeric', month: 'long', year: 'numeric' }).format(d);
     const kind = (item.type && (item.type.shortTitle || item.type.title)) || '';
-    const meta = [kind, shortFormat(item.studyFormat?.title), formatPrice(item)].filter(Boolean).join(' · ');
+    const meta = [kind, shortFormat(item.studyFormat?.title)].filter(Boolean).join(' · ');
+    const price = formatPrice(item);
     const sphere = sphereOf(item);
     const dot = sphere ? `<i class="tl-dot" data-sphere="${escapeHtml(sphere.id)}" aria-hidden="true"></i>` : '';
     // Имя ссылки собирается из ВИДИМОГО текста, а не из aria-label.
@@ -415,6 +409,7 @@ function buildStartsBlock(items, now = new Date()) {
           <span class="tl-when">${escapeHtml(when)}</span>
           <span class="tl-name">${escapeHtml(item.title)}</span>
           <span class="tl-meta">${dot}${escapeHtml(meta)}</span>
+          <span class="tl-price">${escapeHtml(price)}</span>
         </a>
         <span class="tl-pin" aria-hidden="true"></span>
       </div>`;
@@ -437,14 +432,9 @@ function buildStartsBlock(items, now = new Date()) {
   const chips = months
     .map((mo, i) => `    <button type="button" class="starts-chip" data-scroll="${Math.max(0, mo.left - 8)}" aria-pressed="${i === 0 ? 'true' : 'false'}">${escapeHtml(mo.label)} <b>${mo.count}</b></button>`)
     .join('\n');
-  // Родительный падеж первого месяца («с сентября») берётся из формата «1 сентября».
-  const genitive = (mo) => fmt({ day: 'numeric', month: 'long' }).format(new Date(Date.UTC(Number(mo.key.slice(0, 4)), Number(mo.key.slice(5)) - 1, 1, 12))).replace(/^\d+\s+/, '');
-  const span = months.length > 1 ? `с ${genitive(months[0])} по ${months[months.length - 1].label.toLowerCase()}` : `в ${genitive(months[0]).replace(/я$/, 'е')}`;
-
   return `<section class="starts" aria-label="Ближайшие старты программ">
   <div class="starts-head">
     <h2>Ближайшие старты</h2>
-    <p class="starts-sub">${escapeHtml(pluralStarts(upcoming.length))} ${escapeHtml(span)} – каждый на своей дате. Прокрутите ось или выберите месяц.</p>
   </div>
   <div class="starts-months" aria-label="Месяцы">
 ${chips}

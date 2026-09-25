@@ -35,7 +35,19 @@ test('карточки стоят на своих датах, месяцы по�
   assert.match(html, /tl-dot" data-sphere="corporate"/);
   assert.match(html, /class="tl-today" style="left:80px"/, 'сегодня 3 сентября – третий день оси');
   assert.match(html, /style="width:2912px"/, 'сентябрь–ноябрь = 91 день × 32px');
-  assert.match(html, /с сентября по ноябрь/);
+  assert.doesNotMatch(html, /каждый на своей дате|Прокрутите ось|выберите месяц/);
+  assert.match(html, /<span class="tl-price">50 000 ₽<\/span>/);
+});
+
+test('цена видна отдельно от длинного формата на каждой карточке', () => {
+  const asyncProgram = program(1, 'Актуальные вопросы гражданского права', '2026-10-01T00:00:00+03:00', 30000);
+  asyncProgram.studyFormat.title = 'Онлайн асинхронный';
+  const noPrice = program(2, 'Новая программа', '2026-10-10T00:00:00+03:00');
+  delete noPrice.educationPricing;
+  const html = buildStartsBlock([asyncProgram, noPrice], NOW);
+  assert.match(html, /<span class="tl-meta">(?:<i[^>]*><\/i>)?ПК · Онлайн асинхронный<\/span>\s*<span class="tl-price">30 000 ₽<\/span>/);
+  assert.match(html, /<span class="tl-price">Цена по запросу<\/span>/);
+  assert.equal((html.match(/class="tl-price"/g) || []).length, 2);
 });
 
 test('близкие даты разводятся по дорожкам, дальние возвращаются на первую', () => {

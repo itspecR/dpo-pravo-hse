@@ -161,7 +161,9 @@ function dumpDom(chrome, url) {
       done = true;
       clearTimeout(guard);
       child.kill('SIGKILL');
-      fs.rmSync(profile, { recursive: true, force: true });
+      // Chrome может ещё записывать профиль после SIGKILL – даём файловой
+      // системе завершить удаление, иначе ENOTEMPTY оставляет Promise висеть.
+      fs.rmSync(profile, { recursive: true, force: true, maxRetries: 10, retryDelay: 100 });
       fn(arg);
     };
     // Документ напечатан целиком – ждать выхода самого Chrome незачем: со

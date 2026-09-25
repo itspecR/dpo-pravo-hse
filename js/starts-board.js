@@ -1,7 +1,8 @@
 /*
  * Ось времени ближайших стартов в каталоге: чипы месяцев прокручивают
  * дорожку к началу месяца, при ручной прокрутке активный чип следует за
- * положением. Разметку и координаты даёт buildStartsBlock (update-catalog.js);
+ * положением; на узком экране сначала показывается ближайшая карточка.
+ * Разметку и координаты даёт buildStartsBlock (update-catalog.js);
  * без скрипта дорожка просто прокручивается руками.
  */
 (function () {
@@ -18,6 +19,11 @@
     wrap = document.querySelector('.tl-wrap');
     chips = Array.prototype.slice.call(document.querySelectorAll('.starts-chip[data-scroll]'));
     if (!wrap || !chips.length) return;
+    var first = wrap.querySelector('.tl-item');
+    // На узком экране календарный отступ может спрятать ближайший старт.
+    if (first && !wrap.scrollLeft && first.offsetLeft + first.offsetWidth > wrap.clientWidth) {
+      wrap.scrollTo({ left: Math.max(0, first.offsetLeft - 20), behavior: 'instant' });
+    }
     var ticking = false;
     wrap.addEventListener('scroll', function () {
       if (ticking) return;
